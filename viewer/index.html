@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototype Assembly Viewer</title>
+<style>
+  :root{
+    --paper:#EDEDE8; --ink:#23262B; --ink-2:#5C6168; --line:#C9CBC4;
+    --orange:#E3611A; --steel:#7A8C9C; --panel:#F6F6F2; --card:#fff;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:14px;line-height:1.55}
+  #app{display:grid;grid-template-columns:1fr 360px;height:100%}
+  #viewer{position:relative;overflow:hidden;background:
+    radial-gradient(ellipse at 50% 60%, #F4F4EF 0%, #E4E5DF 70%, #D9DAD3 100%)}
+  #viewer canvas{display:block;width:100%;height:100%;touch-action:none}
+  #hud{position:absolute;left:16px;bottom:14px;right:16px;display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;pointer-events:none}
+  .ctl{pointer-events:auto;background:rgba(246,246,242,.92);border:1px solid var(--line);padding:10px 12px;border-radius:4px}
+  .ctl h4{margin:0 0 6px;font-size:12px;font-weight:600;color:var(--ink-2)}
+  .ctl input[type=range]{width:180px;accent-color:var(--orange)}
+  .steps{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .steps button{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 10px;border-radius:3px;cursor:pointer;font:inherit}
+  .steps button:hover{border-color:var(--ink)}
+  .steps button:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .steps b{min-width:56px;text-align:center;font-variant-numeric:tabular-nums}
+  #tip{position:absolute;top:14px;left:16px;background:rgba(246,246,242,.92);border:1px solid var(--line);
+    padding:6px 10px;border-radius:4px;font-size:12px;color:var(--ink-2);pointer-events:none}
+  #rail{background:var(--panel);border-left:1px solid var(--line);overflow:auto;padding:22px 20px 28px}
+  #rail h1{font-size:19px;margin:0 0 4px;font-weight:600}
+  #rail .sub{color:var(--ink-2);margin:0 0 12px;font-size:13px}
+  #rail .note{font-size:12px;background:#FFF4EC;border:1px solid #F0C9AE;border-radius:4px;padding:8px 10px;margin:0 0 14px}
+  #rail h2{font-size:12px;font-weight:600;color:var(--ink-2);margin:20px 0 8px;text-transform:uppercase;letter-spacing:.4px}
+  #rail a{color:var(--orange)}
+  ol.stepslist{list-style:none;padding:0;margin:0;counter-reset:s}
+  ol.stepslist li{counter-increment:s;display:grid;grid-template-columns:26px 1fr;gap:8px;padding:7px 8px;border-radius:3px;cursor:pointer;border:1px solid transparent}
+  ol.stepslist li::before{content:counter(s);font-weight:600;color:var(--steel);font-variant-numeric:tabular-nums}
+  ol.stepslist li:hover{background:var(--card);border-color:var(--line)}
+  ol.stepslist li.on{background:var(--card);border-color:var(--orange)}
+  ol.stepslist li.on::before{color:var(--orange)}
+  ol.stepslist li.future{opacity:.45}
+  ol.stepslist small{display:block;color:var(--ink-2);font-size:12px}
+  #detail{border-top:1px solid var(--line);margin-top:18px;padding-top:14px;min-height:120px}
+  #detail h3{margin:0 0 6px;font-size:15px;font-weight:600}
+  #detail p{margin:0 0 8px;font-size:13px}
+  #detail .k{color:var(--ink-2)}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--ink-2)}
+  .legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+  .legend .c1::before{background:#202326}.legend .c2::before{background:#2E6B4F}.legend .c3::before{background:#B87333}
+  .legend .c4::before{background:#9AA3AA}.legend .c5::before{background:#D9B24B}.legend .c6::before{background:#6F7F8C}.legend .c7::before{background:#C2412D}
+  @media (max-width:820px){
+    #app{grid-template-columns:1fr;grid-template-rows:58vh auto;height:auto;min-height:100%}
+    #rail{border-left:0;border-top:1px solid var(--line);padding:18px 16px 24px}
+    .ctl input[type=range]{width:120px}
+    #hud{left:8px;right:8px;gap:8px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="viewer">
+    <div id="tip">Drag to rotate · wheel/pinch to zoom · click a part</div>
+    <div id="hud">
+      <div class="ctl"><h4>Assembly step</h4>
+        <div class="steps"><button id="prev" aria-label="Previous step">◀</button><b id="stepno">9 / 9</b><button id="next" aria-label="Next step">▶</button><button id="all">All</button></div>
+      </div>
+      <div class="ctl"><h4>Exploded view</h4><input id="explode" type="range" min="0" max="1" step="0.01" value="0" aria-label="Explode amount"></div>
+      <div class="ctl"><h4>View</h4>
+        <div class="steps"><button data-v="iso">Iso</button><button data-v="top">Top</button><button data-v="side">Side</button><button data-v="front">Front</button></div>
+      </div>
+    </div>
+  </div>
+  <aside id="rail">
+    <h1>5-inch prototype assembly</h1>
+    <p class="sub">Route B: Banana Pi BPI-CM5 Pro + IO board, TBS Source One V5.1, MicoAir NxtPX4v2 50A stack. Modelled in real millimetres with simplified shapes.</p>
+    <p class="note">This shows the <b>reference build</b>: flight controller soft-mounted <i>above</i> the ESC. Differences on the real aircraft are tracked in <a href="../docs/as-built-status.md">as-built-status.md</a>. Printed parts in 3D: <a href="parts.html">parts.html</a>.</p>
+    <h2>Assembly order</h2>
+    <ol class="stepslist" id="steps"></ol>
+    <div id="detail"><h3>Click a part in the model</h3><p class="k">Or click a step: the model shows only the parts fitted up to that step.</p></div>
+    <h2>Colours</h2>
+    <div class="legend"><span class="c1">Carbon</span><span class="c2">PCB</span><span class="c3">Motor</span><span class="c4">Metal</span><span class="c5">3D print</span><span class="c7">Rubber grommet</span><span class="c6">Battery / cable</span></div>
+  </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  const viewer=document.getElementById('viewer');
+  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  viewer.appendChild(renderer.domElement);
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(38,1,1,5000);
+  scene.add(new THREE.HemisphereLight(0xffffff,0x8a8f88,.85));
+  const sun=new THREE.DirectionalLight(0xffffff,.75); sun.position.set(180,320,220); scene.add(sun);
+  const fill=new THREE.DirectionalLight(0xffffff,.25); fill.position.set(-200,120,-160); scene.add(fill);
+  const disc=new THREE.Mesh(new THREE.CircleGeometry(190,64),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.07}));
+  disc.rotation.x=-Math.PI/2; disc.position.y=-62; scene.add(disc);
+
+  const M={
+    carbon:new THREE.MeshStandardMaterial({color:0x202326,roughness:.55,metalness:.35}),
+    pcb:new THREE.MeshStandardMaterial({color:0x2E6B4F,roughness:.6,metalness:.1}),
+    pcbDark:new THREE.MeshStandardMaterial({color:0x1F4B36,roughness:.6}),
+    copper:new THREE.MeshStandardMaterial({color:0xB87333,roughness:.4,metalness:.6}),
+    alu:new THREE.MeshStandardMaterial({color:0x9AA3AA,roughness:.35,metalness:.7}),
+    print:new THREE.MeshStandardMaterial({color:0xD9B24B,roughness:.8}),
+    tpu:new THREE.MeshStandardMaterial({color:0xC69A2F,roughness:.9}),
+    rubber:new THREE.MeshStandardMaterial({color:0xC2412D,roughness:.9}),
+    black:new THREE.MeshStandardMaterial({color:0x2A2D31,roughness:.7}),
+    batt:new THREE.MeshStandardMaterial({color:0x6F7F8C,roughness:.7}),
+    chip:new THREE.MeshStandardMaterial({color:0x101214,roughness:.4,metalness:.3}),
+    prop:new THREE.MeshStandardMaterial({color:0x3A3D41,roughness:.6,transparent:true,opacity:.85,side:THREE.DoubleSide}),
+    lens:new THREE.MeshStandardMaterial({color:0x0B0F14,roughness:.2,metalness:.5}),
+    white:new THREE.MeshStandardMaterial({color:0xEAEAE6,roughness:.7}),
+    wire:new THREE.MeshStandardMaterial({color:0xB8332A,roughness:.7})
+  };
+
+  const parts=[];
+  function box(w,h,d,mat,x=0,y=0,z=0,ry=0){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.rotation.y=ry;return m;}
+  function cyl(r,h,mat,x=0,y=0,z=0,seg=28){const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,seg),mat);m.position.set(x,y,z);return m;}
+  function part(name,step,desc,explode,build){
+    const g=new THREE.Group(); build(g); g.userData={name,step,desc};
+    g.traverse(o=>{if(o.isMesh){o.userData.part=g;}});
+    scene.add(g);
+    parts.push({group:g,name,step,desc,explode:new THREE.Vector3(...explode),base:g.position.clone()});
+    return g;
+  }
+  const corners=[[1,1],[-1,1],[1,-1],[-1,-1]];
+
+  // ---------- geometry (mm; Y up; +Z = nose) ----------
+  part('Bottom plate and arms (Source One V5.1)',1,
+    'Carbon fibre, 6 mm arms. The four arms bolt to the bottom plate with the supplied M3 screws. The 30.5 × 30.5 mm stack pattern is in the middle.',
+    [0,0,0],g=>{
+      g.add(box(150,3,44,M.carbon,0,-1.5,0));
+      for(const [sx,sz] of corners){
+        const arm=box(16,6,118,M.carbon,0,-3,0);
+        arm.position.set(sx*40,-3,sz*40); arm.rotation.y=Math.atan2(sx,sz);
+        g.add(arm);
+      }
+    });
+  const motorPos=[[80,80],[-80,-80],[-80,80],[80,-80]];
+  part('Motors ×4 (XING2 2207 1855KV)',1,
+    'M3×6 screws with threadlocker. PX4 Quad X order: 1 front-right, 2 rear-left, 3 front-left, 4 rear-right. Direction (from above): 1 and 2 counter-clockwise, 3 and 4 clockwise. Leads zip-tied along the arms to the ESC.',
+    [0,0,0],g=>{
+      for(const [x,z] of motorPos){
+        g.add(cyl(14,18,M.copper,x,9,z)); g.add(cyl(15,4,M.black,x,1,z)); g.add(cyl(2.5,8,M.alu,x,22,z));
+      }
+    });
+  part('Stack standoffs (30.5 mm)',2,
+    'Frame M3 standoffs in the 30.5 mm pattern. They carry the ESC, the 30.5→20 adapter and the top plate.',
+    [0,0,0],g=>{ for(const [x,z] of corners) g.add(cyl(2.3,26,M.alu,x*15.25,13,z*15.25,10)); });
+  part('4-in-1 ESC (MicoAir 50A)',2,
+    'Bottom of the stack, on rubber grommets (isolation stage 1), arrow to the nose. 12 motor joints, XT60 lead and low-ESR capacitor on the battery pads, XT30 pigtail in parallel for the compute BEC. Check + and − are not shorted before going on.',
+    [0,30,0],g=>{
+      g.add(box(36,4,36,M.pcbDark,0,6,0));
+      for(const [x,z] of corners) g.add(cyl(3,3,M.rubber,x*15.25,6,z*15.25,12));
+      g.add(cyl(4,9,M.black,-22,8,0,14));
+    });
+  part('30.5→20 mm adapter plate',3,
+    'Rigid carbon plate on the ESC standoffs. It only converts the hole pattern from 30.5 to 20 mm; it does not isolate vibration. Isolation comes from the grommets on the flight controller.',
+    [0,55,0],g=>{ g.add(box(38,1.5,38,M.carbon,0,12.5,0)); });
+  part('Flight controller (MicoAir NxtPX4v2, H743) on grommets',3,
+    'Soft-mounted on four rubber grommets at the 20 × 20 holes (isolation stage 2), arrow to the nose. Grommets just snug, never crushed. USB-C, microSD and boot button face outward so they are reachable without disassembly. ESC 8-pin, GPS, receiver and TEL1 (companion UART) all plug into GH/SH sockets.',
+    [0,80,0],g=>{
+      for(const [x,z] of corners) g.add(cyl(2.6,3,M.rubber,x*10,15,z*10,12));
+      g.add(box(30,3,30,M.pcb,0,18,0)); g.add(box(9,2,9,M.chip,0,20.5,0));
+      g.add(box(6,2.5,4,M.white,11,20.5,9)); g.add(box(6,2.5,4,M.white,11,20.5,-9));
+      g.add(box(8,3,5,M.alu,-15,19,0)); // USB-C, facing out
+    });
+  part('Receiver (RadioMaster RP1)',3,
+    'Taped to the rear of the frame. Four wires soldered at the receiver, GH plug into the FC RC port (receiver TX → FC RX). Antenna run out along a rear arm, away from carbon.',
+    [-40,0,-30],g=>{ g.add(box(12,3,18,M.pcb,-30,2,-40)); g.add(cyl(.8,60,M.white,-38,2,-70,6)); });
+  part('Top plate',5,
+    'Replace the rear 22 mm standoffs with 30 mm so the plate sits level, then four screws into the standoffs.',
+    [0,110,0],g=>{ g.add(box(140,2.5,40,M.carbon,0,27.5,0)); });
+  part('Printed carrier adapter plate (130 × 90 × 3 mm)',5,
+    'PETG/PLA+. Centre holes bolt to the top-plate standoffs; four M2.5 nylon standoffs at the corners carry the IO board. Holds the 100 × 80 mm board above the 40 mm-wide body, overhanging ~25 mm per side. STL: mounts/stl/01_carrier_adapter_plate.stl.',
+    [0,150,0],g=>{
+      g.add(box(130,3,90,M.print,0,30.5,0));
+      for(const [x,z] of corners) g.add(cyl(2.2,6,M.white,x*46.5,35,z*36.5,8));
+    });
+  part('BPI CM5 Pro IO board + BPI-CM5 Pro module',6,
+    'IO board 100 × 80 mm, 12 V DC input. Module fixed with four M2.5 screws (never only the connectors), heatsink on the SoC. USB ports to the rear, camera connector to the front. Wi-Fi antenna led out ≥ 15 mm from carbon. TEL1 UART (TX/RX/GND only) to the 40-pin header.',
+    [0,210,0],g=>{
+      g.add(box(100,2,80,M.pcb,0,39,0));
+      g.add(box(55,3.5,40,M.pcbDark,0,42,4));
+      g.add(box(30,8,30,M.alu,0,48,4));
+      for(let i=-2;i<=2;i++) g.add(box(30,.6,1.2,M.alu,0,52.5,4+i*6));
+      g.add(box(14,7,15,M.alu,-30,44,-36)); g.add(box(14,7,15,M.alu,-12,44,-36));
+      g.add(box(16,6,14,M.alu,30,43,-36));
+      g.add(box(2.54*20,4,5,M.black,0,43,36));
+      g.add(box(18,2,4,M.white,28,41,38)); g.add(box(18,2,4,M.white,-28,41,38));
+      g.add(box(6,4,8,M.black,44,42,-20));
+    });
+  part('Compute BEC (4S → 12 V / 3 A)',6,
+    'Taped beside the ESC. Input from the XT30 pigtail, output DC 5.5×2.1 to the IO board. Verify 12 V with a multimeter before connecting. The flight controller has its own BEC and does not depend on this one.',
+    [50,0,0],g=>{ g.add(box(22,7,16,M.black,52,3.5,-8)); g.add(box(4,4,6,M.wire,64,3.5,-8)); });
+  part('Camera (IMX219 120°) + TPU adapter',7,
+    'Board screwed to the TPU adapter, pushed into the front camera cage, ~20° up-tilt. 22-pin FPC under the top plate, up through the front slot of the adapter plate into the IO board CAM connector; slack loop, taped at the connector. STL: mounts/stl/02_camera_adapter_TPU.stl.',
+    [0,0,60],g=>{
+      const cage=box(22,22,4,M.tpu,0,12,70); cage.rotation.x=-0.35; g.add(cage);
+      const b=box(25,24,1.5,M.pcb,0,12,73); b.rotation.x=-0.35; g.add(b);
+      const l=cyl(5,6,M.lens,0,13.5,77,20); l.rotation.x=Math.PI/2-0.35; g.add(l);
+      const fpc=box(12,.6,40,M.wire,0,22,52); fpc.rotation.x=-.25; g.add(fpc);
+    });
+  part('GPS (Holybro Micro M10) on mast',7,
+    '30 mm printed mast at the rear of the adapter plate, GPS arrow to the nose. The mast keeps the compass away from the BEC, ESC, battery leads and Wi-Fi antenna. GH 6-pin cable into FC GPS1 — check the pin order first (see wiring.md). STL: mounts/stl/03_gps_mast.stl.',
+    [0,80,-40],g=>{ g.add(cyl(4,30,M.print,0,47,-38,10)); g.add(cyl(15,6,M.black,0,65,-38)); g.add(cyl(13,1,M.white,0,68.5,-38)); });
+  part('Battery (4S 1550 mAh) + TPU tray',8,
+    'Under-slung because the top is taken by the IO board: TPU tray under the bottom plate, strap through the slots, 3 mm EVA pad underneath. XT60 exits to the side. STL: mounts/stl/04_battery_tray_TPU.stl.',
+    [0,-70,0],g=>{
+      g.add(box(78,24,38,M.print,0,-16,0)); g.add(box(75,32,35,M.batt,0,-21,0));
+      g.add(box(90,3,20,M.black,0,-21,0));
+      g.add(box(6,5,12,M.wire,42,-14,10));
+    });
+  part('Props ×4 (Gemfan 51466 tri-blade)',9,
+    'Fitted last: only after the software setup and motor-direction check. Match direction to each motor, convex side up, nuts tight.',
+    [0,40,0],g=>{
+      for(const [x,z] of motorPos){
+        g.add(cyl(6,2,M.black,x,25,z,16));
+        for(let i=0;i<3;i++){const bl=box(62,1.2,10,M.prop,0,0,0); bl.position.set(x,25,z); bl.rotation.y=i*Math.PI*2/3; bl.geometry.translate(31,0,0); bl.rotation.z=.12; g.add(bl);}
+      }
+    });
+
+  const STEPS=[
+    ['Frame and motors','Bottom plate, arms, 4 motors, leads tied along the arms'],
+    ['ESC','Standoffs, grommets; solder motors, XT60, capacitor, XT30 pigtail'],
+    ['Flight controller above the ESC','30.5→20 adapter, grommets, 8-pin cable, receiver, GPS, TEL1'],
+    ['Bench power test','Props off; QGC sees the FC, XT30 live, nothing hot'],
+    ['Top plate and adapter plate','Level the top plate, bolt the printed adapter plate'],
+    ['Companion computer and BEC','Module screwed down, heatsink, antenna out, 12 V in'],
+    ['Camera and GPS','Camera cage adapter, FPC under the top plate; GPS on mast'],
+    ['Battery','Under-slung, strap, EVA pad'],
+    ['Inspection → software → props','Screws, ties, CG; parameters done before props go on']
+  ];
+  const N=STEPS.length;
+  const stepsEl=document.getElementById('steps');
+  STEPS.forEach((s,i)=>{const li=document.createElement('li');li.innerHTML=`<span>${s[0]}<small>${s[1]}</small></span>`;li.addEventListener('click',()=>setStep(i+1));stepsEl.appendChild(li);});
+
+  let cur=N;
+  function setStep(n){
+    cur=Math.max(1,Math.min(N,n));
+    document.getElementById('stepno').textContent=`${cur} / ${N}`;
+    parts.forEach(p=>{p.group.visible=p.step<=cur;});
+    [...stepsEl.children].forEach((li,i)=>{li.classList.toggle('on',i+1===cur);li.classList.toggle('future',i+1>cur);});
+  }
+  document.getElementById('prev').onclick=()=>setStep(cur-1);
+  document.getElementById('next').onclick=()=>setStep(cur+1);
+  document.getElementById('all').onclick=()=>setStep(N);
+
+  const exp=document.getElementById('explode');
+  function applyExplode(){const k=parseFloat(exp.value);parts.forEach(p=>{p.group.position.copy(p.base).addScaledVector(p.explode,k);});}
+  exp.addEventListener('input',applyExplode);
+
+  const target=new THREE.Vector3(0,10,0);
+  let theta=0.7, phi=1.05, dist=420, drag=false, lx=0, ly=0;
+  function place(){camera.position.set(target.x+dist*Math.sin(phi)*Math.sin(theta),target.y+dist*Math.cos(phi),target.z+dist*Math.sin(phi)*Math.cos(theta));camera.lookAt(target);}
+  const el=renderer.domElement;
+  el.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;ly=e.clientY;el.setPointerCapture(e.pointerId);});
+  el.addEventListener('pointermove',e=>{ if(!drag) return; theta-=(e.clientX-lx)*0.006; phi-=(e.clientY-ly)*0.006; phi=Math.max(0.15,Math.min(1.5,phi)); lx=e.clientX; ly=e.clientY; place();});
+  el.addEventListener('pointerup',()=>{drag=false;});
+  el.addEventListener('wheel',e=>{e.preventDefault();dist=Math.max(150,Math.min(900,dist*(1+Math.sign(e.deltaY)*0.08)));place();},{passive:false});
+  let pinch=null;
+  el.addEventListener('touchstart',e=>{if(e.touches.length===2){pinch=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}},{passive:true});
+  el.addEventListener('touchmove',e=>{if(e.touches.length===2&&pinch){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);dist=Math.max(150,Math.min(900,dist*pinch/d));pinch=d;place();}},{passive:true});
+  document.querySelectorAll('[data-v]').forEach(b=>b.addEventListener('click',()=>{
+    const v=b.dataset.v; if(v==='iso'){theta=0.7;phi=1.05;} if(v==='top'){theta=0;phi=0.16;} if(v==='side'){theta=Math.PI/2;phi=Math.PI/2-0.05;} if(v==='front'){theta=0;phi=Math.PI/2-0.05;} place();}));
+
+  const ray=new THREE.Raycaster(), mouse=new THREE.Vector2(); let hover=null, selected=null;
+  function setEmissive(g,c){g&&g.traverse(o=>{if(o.isMesh){o.material=o.material.clone();o.material.emissive=new THREE.Color(c);o.material.emissiveIntensity=c?0.55:0;}});}
+  function restore(g){g&&g.traverse(o=>{if(o.isMesh){o.material.emissive=new THREE.Color(0x000000);o.material.emissiveIntensity=0;}});}
+  function pick(e){const r=el.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;ray.setFromCamera(mouse,camera);const hits=ray.intersectObjects(scene.children,true).filter(h=>h.object.userData.part&&h.object.userData.part.visible);return hits.length?hits[0].object.userData.part:null;}
+  const EMPTY='<h3>Click a part in the model</h3><p class="k">Or click a step: the model shows only the parts fitted up to that step.</p>';
+  let moved=0;
+  el.addEventListener('pointerdown',()=>{moved=0;});
+  el.addEventListener('pointermove',e=>{moved++; if(drag) return; const g=pick(e); if(g!==hover){ if(hover&&hover!==selected) restore(hover); hover=g; if(hover&&hover!==selected) setEmissive(hover,0xE3611A); el.style.cursor=hover?'pointer':'grab';}});
+  el.addEventListener('click',e=>{ if(moved>4) return; const g=pick(e); if(selected) restore(selected); selected=g; const det=document.getElementById('detail'); if(g){ setEmissive(g,0xE3611A); const d=g.userData; det.innerHTML=`<h3>${d.name}</h3><p class="k">Fitted in step ${d.step}</p><p>${d.desc}</p>`; } else { det.innerHTML=EMPTY; } });
+
+  function resize(){const w=viewer.clientWidth,h=viewer.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+  addEventListener('resize',resize); resize(); place(); setStep(N); applyExplode();
+  (function loop(){renderer.render(scene,camera);requestAnimationFrame(loop);})();
+})();
+</script>
+</body>
+</html>
