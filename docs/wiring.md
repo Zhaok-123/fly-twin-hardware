@@ -1,5 +1,13 @@
 # Wiring
 
+> **Airframe #1 as-built limitation (2026-11-21):** This page contains reference
+> wiring and planned companion UART settings. The currently photographed compute
+> hardware is **ArmSoM CM5 + CM5-IO**, not the originally specified BPI board.
+> The flight-battery compute BEC is **not installed** and PX4 `TEL1`/MAVLink
+> communication has **not been validated**. Do not apply any BPI GPIO header
+> pin numbers to ArmSoM without checking the actual silkscreen and documentation.
+> Do not connect the 5 V rails together. See [as-built status](as-built-status.md).
+
 All flight-controller peripherals use JST-GH sockets — no soldering on the FC side.
 Silkscreen labels below are from the MicoAir NxtPX4v2 documentation; **always confirm
 against the silkscreen on your board** before plugging anything in. Rows marked

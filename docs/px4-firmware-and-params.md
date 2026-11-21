@@ -1,5 +1,14 @@
 # PX4 firmware and parameters
 
+> **Airframe #1 update (2026-11-21):** The builder flashed official **PX4 v1.16.2**
+> on 2026-11-10. The migration instructions and parameter values below are a
+> **reference plan**, not evidence of a current verified configuration. There has
+> been **no accepted real-aircraft reflight** on this firmware in the supplied
+> records. Recheck actuator mapping, DShot output, RC, GPS, battery monitoring,
+> sensors and failsafes with **propellers removed** before a controlled flight;
+> export the actual current `.params` afterwards. Do **not** load old 1.14.3
+> parameters wholesale. See [as-built status](as-built-status.md).
+
 ## Firmware decision
 
 | | Before (airframe #1 first flights) | Now (team standard) |

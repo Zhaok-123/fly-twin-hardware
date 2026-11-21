@@ -42,10 +42,15 @@
 <script>
 (function(){
   const PARTS=[
-    {file:'01_carrier_adapter_plate.stl',name:'Carrier adapter plate',mat:'PETG / PLA+',color:0xD9B24B},
-    {file:'02_camera_adapter_TPU.stl',name:'Camera adapter',mat:'TPU 95A',color:0xC69A2F},
-    {file:'03_gps_mast.stl',name:'GPS mast',mat:'PLA',color:0xD9B24B},
-    {file:'04_battery_tray_TPU.stl',name:'Battery tray',mat:'TPU 95A',color:0xC69A2F}
+    {file:'01_carrier_adapter_plate_V3_new.stl',name:'AS-BUILT · Carrier V3',mat:'As printed: material not verified',color:0xD9B24B},
+    {file:'03_gps_mast_v2_rounded_rect.stl',name:'AS-BUILT · GPS mast V2',mat:'As printed: material not verified',color:0xD9B24B},
+    {file:'04_battery_tray_TPU_new.stl',name:'AS-BUILT · Battery tray',mat:'As printed: material not verified',color:0xC69A2F},
+    {file:'05_esc_plate_38x38x2_8xM3_R1.stl',name:'AS-BUILT · FC/ESC adapter',mat:'As printed: material not verified',color:0xD9B24B},
+    {file:'landing_foot_v7.stl',name:'AS-BUILT · Landing foot V7',mat:'As printed: material not verified',color:0xD9B24B},
+    {file:'01_carrier_adapter_plate.stl',name:'REFERENCE · Carrier original',mat:'Historical PETG / PLA+',color:0xB0B5A8},
+    {file:'02_camera_adapter_TPU.stl',name:'REFERENCE · Camera TPU',mat:'Historical TPU 95A',color:0xB0B5A8},
+    {file:'03_gps_mast.stl',name:'REFERENCE · GPS mast original',mat:'Historical PLA',color:0xB0B5A8},
+    {file:'04_battery_tray_TPU.stl',name:'REFERENCE · Battery tray original',mat:'Historical TPU 95A',color:0xB0B5A8}
   ];
   const BASE='../mounts/stl/';
   const viewer=document.getElementById('viewer'), msg=document.getElementById('msg');
