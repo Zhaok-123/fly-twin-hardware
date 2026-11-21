@@ -26,11 +26,11 @@ software) and the hardware team stay in sync.
 | [docs/wiring.md](docs/wiring.md) | Every connector and pin mapping |
 | [docs/px4-firmware-and-params.md](docs/px4-firmware-and-params.md) | Firmware version, flashing, migration from the vendor build, parameter set |
 | [docs/as-built-status.md](docs/as-built-status.md) | Differences between docs and the real aircraft; change log |
-| [bom/bom.md](bom/bom.md) | Bill of materials as actually purchased, with status |
+| [bom/bom.md](bom/bom.md) | Bill of materials with installed status and historical reference prices |
 | [mounts/](mounts/) | 3D-printed parts: STL files, parametric source, print settings |
 | [viewer/index.html](viewer/index.html) | Interactive 3D assembly viewer (step-by-step, exploded view, click a part) |
 | [viewer/parts.html](viewer/parts.html) | 3D viewer for the printed-part STL files |
-| [params/](params/) | PX4 parameter files exported from each aircraft |
+| [params/](params/) | PX4 parameter export instructions; actual aircraft exports are still pending |
 | [build-log/](build-log/) | Dated build photos and notes |
 
 ### Opening the 3D viewers
@@ -43,8 +43,9 @@ python -m http.server 8000      # from the repo root
 # then open http://localhost:8000/viewer/parts.html
 ```
 
-`viewer/index.html` is the reviewed self-contained as-built viewer (embedded meshes);
-`viewer/parts.html` loads the standalone STL files and requires HTTP.
+`viewer/index.html` is the reviewed self-contained as-built viewer (embedded meshes).
+`viewer/parts.html` uses locally bundled scripts and loads the standalone STL files over
+HTTP; neither viewer requires an internet connection.
 Both pages also work from GitHub Pages if it is enabled for this repo.
 
 ## The aircraft in one table

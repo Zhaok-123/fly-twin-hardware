@@ -31,10 +31,13 @@ Why mainline v1.16.2:
 
 Check what a board is running: QGroundControl → Analyze Tools → MAVLink Console → `ver all`.
 
-## Migration procedure
+## Historical migration plan — do not repeat on Airframe #1
 
-Do this on the **bench flight controller (stack #2) first**, then on airframe #1 after the
-soft-mount rebuild (which needs a full recalibration anyway).
+The following steps are retained for provenance, not as current instructions. Airframe #1
+has already been flashed and its FC is rigidly mounted; there has been no confirmed
+soft-mount rebuild. Do not reflash or apply the historical settings below merely because
+they appear here. First export the actual current parameters and verify the configuration
+with propellers removed.
 
 1. **Back up the vendor state** (airframe #1):
    - QGC → Parameters → Tools → Save to file →
@@ -67,19 +70,23 @@ Stack #2 is the software team's bench unit for HITL. Label it **"BENCH / HITL"**
 `SYS_HITL = 1` on a flying aircraft disables real sensors and outputs. Never move a
 parameter file from the bench unit to a flying aircraft.
 
-## Initial setup (props off)
+## Historical initial setup proposal — verify, do not apply blindly
+
+The list and table below are an unverified reference plan, not a record of the current
+configuration. Airframe #1 previously used DShot300; its current protocol, telemetry
+support, motor mapping and directions must be checked on the actual hardware with props
+removed. Do not assume the proposed settings or motor map below are correct.
 
 1. Airframe: **Generic Quadcopter** (`SYS_AUTOSTART = 4001`).
 2. Sensor calibration: accelerometer, gyro, level horizon, compass (GPS-mounted).
 3. Radio: bind RP1 to the Pocket, calibrate sticks, assign a 3-position mode switch
    (Manual / Position / Offboard) and a **kill switch**.
-4. ESC: DShot600, enable bidirectional DShot telemetry.
-5. Motor test (QGC → Motors): check order **1 FR, 2 RL, 3 FL, 4 RR** and direction
-   **1, 2 CCW; 3, 4 CW**. Fix direction with the DShot reverse command, not by re-soldering.
+4. ESC: historical proposal was DShot600 and bidirectional telemetry. Verify the current protocol and hardware/firmware support before changing either.
+5. Motor test (QGC → Motors): with props removed, verify each physical output and motor direction against the current QGC actuator configuration. The historical proposal was **1 FR, 2 RL, 3 FL, 4 RR** and **1, 2 CCW; 3, 4 CW**; this is not an established mapping for the current firmware.
 6. Companion link: `MAV_1_CONFIG = TEL1`, `SER_TEL1_BAUD = 921600`, `MAV_1_MODE = Onboard`.
 7. Failsafes and geofence (table below). Export the parameter file and commit it.
 
-## Parameter set
+## Historical proposed parameters — not verified settings
 
 Parameter names below are those used in our planning docs. **Check each name in QGC on
 v1.16.2** — a few failsafe parameters were renamed between releases. Update this table
