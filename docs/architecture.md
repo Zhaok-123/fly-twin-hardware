@@ -1,5 +1,15 @@
 # Architecture — how the prototype works
 
+> **Reference-design document.** The vertical stack, companion module, compute BEC,
+> data links and anti-vibration scheme below describe planned architecture, not a
+> verified claim about Airframe #1. The aircraft photographed on 2026-11-21 has an
+> **ArmSoM CM5 + CM5-IO**, custom eight-hole FC-over-ESC adapter and continuous outer
+> through-fasteners. BEC is **not installed**, TEL1 is **not validated**, and vibration
+> isolation is **not proven**. For physical reconstruction use the
+> [as-built assembly guide](assembly.md) and [actual-state record](as-built-status.md).
+> The reference DShot600/bidirectional telemetry and programmed offboard policy are
+> **not verified Airframe #1 features**.
+
 This document explains *why* the aircraft is built the way it is. The step-by-step
 build is in [assembly.md](assembly.md); pin-level detail is in [wiring.md](wiring.md).
 

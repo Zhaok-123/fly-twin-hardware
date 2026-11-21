@@ -1,45 +1,43 @@
 # 3D-printed parts
 
-Frame: TBS Source One V5.1 (5"). Companion: Banana Pi BPI-CM5 Pro + IO board (same
-footprint as ArmSoM CM5 / CM5-IO). Preview of the four parts: [preview.png](preview.png).
-View them in 3D: [../viewer/parts.html](../viewer/parts.html).
+This repository retains the four original **planning-stage** STL files for historical
+reference. The **as-built Airframe #1** revisions are listed first below; they are the
+five source STLs supplied by the builder for the November 2026 hardware documentation.
+The [interactive assembly viewer](../viewer/index.html) embeds the five actual meshes;
+the [STL parts viewer](../viewer/parts.html) loads individual mesh files by HTTP.
 
-The STL files were generated from **nominal** dimensions in the planning stage. Measure
-the *verify* dimensions on your parts before printing, then regenerate (see below).
+## Airframe #1 — supplied as-built printed parts (2026-11-21)
 
-| File | Material | Print | Dimensions to verify |
-|------|----------|-------|----------------------|
-| [01_carrier_adapter_plate.stl](stl/01_carrier_adapter_plate.stl) | PETG or PLA+ | Flat, 0.2 mm layers, 4 walls, 40 % infill | IO-board mounting holes (assumed 93 × 73 mm, M2.5; check the official DXF); Source One V5 top-plate standoff screw spacing (assumed 62 mm fore/aft × 30 mm lateral) |
-| [02_camera_adapter_TPU.stl](stl/02_camera_adapter_TPU.stl) | TPU 95A | Front face down, no supports | Camera cage inner width (19 or 20 mm; generated at 19); IMX219 board holes (assumed Pi v2 standard 21 × 12.5 mm; wide-angle boards may differ) |
-| [03_gps_mast.stl](stl/03_gps_mast.stl) | PLA | Base down, supports under the top disc | — |
-| [04_battery_tray_TPU.stl](stl/04_battery_tray_TPU.stl) | TPU 95A | Opening up | Battery size (Tattu 4S 1550 assumed ~35 × 75 × 31 mm) |
+| STL | Qty on #1 | Nominal bounding-box size (mm) | Function / facts |
+|---|---:|---|---|
+| [01_carrier_adapter_plate_V3_new.stl](stl/01_carrier_adapter_plate_V3_new.stl) | 1 | **90 × 137 × 3** | Upper carrier on the four center-stack extension fasteners; four separate raised mounts for CM5-IO. |
+| [03_gps_mast_v2_rounded_rect.stl](stl/03_gps_mast_v2_rounded_rect.stl) | 1 | **29.9 × 36.44 × 35** | Rear GPS mast, approximately 35 mm tall. |
+| [04_battery_tray_TPU_new.stl](stl/04_battery_tray_TPU_new.stl) | 1 | **45 × 81.5 × 15** | Underslung battery tray with strap. Filename is not proof of print material. |
+| [05_esc_plate_38x38x2_8xM3_R1.stl](stl/05_esc_plate_38x38x2_8xM3_R1.stl) | 1 | **38 × 38 × 2** | Adapter with 20 × 20 mm inner FC mounting pattern and 30.5 × 30.5 mm outer through-fastener pattern; 8 × ~3.3 mm M3 clearance holes. |
+| [landing_foot_v7.stl](stl/landing_foot_v7.stl) | 4 | **54.5 × 25 × 80** | One repeated landing leg under each motor arm, ~80 mm tall. |
 
-Assumptions baked into the files:
+**Total:** Five unique printed-part models; eight installed part instances. Geometry
+comes from the supplied STL files. Material, manufacturing process, fastener lengths
+and installed clearance must be confirmed on real hardware; the STLs do **not** certify
+material or mechanical strength. The described as-built structure and measured center
+clearances are recorded in [assembly.md](../docs/assembly.md).
 
-- Both the top-plate standoff holes and the 30.5 × 30.5 stack holes are on the adapter
-  plate; at least one set will fit.
-- The Source One V5 ships with 30 mm front / 22 mm rear standoffs, so the top plate is
-  tilted. Replace the rear pair with 30 mm before fitting the adapter plate.
-- The camera adapter is clamped by the cage's M2 side screws; tilt is set by rotating it,
-  then tightening.
-- The battery tray bolts through the bottom plate's 30.5 stack holes; those screws need
-  to be ~4 mm longer.
+## Original reference models (not necessarily fitted to Airframe #1)
 
-## Parts printed for airframe #1 but not in this folder yet
+| Historical STL | Reference design material / print notes | Status |
+|---|---|---|
+| [01_carrier_adapter_plate.stl](stl/01_carrier_adapter_plate.stl) | PETG or PLA+; flat, 0.2 mm layers | Superseded by V3 carrier. |
+| [02_camera_adapter_TPU.stl](stl/02_camera_adapter_TPU.stl) | TPU 95A, camera-cage mount | Not fitted; replaced by adjustable metal camera bracket, not a 3D-printed part. |
+| [03_gps_mast.stl](stl/03_gps_mast.stl) | PLA, nominal mast | Superseded by supplied GPS mast V2. |
+| [04_battery_tray_TPU.stl](stl/04_battery_tray_TPU.stl) | TPU 95A, nominal battery tray | Superseded by supplied battery tray revision. |
 
-- Landing legs (one under each arm)
-- Camera bracket on the front edge of the carrier adapter plate (used instead of
-  `02_camera_adapter_TPU`)
+## Model provenance and regeneration
 
-Add the STL (and STEP or source, if available) and a row in the table above.
+[src/gen_mounts.py](src/gen_mounts.py) is the **original planning-stage generator**;
+it does **not** reproduce all five supplied as-built STL revisions. Do not regenerate
+and overwrite these supplied files with the older default geometry. Original script
+requirements: `pip install trimesh manifold3d numpy`.
 
-## Regenerating
-
-[src/gen_mounts.py](src/gen_mounts.py) is parametric: all dimensions are at the top.
-
-```bash
-pip install trimesh manifold3d numpy
-python src/gen_mounts.py        # writes to src/stl/ — copy into ../stl/ after checking
-```
-
-Units are mm. Axes: X left/right, Y fore/aft (+Y = nose), Z up.
+Coordinates in the original scripts use millimetres, with X left/right, +Y forward and
+Z upward. No editable CAD/STEP source for the five newer revisions was provided in this
+update. Where needed, obtain it separately rather than claiming that it is in Git.
