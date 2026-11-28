@@ -1,12 +1,9 @@
 # Wiring
 
-> **Airframe #1 as-built limitation (2026-11-21):** This page contains reference
-> wiring and planned companion UART settings. The currently photographed compute
-> hardware is **ArmSoM CM5 + CM5-IO**, not the originally specified BPI board.
-> The flight-battery compute BEC is **not installed** and PX4 `TEL1`/MAVLink
-> communication has **not been validated**. Do not apply any BPI GPIO header
-> pin numbers to ArmSoM without checking the actual silkscreen and documentation.
-> Do not connect the 5 V rails together. See [as-built status](as-built-status.md).
+> This page is a reference pinout and planned UART configuration. See
+> [as-built status](as-built-status.md) for Airframe #1's current board identification,
+> wiring state and validation gaps. Confirm pinouts on the hardware; do not connect the
+> 5 V rails together.
 
 All flight-controller peripherals use JST-GH sockets — no soldering on the FC side.
 Silkscreen labels below are from the MicoAir NxtPX4v2 documentation; **always confirm
@@ -65,9 +62,10 @@ PX4 detects CRSF automatically on the RC port. Bind with the ELRS procedure.
 | TX | yes | UART RX — *verify pin number* |
 | RX | yes | UART TX — *verify pin number* |
 
-The BPI CM5 Pro IO board's 40-pin header follows the Raspberry Pi layout, but which
-`/dev/ttyS*` maps to which header pins, and whether that UART must be enabled with a
-device-tree overlay, depends on the board image. Find it with:
+The installed board is an ArmSoM CM5-IO. Verify its 40-pin header against the board
+silkscreen and the documentation for the exact board revision and OS image. Which
+`/dev/ttyS*` maps to each header pin, and whether the UART needs a device-tree overlay,
+depends on the board image. Find candidate serial devices with:
 
 ```bash
 ls /dev/ttyS* /dev/ttyAMA* 2>/dev/null

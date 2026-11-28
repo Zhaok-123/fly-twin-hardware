@@ -8,7 +8,7 @@ received; *On #1* = fitted to airframe #1 (it has flown); *To order*; *Verify* =
 bought per the plan, not yet confirmed — update when checked.
 
 See the [as-built record](../docs/as-built-status.md) before interpreting reference prices
-or purchasing the BEC or FC rubber parts.
+or treating an open mounting, power or wiring item as verified.
 
 ## A. Flight hardware (per aircraft)
 
@@ -19,8 +19,8 @@ or purchasing the BEC or FC rubber parts.
 | A3 | Motors | iFlight XING2 2207 1855KV | 4 | 90 | 360 | "翼飞 XING2 2207 1855KV" | On #1 |
 | A4 | Props | Gemfan 51466 tri-blade (2 CW + 2 CCW per set) | 4 pairs | 10 | 40 | "乾丰 51466" | On #1 (verify model) |
 | A5 | Flight stack | MicoAir NxtPX4v2 **50A stack**: NxtPX4v2 FC (STM32H743, dual BMI088, SPL06 baro, 20×20 mm, onboard 5 V and 12 V BEC) + MicoAir 50A 4-in-1 ESC + stack hardware + 8-pin cable | 1 | 628 | 628 | Taobao "微空科技" official store | On #1 |
-| A6 | FC/ESC adapter | **Custom printed 38 × 38 × 2 mm, eight holes; 20 × 20 and 30.5 × 30.5 mm patterns** | 1 | — | — | Supplied [STL](../mounts/stl/05_esc_plate_38x38x2_8xM3_R1.stl) | **On #1** |
-| A7 | Mounting spacers and silicone | Silicone washers / nut-height spacers / outer long fasteners / threaded couplers; **FC inner holes are rigidly fixed**, unlike proposed grommets | 1 set | — | — | Actual photographed assembly; fastener sizes to verify | **On #1; vibration not validated** |
+| A6 | FC/ESC adapter | **Custom printed 40 × 40 × 1.5 mm, eight holes; 20 mm inner and 30.5 mm outer patterns** | 1 | — | — | Supplied [STL](../mounts/stl/05_esc_plate_40x40x1p5_outer4p1_R1.stl) | **Builder reports installed on #1** |
+| A7 | Mounting spacers and silicone | Builder reports grommets at the adapter's outer holes and silicone washers above the FC at the inner holes; separate inner-hole grommets are requested but not confirmed | 1 set | — | — | See [current mounting status](../docs/as-built-status.md); fastener sizes to verify | **Arrangement builder-reported; vibration not measured** |
 | A8 | GPS | Holybro Micro M10 (plastic case), with compass | 1 | 166 | 166 | Holybro store | On #1 |
 | A9 | Receiver | RadioMaster RP1 ELRS 2.4 GHz | 1 | 60 | 60 | "RadioMaster RP1" | On #1 |
 | A10 | Battery | Tattu R-Line 4S 1550 mAh 95C | 2 | 180 | 360 | "格式 R-Line 4S 1550" | Verify |
@@ -28,14 +28,14 @@ or purchasing the BEC or FC rubber parts.
 | A12 | Prop guards | 5" universal | 1 set | 40 | 40 | Taobao | Verify |
 | A13 | Wiring | XT60 + 14 AWG, XT30 pigtail, low-ESR capacitor, 22 AWG silicone wire, heat-shrink, zip ties, crash strip | 1 set | 120 | 120 | Taobao | Verify |
 | A14 | Small hardware | M2.5 6 mm nylon standoffs, M3 nylon standoffs, M2.5 screws, 3 mm EVA pad, battery strap | 1 set | 30 | 30 | Taobao | Verify |
-| A15 | Printed parts | **Five types / eight instances:** V3 carrier, GPS mast V2, battery tray, 8-hole FC adapter, V7 landing leg ×4 | 1 set | — | — | [As-built STL list](../mounts/README.md) | **On #1** |
+| A15 | Printed parts | **Five types / eight instances:** V3 carrier, GPS mast V2, battery tray, 8-hole FC adapter, V7 landing leg ×4 | 1 set | — | — | [As-built STL list](../mounts/README.md) | **Builder reports all five supplied revisions installed; mesh alignment unverified** |
 | | **Subtotal (excl. compute)** | | | | **≈ 2,170** | | |
 
 ## B. Compute
 
 | # | Part | Exact model | Qty | Unit ¥ | Total ¥ | Where | Status |
 |---|------|-------------|----:|-------:|--------:|-------|--------|
-| B1 | Compute module + IO board | **ArmSoM CM5 (RK3576) + ArmSoM CM5-IO** as photographed on Airframe #1; BPI-CM5 Pro is the earlier reference design | 1 | — | — | Actual source / current paid price unverified | **Mounted on #1** |
+| B1 | Compute module + IO board | **BPI-CM5 Pro 4+32G WiFi module** (package marking) + separately purchased **ArmSoM CM5-IO** board (RK3576) | 1 | — | — | Vendor, order and current paid price are not recorded | **Builder-identified configuration; power and UART unverified** |
 | B2 | Heatsink | ~30×30 mm for the SoC (if not included) | 1 | 10 | 10 | Taobao | Verify |
 | B3 | Camera | IMX219 120° wide-angle, Raspberry Pi connector, 15 cm FPC (+ 22→15-pin adapter if needed) | 1 | 33 | 33 | "IMX219 120度 树莓派 Pi5" | In hand, fitted |
 | B4 | Wi-Fi antenna | IPEX → external antenna (if not included) | 1 | 10 | 10 | Taobao | Verify |
@@ -86,4 +86,4 @@ or purchasing the BEC or FC rubber parts.
 | iFlight Nazgul5 V3 frame | TBS Source One V5.1 | Nazgul5 V3 not sold as a bare frame in China; Source One is open-source |
 | iFlight BLITZ E55S ESC | MicoAir 50A ESC (in the stack) | Comes matched with the FC, cable and current scale included |
 | Holybro Pixhawk 6C Mini + PM06 | MicoAir NxtPX4v2 | Cost; NxtPX4v2 is also the open reference design for the AIO FC |
-| Banana Pi BPI-CM5 Pro (reference proposal) | ArmSoM CM5 + CM5-IO (Airframe #1 as built) | Actual photographed unit differs from early reference specification |
+| Earlier generic “ArmSoM CM5 module” identification | BPI-CM5 Pro 4+32G WiFi module + separately purchased ArmSoM CM5-IO board | Module identity comes from its packaging; vendor and order details are not recorded |

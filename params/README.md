@@ -1,12 +1,19 @@
 # PX4 parameter files
 
-Export from QGroundControl: Vehicle Setup → Parameters → Tools → *Save to file*.
+The supplied [PX4 v1.16.2 file](airframe1_px4-v1.16.2_2026-11-12.params)
+is dated 2026-11-12. The filename identifies it as Airframe #1, but the source aircraft
+and whether it is a post-check export after the latest updates have not been confirmed. It does not
+by itself establish props-off validation or a new flight. See the
+[firmware and parameter notes](../docs/px4-firmware-and-params.md) and the
+[current as-built status](../docs/as-built-status.md) before applying it.
 
-Naming: `<unit>_<firmware>_<YYYY-MM-DD>[_note].params`, for example
+To save a file from QGroundControl: Vehicle Setup → Parameters → Tools → *Save to file*.
+
+Name new files `<unit>_<firmware>_<YYYY-MM-DD>[_note].params`, for example:
 
 - `airframe1_micoair-v1.14.3_2026-11-11_baseline.params` — vendor firmware, before migration
-- `airframe1_px4-v1.16.2_2026-11-14.params`
-- `bench-hitl_px4-v1.16.2_2026-11-12.params` — bench flight controller, `SYS_HITL = 1`, **never load on an aircraft**
+- `airframe1_px4-v1.16.2_2026-11-14.params` — example name for a later export
+- `bench-hitl_px4-v1.16.2_2026-11-12.params` — bench flight controller, `SYS_HITL = 1`; never load on an aircraft
 
-Commit a new file for every change (do not overwrite), and say in the commit message
-which parameters changed and why.
+Keep each export as a new file; do not overwrite an earlier baseline. Record which
+parameters changed and why with the update.

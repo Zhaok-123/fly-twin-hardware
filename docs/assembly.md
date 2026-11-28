@@ -1,10 +1,11 @@
 # Assembly guide — Airframe #1 (as-built revision)
 
-**FlyTwin / FlyAgent · TBS Source One V5.1 · 21 November 2026 · Draft for hardware review**
+**FlyTwin / FlyAgent · TBS Source One V5.1 · 28 November 2026 · Draft for hardware review**
 
-This guide documents the **physical configuration photographed and described for Airframe #1**. It replaces the outdated assembly arrangement in the original reference guide; it does **not** certify flight readiness or independently validate every dimension. See [interactive 3D assembly viewer](../viewer/index.html) for the nine-stage model and exploded view.
-
-> **Current status:** The MicoAir 50A ESC is below the NxtPX4v2 flight controller. The FC is rigidly attached to an 8-hole printed adapter; silicone washers/spacers exist in the external mounting chain, but effective vibration isolation is **not yet verified**. The ArmSoM CM5/IO assembly is physically fitted. The onboard compute BEC is **not installed**, TEL1 MAVLink is **not verified**, and the upgraded PX4 v1.16.2 has **not yet passed a new real-aircraft flight test**.
+Current configuration, measurements, evidence and open checks are in the
+[as-built status](as-built-status.md). The 2026-11-21 photos predate later corrections.
+Use the [36-step offline viewer](../viewer/index.html) for the part-by-part visual
+tutorial; its meshes are not confirmed to align with the physical airframe.
 
 ![Photographed assembly](../build-log/2026-11-21_airframe1_rebuild/photos/01_airframe_overview.jpg)
 
@@ -17,14 +18,15 @@ This guide documents the **physical configuration photographed and described for
 | Airframe | TBS Source One V5.1, five-inch Quad X | Simplified in viewer |
 | Propulsion | 4 × iFlight XING2 2207 1855KV, four Gemfan 51466 props | Photographs; motors/props schematic in viewer |
 | Flight stack | MicoAir 50A four-in-one ESC below MicoAir NxtPX4v2 FC | Actual assembly photos |
-| FC/ESC adapter | Printed **38 × 38 × 2 mm** plate with **20 × 20** and **30.5 × 30.5 mm** hole patterns | Actual eight-hole STL |
+| FC/ESC adapter | Printed **40 × 40 × 1.5 mm** plate; 20 mm inner pitch, 30.5 mm outer pitch | Supplied eight-hole STL; builder reports it is installed |
 | Upper carrier | Printed **90 × 137 × 3 mm** V3 plate | Actual STL |
-| Companion | **ArmSoM CM5 + CM5-IO** on four raised supports | Observed board; external geometry schematic |
+| Upper plate position | Carbon top plate removed; the V3 printed carrier occupies this position | Builder statement; load transfer not independently checked |
+| Companion | **BPI-CM5 Pro 4+32G WiFi module** (package marking) with separately purchased **ArmSoM CM5-IO** on four raised supports | Builder identification; UART and power are unverified |
 | GPS / camera | Holybro Micro M10 GPS on printed mast; IMX219 on adjustable metal hinge | Photographs; GPS mast STL |
 | Landing gear | Four printed V7 legs, each nominally 80 mm tall | Actual V7 STL |
 | Battery support | Underslung printed battery tray and strap | Actual STL; battery not fixed in model |
 
-The five actual printed STL types are [carrier V3](../mounts/stl/01_carrier_adapter_plate_V3_new.stl), [ESC/FC adapter](../mounts/stl/05_esc_plate_38x38x2_8xM3_R1.stl), [GPS mast V2](../mounts/stl/03_gps_mast_v2_rounded_rect.stl), [battery tray](../mounts/stl/04_battery_tray_TPU_new.stl), and [landing leg V7](../mounts/stl/landing_foot_v7.stl). There are **8 printed-part instances** in total: 1 + 1 + 1 + 1 + 4. Print material and individual fastener length should be recorded from purchased/installed parts; **do not infer material merely from a filename**.
+The builder identifies the five supplied printed STL revisions as installed: [carrier V3](../mounts/stl/01_carrier_adapter_plate_V3.stl), [FC/ESC adapter](../mounts/stl/05_esc_plate_40x40x1p5_outer4p1_R1.stl), [GPS mast V2](../mounts/stl/03_gps_mast_v2_rounded_rect.stl), [battery tray](../mounts/stl/04_battery_tray_TPU.stl), and [landing leg V7](../mounts/stl/landing_foot_v7.stl). There are **8 part instances**: 1 + 1 + 1 + 1 + 4. Their mesh alignment with the physical airframe has not been independently checked. Print material and individual fastener length are not established by the STL files; **do not infer material merely from a filename**.
 
 ## 2. Center-stack geometry and mounting datums
 
@@ -32,22 +34,17 @@ The five actual printed STL types are [carrier V3](../mounts/stl/01_carrier_adap
 
 *Figure 1 — As-built vertical order and four user-measured clearances. Printed plates have their native dimensions; other components and fasteners are schematic.*
 
-All distances below are **measured clear gaps between the named faces**, not total stack height:
-
-| ID | From / to | Measured gap |
-| --- | --- | ---: |
-| H1 | Carbon-frame mounting face → ESC bottom face | **4.6 mm** |
-| H2 | ESC top face → small printed adapter bottom face | **6.0 mm** |
-| H3 | Small printed adapter top face → large V3 carrier bottom face | **15.5 mm** |
-| H4 | Large V3 carrier top face → CM5-IO underside | **5.8 mm** |
-
-The FC lies **within the H3 space** above the small adapter. The four **outer** through-fasteners continue from the carbon frame, through the ESC/adapter mounting chain, and upward to the large carrier plate. Stand-offs / threaded couplers at the top carry the upper carrier. The four **inner** fasteners independently secure the FC to the printed adapter.
+The latest H1–H4 clearances, their face definitions and source are in
+[as-built status](as-built-status.md). The FC lies within H3 above the adapter. The four
+outer fasteners continue from the frame through the ESC/adapter chain to the V3 carrier.
 
 ![Adapter hole plan](images/fig02_fc_adapter_holes.svg)
 
-*Figure 2 — Nominal adapter geometry from the supplied eight-hole STL. Outer holes: 30.5 × 30.5 mm. Inner holes: 20 × 20 mm. All eight holes are nominal M3 clearance; check the actual hardware rather than forcing screws.*
+*Figure 2 — Nominal adapter geometry from the supplied eight-hole STL. Its hole pitches and diameters are identified in the STL header. This drawing is explanatory, not a drilling template; check the actual hardware rather than forcing screws.*
 
-**Vibration limitation.** The FC is rigid at its inner mounting points. Silicone washers are used around the ESC and below the adapter, but a continuous metallic fastening route may bypass the elastomer. Do **not** describe this assembly as a verified FC soft-mount. Validate clamp/contact paths before any flight, then examine the PX4 vibration data in the new flight log.
+**Mounting limitation.** See [as-built status](as-built-status.md) for the current mount
+description and the unresolved inner-hole grommet request. Check clamp/contact paths and
+PX4 vibration data before claiming effective FC isolation.
 
 ## 3. Assembly sequence
 
@@ -55,7 +52,7 @@ The FC lies **within the H3 space** above the small adapter. The four **outer** 
 
 ### Step 1 — Carbon frame, arms and motors
 
-1. Assemble the four carbon arms and central plates as supplied for the Source One V5.1.
+1. Assemble the four carbon arms and lower central plate as supplied for the Source One V5.1. Airframe #1's carbon top plate has been removed; the V3 printed carrier occupies its position. Check the actual fit and load path before powered use.
 2. Install the four XING2 motors with correctly sized screws; verify that no screw touches motor windings.
 3. Route three motor leads from each motor to the central ESC; keep wires outside propeller arcs and away from sharp carbon edges.
 4. Identify the aircraft **nose** as the end carrying the adjustable camera. Use the same forward reference across photos, viewer and PX4 orientation checks.
@@ -67,37 +64,37 @@ The FC lies **within the H3 space** above the small adapter. The four **outer** 
 ### Step 2 — Lower ESC and continuous outer fasteners
 
 1. Insert the four outer mounting screws through the carbon frame at the **30.5 × 30.5 mm** pattern.
-2. Position the silicone spacers/washers and lower nut-height spacing as photographed. The measured **frame-to-ESC underside gap is H1 = 4.6 mm**.
+2. Position the outer grommets and lower spacing using the actual hardware; see [as-built status](as-built-status.md) for the builder-reported arrangement.
 3. Place the 50A ESC as the **lower PCB**, with sufficient component and solder-joint clearance.
-4. Connect or inspect the already-soldered motor leads and battery power lead. Inspect the power capacitor solder joints and polarity. Do not use the capacitor package as a structural support.
+4. Connect or inspect the motor leads and battery power lead. Check polarity and clearance of all electrical joints and components.
 5. Re-check that the full fastener stack does not bend the ESC PCB or compress an exposed electrical component.
 
 **Existing electrical wiring:** The original repository specifies the battery lead, ESC-to-FC harness and polarity checks in [wiring.md](wiring.md). Use that page for signal identities; photographs alone are not a reliable pinout. The XT30/BEC branch is **not evidence that the BEC is installed**.
 
 ### Step 3 — Printed 8-hole adapter and NxtPX4v2 FC
 
-1. On the ESC's four outer fasteners, place the observed silicone washers and spacer/nut stack.
-2. Seat the **38 × 38 × 2 mm eight-hole printed adapter** using the **outer 30.5 mm holes**. The measured ESC-top-to-adapter-underside gap is **H2 = 6.0 mm**.
-3. Mount the NxtPX4v2 FC to the adapter's **inner 20 × 20 mm holes** using the four independent inner screws and nuts. The FC is **rigidly attached** to the adapter; no inner-hole FC grommets have been confirmed.
+1. Position the builder-reported grommets at the adapter's **outer holes** on the ESC's outer fasteners, then fit the spacer/nut stack without loading electrical components.
+2. Seat the **40 × 40 × 1.5 mm eight-hole adapter** (`05_esc_plate_40x40x1p5_outer4p1_R1.stl`) on its **30.5 mm outer pitch**.
+3. Mount the NxtPX4v2 FC at the adapter's **20 mm inner pitch** using the actual hardware. The builder reports silicone washers above the FC at these inner holes. The separate inner-hole FC grommets requested are not confirmed fitted; do not treat the washers as satisfying that request.
 4. Keep the FC USB-C socket and microSD access clear. Install the matching original ESC-to-FC cable and verify connector orientation against the hardware, not cable colour.
 5. Check clearance from the ESC, FC solder joints, all screw ends and the upper carrier supports. Do not allow the adapter or nuts to touch live pads.
 
 ![Stack top photograph](../build-log/2026-11-21_airframe1_rebuild/photos/03_flight_stack_top.jpg)
 
-*Figure P3 — FC above the eight-hole adapter; outer mounting chain and inner FC fasteners are visible.*
+*Figure P3 — 2026-11-21 photo of the FC above an earlier adapter version. It does not confirm the later grommet and washer arrangement described in the current status.*
 
 ![ESC stack side photograph](../build-log/2026-11-21_airframe1_rebuild/photos/04_flight_stack_side.jpg)
 
-*Figure P4 — Side view showing FC, printed adapter, ESC and continuous outer mounting screws.*
+*Figure P4 — 2026-11-21 side photo showing the FC, printed adapter, ESC and outer mounting screws; the later H1–H4 values and mounting updates are not visible here.*
 
 ![ESC lower mount detail](../build-log/2026-11-21_airframe1_rebuild/photos/05_esc_spacing_detail.jpg)
 
-*Figure P5 — Close-up of silicone components, nut-height supports and soldered ESC motor pads. Confirm that the metallic fastener chain does not defeat vibration isolation.*
+*Figure P5 — 2026-11-21 close-up of the earlier assembly. Confirm current fit and contact paths on the aircraft; this photo does not establish effective vibration isolation.*
 
 ### Step 4 — Upper through-couplers and V3 carrier
 
 1. Continue the four **outer** fasteners upward using the installed threaded extension couplers.
-2. Position the large **90 × 137 × 3 mm** V3 carrier on these four center-stack supports. The adapter-top-to-carrier-underside clearance is **H3 = 15.5 mm**, including the FC space.
+2. Position the large **90 × 137 × 3 mm** V3 carrier on the four center-stack supports; the builder reports it occupies the removed carbon top plate's position.
 3. Fit the upper retaining nuts. Confirm the carrier is level and does not press on the FC, its connectors or the CSI ribbon.
 4. The carrier provides mounting points for the CM5-IO board and the GPS mast. Preserve the front cable slot and the board's service access.
 
@@ -105,10 +102,10 @@ The FC lies **within the H3 space** above the small adapter. The four **outer** 
 
 *Figure P6 — V3 carrier shown without the IO board. The internal fastener pattern belongs to the center stack; four outer posts raise the IO board.*
 
-### Step 5 — ArmSoM CM5 and IO board
+### Step 5 — BPI-CM5 Pro module and ArmSoM CM5-IO board
 
-1. Install the CM5 compute module on the compatible IO carrier and secure it using the board's actual fixing hardware; do not support a module only by its board-to-board connectors.
-2. Mount the IO board on **four separate risers** on the V3 plate. The measured carrier-top-to-IO-underside clearance is **H4 = 5.8 mm**.
+1. Install the **BPI-CM5 Pro 4+32G WiFi module** on the separately purchased **ArmSoM CM5-IO** board using the actual compatible fixing hardware; do not support a module only by its board-to-board connectors.
+2. Mount the IO board on **four separate risers** on the V3 plate.
 3. Confirm access to the IO board's USB, Ethernet, DC input and CSI connectors.
 4. Leave enough free length for the camera FPC through the carrier slot. Keep cables clear of props and screw ends.
 5. The **onboard 12 V BEC is not installed**. Do not label the compute board as operational from flight-battery power until a separate loaded power test is completed.
@@ -119,7 +116,7 @@ The FC lies **within the H3 space** above the small adapter. The four **outer** 
 
 ![Photograph of CM5 assembly](../build-log/2026-11-21_airframe1_rebuild/photos/07_upper_compute.jpg)
 
-*Figure P7 — ArmSoM CM5/IO installed above the V3 carrier; camera FPC shown being handled.*
+*Figure P7 — 2026-11-21 photo of the compute assembly above the V3 carrier; the module's package marking and separate IO-board purchase are recorded from the later builder update.*
 
 ### Step 6 — Rear GPS mast and GPS module
 
@@ -163,7 +160,7 @@ The 3D viewer displays Gemfan propellers to resemble the airframe photos. **Do n
 
 - [ ] Battery disconnected and **all propellers removed**.
 - [ ] Four ESC/FC outer through-fasteners are secured; **the ESC PCB is not acting as a bent load-bearing spacer**.
-- [ ] Inner FC screws are secure; their tips and washers clear circuitry.
+- [ ] Inner FC hardware is secure; screw tips and washers clear circuitry, and the requested separate inner-hole grommets have been fitted or explicitly resolved.
 - [ ] Silicone washers do not bridge to bare solder or power pads; metal paths and vibration coupling have been assessed.
 - [ ] Carrier, GPS mast, camera hinge and all four V7 legs are rigidly retained where intended.
 - [ ] CM5/IO board is elevated without board flex; connectors, ribbon and antennas have strain relief.
@@ -178,18 +175,18 @@ The 3D viewer displays Gemfan propellers to resemble the airframe photos. **Do n
 
 ## 5. Repository records and pending acceptance
 
-| Record | Location | Current action |
+| Record | Location | Current status |
 | --- | --- | --- |
-| Physical differences from reference build | [as-built-status.md](as-built-status.md) | Record FC-over-ESC conversion, new carrier/camera mount, unfinished validation |
-| Bill of materials | [bom/bom.md](../bom/bom.md) | Replace planning-state components with actually installed versions |
-| Printed models | [mounts/stl/](../mounts/stl/) and [mounts/README.md](../mounts/README.md) | Commit the five supplied STL revisions; note as-built quantities and unknown print material |
-| Photos and assembly notes | [build-log](../build-log/2026-11-21_airframe1_rebuild/notes.md) | File dated photos, H1-H4, and the mechanical fastening chain |
-| PX4 parameters | [params/](../params/) | Export a **new** file after revalidation; never overwrite old baseline |
-| Flight logs | Separate data repository, **not this hardware repo** | Archive the new `.ulg` only after a real flight |
-| TEL1 / 12 V BEC | [wiring.md](wiring.md) | Add **measured** UART pin/device/baud and BEC results once verified |
+| Current state and deviations | [as-built-status.md](as-built-status.md) | Latest builder corrections and open checks |
+| Bill of materials | [bom/bom.md](../bom/bom.md) | Current parts identification; prices remain historical planning values |
+| Printed models | [mounts/README.md](../mounts/README.md) | Five current STL files; physical fit and print material are unverified |
+| Photos and notes | [build-log](../build-log/2026-11-21_airframe1_rebuild/notes.md) | 2026-11-21 photo record; later state is separated and labeled as builder-reported |
+| PX4 parameters | [params/](../params/) | 2026-11-12 file supplied; export a post-check file after revalidation |
+| Flight logs | Separate data repository, **not this hardware repo** | Archive a `.ulg` only after a real flight |
+| TEL1 / 12 V BEC | [wiring.md](wiring.md) | Record measured UART pin/device/baud and BEC results after verification |
 
-**Open acceptance items:** (1) verify effective vibration isolation / mechanical loading, (2) complete PX4 v1.16.2 props-off revalidation and controlled reflight, (3) install and validate flight-battery-to-CM5 power, and (4) demonstrate bidirectional PX4 TEL1/MAVLink telemetry on the actual companion computer.
+**Open acceptance items:** (1) resolve the requested FC inner-hole grommets and verify load paths and vibration, (2) complete PX4 v1.16.2 props-off revalidation and a controlled reflight, (3) install and validate flight-battery-to-CM5 power, and (4) demonstrate PX4 TEL1/MAVLink telemetry on the actual companion computer.
 
 ---
 
-**Documentation scope:** The structure above is based on user-provided photos, measurements H1-H4 and five actual STL files, plus the repository's original assembly instructions. Simplified drawings and viewer geometry are **not** machining drawings, installation torque references or evidence of flight certification. Recheck connector pinouts and motor direction on the physical hardware before use.
+**Documentation scope:** The dated photos, later builder-provided corrections and five supplied STL files have different evidence dates; see [as-built status](as-built-status.md). Simplified drawings and viewer geometry are not machining drawings, installation torque references, verified fits or evidence of flight certification. Recheck connector pinouts and motor direction on the physical hardware before use.

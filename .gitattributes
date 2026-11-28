@@ -2,6 +2,7 @@
 *.stl binary
 *.step binary
 *.stp binary
+*.params -text whitespace=cr-at-eol,-trailing-space
 *.png binary
 *.jpg binary
 *.webp binary

@@ -1,43 +1,35 @@
 # 3D-printed parts
 
-This repository retains the four original **planning-stage** STL files for historical
-reference. The **as-built Airframe #1** revisions are listed first below; they are the
-five source STLs supplied by the builder for the November 2026 hardware documentation.
-The [interactive assembly viewer](../viewer/index.html) embeds the five actual meshes;
-the [STL parts viewer](../viewer/parts.html) loads individual mesh files by HTTP.
+The five current STL files listed below were supplied for the latest Airframe #1
+documentation. Earlier STL assets were removed from the working tree; earlier revisions
+remain in Git history. The original planning-stage generator remains for reference. The
+[36-step interactive assembly viewer](../viewer/index.html) presents the
+parts in assembly order; the [STL parts viewer](../viewer/parts.html) loads standalone
+meshes.
 
-## Airframe #1 — supplied as-built printed parts (2026-11-21)
+## Supplied Airframe #1 part files
 
-| STL | Qty on #1 | Nominal bounding-box size (mm) | Function / facts |
+| STL | Qty reported installed | Nominal size (mm) | Function / known details |
 |---|---:|---|---|
-| [01_carrier_adapter_plate_V3_new.stl](stl/01_carrier_adapter_plate_V3_new.stl) | 1 | **90 × 137 × 3** | Upper carrier on the four center-stack extension fasteners; four separate raised mounts for CM5-IO. |
+| [01_carrier_adapter_plate_V3.stl](stl/01_carrier_adapter_plate_V3.stl) | 1 | **90 × 137 × 3** | V3 upper carrier; builder states it occupies the position of the removed carbon top plate. |
 | [03_gps_mast_v2_rounded_rect.stl](stl/03_gps_mast_v2_rounded_rect.stl) | 1 | **29.9 × 36.44 × 35** | Rear GPS mast, approximately 35 mm tall. |
-| [04_battery_tray_TPU_new.stl](stl/04_battery_tray_TPU_new.stl) | 1 | **45 × 81.5 × 15** | Underslung battery tray with strap. Filename is not proof of print material. |
-| [05_esc_plate_38x38x2_8xM3_R1.stl](stl/05_esc_plate_38x38x2_8xM3_R1.stl) | 1 | **38 × 38 × 2** | Adapter with 20 × 20 mm inner FC mounting pattern and 30.5 × 30.5 mm outer through-fastener pattern; 8 × ~3.3 mm M3 clearance holes. |
-| [landing_foot_v7.stl](stl/landing_foot_v7.stl) | 4 | **54.5 × 25 × 80** | One repeated landing leg under each motor arm, ~80 mm tall. |
+| [04_battery_tray_TPU.stl](stl/04_battery_tray_TPU.stl) | 1 | **45 × 81.5 × 15** | Underslung battery tray. The filename does not establish print material. |
+| [05_esc_plate_40x40x1p5_outer4p1_R1.stl](stl/05_esc_plate_40x40x1p5_outer4p1_R1.stl) | 1 | **40 × 40 × 1.5** | FC/ESC adapter. STL header specifies 30.5 mm outer pitch with 4.1 mm holes and 20 mm inner pitch with 3.3 mm holes. |
+| [landing_foot_v7.stl](stl/landing_foot_v7.stl) | 4 | **54.5 × 25 × 80** | Repeated landing leg under each motor arm, approximately 80 mm tall. |
 
-**Total:** Five unique printed-part models; eight installed part instances. Geometry
-comes from the supplied STL files. Material, manufacturing process, fastener lengths
-and installed clearance must be confirmed on real hardware; the STLs do **not** certify
-material or mechanical strength. The described as-built structure and measured center
-clearances are recorded in [assembly.md](../docs/assembly.md).
-
-## Original reference models (not necessarily fitted to Airframe #1)
-
-| Historical STL | Reference design material / print notes | Status |
-|---|---|---|
-| [01_carrier_adapter_plate.stl](stl/01_carrier_adapter_plate.stl) | PETG or PLA+; flat, 0.2 mm layers | Superseded by V3 carrier. |
-| [02_camera_adapter_TPU.stl](stl/02_camera_adapter_TPU.stl) | TPU 95A, camera-cage mount | Not fitted; replaced by adjustable metal camera bracket, not a 3D-printed part. |
-| [03_gps_mast.stl](stl/03_gps_mast.stl) | PLA, nominal mast | Superseded by supplied GPS mast V2. |
-| [04_battery_tray_TPU.stl](stl/04_battery_tray_TPU.stl) | TPU 95A, nominal battery tray | Superseded by supplied battery tray revision. |
+**Total:** Five unique models and eight part instances. The builder identifies all five
+supplied revisions as the installed parts. Their mesh alignment with the built aircraft
+has not been verified. See [as-built status](../docs/as-built-status.md) for the source
+and confidence of dimensions, fit and mounting details. Material,
+manufacturing process, fastener lengths and installed clearance are not certified by an
+STL filename or model.
 
 ## Model provenance and regeneration
 
-[src/gen_mounts.py](src/gen_mounts.py) is the **original planning-stage generator**;
-it does **not** reproduce all five supplied as-built STL revisions. Do not regenerate
-and overwrite these supplied files with the older default geometry. Original script
-requirements: `pip install trimesh manifold3d numpy`.
+[src/gen_mounts.py](src/gen_mounts.py) is the **legacy planning-stage generator**. It does
+not reproduce the five supplied STL revisions; do not regenerate over the supplied files.
+The script's original requirements are `pip install trimesh manifold3d numpy`.
 
-Coordinates in the original scripts use millimetres, with X left/right, +Y forward and
-Z upward. No editable CAD/STEP source for the five newer revisions was provided in this
-update. Where needed, obtain it separately rather than claiming that it is in Git.
+The original script uses millimetres, X left/right, +Y forward and Z upward. No editable
+CAD or STEP sources for the five supplied revisions were provided. The assembly viewer is
+an offline visual aid, not confirmation that its meshes align with Airframe #1.

@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Printed Parts Viewer</title>
+<title>Assembly Parts Viewer</title>
 <style>
   :root{--paper:#EDEDE8;--ink:#23262B;--ink-2:#5C6168;--line:#C9CBC4;--orange:#E3611A;--panel:#F6F6F2;--card:#fff}
   *{box-sizing:border-box}
   html,body{margin:0;height:100%;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:14px;line-height:1.55}
-  #app{display:grid;grid-template-columns:1fr 340px;height:100%}
+  #app{display:grid;grid-template-columns:minmax(0,1fr) 360px;height:100%}
   #viewer{position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 60%,#F4F4EF 0%,#E4E5DF 70%,#D9DAD3 100%)}
   #viewer canvas{display:block;width:100%;height:100%;touch-action:none}
-  #msg{position:absolute;inset:auto 16px 16px 16px;background:#FFF4EC;border:1px solid #F0C9AE;border-radius:4px;padding:10px 12px;font-size:13px;display:none}
-  #msg code{background:#fff;padding:1px 4px;border-radius:3px}
+  #tip{position:absolute;top:14px;left:16px;background:rgba(246,246,242,.92);border:1px solid var(--line);padding:6px 10px;border-radius:4px;font-size:12px;color:var(--ink-2);pointer-events:none}
+  #msg{position:absolute;inset:auto 16px 16px;background:#FFF4EC;border:1px solid #F0C9AE;border-radius:4px;padding:10px 12px;font-size:13px;display:none}
   #rail{background:var(--panel);border-left:1px solid var(--line);overflow:auto;padding:22px 20px}
   h1{font-size:19px;margin:0 0 4px;font-weight:600}
   .sub{color:var(--ink-2);font-size:13px;margin:0 0 16px}
@@ -22,91 +22,280 @@
   .list button.on{border-color:var(--orange)}
   .list button small{display:block;color:var(--ink-2);font-size:12px}
   .list button:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
-  dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px;margin:18px 0 0;border-top:1px solid var(--line);padding-top:14px}
-  dt{color:var(--ink-2)} dd{margin:0;font-variant-numeric:tabular-nums}
-  @media (max-width:820px){#app{grid-template-columns:1fr;grid-template-rows:56vh auto;height:auto;min-height:100%}#rail{border-left:0;border-top:1px solid var(--line);padding:18px 16px}}
+  dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px;margin:18px 0 0;border-top:1px solid var(--line);padding:14px 0;position:sticky;top:-22px;z-index:1;background:var(--panel)}
+  dt{color:var(--ink-2)} dd{margin:0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+  .downloads{margin:0;padding-left:16px}
+  @media (max-width:820px){html,body{height:auto;min-height:100%}#app{grid-template-columns:1fr;grid-template-rows:56vh auto;height:auto;min-height:100%}#rail{border-left:0;border-top:1px solid var(--line);padding:18px 16px}}
 </style>
 </head>
 <body>
 <div id="app">
-  <div id="viewer"><div id="msg"></div></div>
+  <div id="viewer">
+    <div id="tip">Drag to rotate · wheel or pinch to zoom · parts shown in isolation</div>
+    <div id="msg" role="status"></div>
+  </div>
   <aside id="rail">
-    <h1>Printed parts</h1>
-    <p class="sub">STL files from <a href="../mounts/">mounts/stl/</a>, shown at true size (mm). Drag to rotate, wheel to zoom. Assembly context: <a href="index.html">assembly viewer</a>.</p>
-    <div class="list" id="list"></div>
-    <dl id="info"></dl>
+    <h1>Registered parts</h1>
+    <p class="sub">Browse assembly components and independent hardware. Dimensions are calculated from each model (mm). <a href="index.html">Back to assembly viewer</a>.</p>
+    <dl id="info" aria-live="polite"></dl>
+    <div class="list" id="list" aria-label="Registered parts"></div>
   </aside>
 </div>
 <script src="vendor/three.min.js"></script>
 <script src="vendor/STLLoader.js"></script>
+<script src="stl-assets.js"></script>
+<script src="hardware-parts.js"></script>
+<script src="assembly-model.js"></script>
 <script>
 (function(){
-  const PARTS=[
-    {file:'01_carrier_adapter_plate_V3_new.stl',name:'AS-BUILT · Carrier V3',mat:'As printed: material not verified',color:0xD9B24B},
-    {file:'03_gps_mast_v2_rounded_rect.stl',name:'AS-BUILT · GPS mast V2',mat:'As printed: material not verified',color:0xD9B24B},
-    {file:'04_battery_tray_TPU_new.stl',name:'AS-BUILT · Battery tray',mat:'As printed: material not verified',color:0xC69A2F},
-    {file:'05_esc_plate_38x38x2_8xM3_R1.stl',name:'AS-BUILT · FC/ESC adapter',mat:'As printed: material not verified',color:0xD9B24B},
-    {file:'landing_foot_v7.stl',name:'AS-BUILT · Landing foot V7',mat:'As printed: material not verified',color:0xD9B24B},
-    {file:'01_carrier_adapter_plate.stl',name:'REFERENCE · Carrier original',mat:'Historical PETG / PLA+',color:0xB0B5A8},
-    {file:'02_camera_adapter_TPU.stl',name:'REFERENCE · Camera TPU',mat:'Historical TPU 95A',color:0xB0B5A8},
-    {file:'03_gps_mast.stl',name:'REFERENCE · GPS mast original',mat:'Historical PLA',color:0xB0B5A8},
-    {file:'04_battery_tray_TPU.stl',name:'REFERENCE · Battery tray original',mat:'Historical TPU 95A',color:0xB0B5A8}
-  ];
-  const BASE='../mounts/stl/';
-  const viewer=document.getElementById('viewer'), msg=document.getElementById('msg');
-  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
-  renderer.setPixelRatio(Math.min(devicePixelRatio,2)); viewer.appendChild(renderer.domElement);
-  const scene=new THREE.Scene(), camera=new THREE.PerspectiveCamera(35,1,0.5,5000);
-  scene.add(new THREE.HemisphereLight(0xffffff,0x8a8f88,.85));
-  const sun=new THREE.DirectionalLight(0xffffff,.8); sun.position.set(150,300,200); scene.add(sun);
-  const fill=new THREE.DirectionalLight(0xffffff,.3); fill.position.set(-200,100,-150); scene.add(fill);
-  const grid=new THREE.GridHelper(200,20,0xb9bbb4,0xd2d3cd); scene.add(grid);
-  const loader=new THREE.STLLoader();
-  let mesh=null, theta=0.8, phi=1.0, dist=200, target=new THREE.Vector3();
-  function place(){camera.position.set(target.x+dist*Math.sin(phi)*Math.sin(theta),target.y+dist*Math.cos(phi),target.z+dist*Math.sin(phi)*Math.cos(theta));camera.lookAt(target);}
+  const viewer=document.getElementById('viewer');
+  const message=document.getElementById('msg');
+  const list=document.getElementById('list');
+  const info=document.getElementById('info');
 
-  function show(i){
-    const p=PARTS[i];
-    [...document.getElementById('list').children].forEach((b,j)=>b.classList.toggle('on',i===j));
-    loader.load(BASE+p.file,geo=>{
-      msg.style.display='none';
-      if(mesh){scene.remove(mesh);mesh.geometry.dispose();}
-      geo.rotateX(-Math.PI/2);            // files are Z-up; viewer is Y-up
-      geo.computeBoundingBox(); const bb=geo.boundingBox, c=new THREE.Vector3(); bb.getCenter(c);
-      geo.translate(-c.x,-bb.min.y,-c.z); geo.computeVertexNormals();
-      mesh=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:p.color,roughness:.75}));
-      scene.add(mesh);
-      const s=new THREE.Vector3(); bb.getSize(s);
-      target.set(0,s.y/2,0); dist=Math.max(s.x,s.y,s.z)*2.2+40; place();
-      let vol=0; const a=geo.attributes.position.array;
-      for(let k=0;k<a.length;k+=9){vol+=(a[k]*(a[k+4]*a[k+8]-a[k+5]*a[k+7])-a[k+1]*(a[k+3]*a[k+8]-a[k+5]*a[k+6])+a[k+2]*(a[k+3]*a[k+7]-a[k+4]*a[k+6]))/6;}
-      document.getElementById('info').innerHTML=
-        `<dt>File</dt><dd><a href="${BASE+p.file}" download>${p.file}</a></dd>`+
-        `<dt>Material</dt><dd>${p.mat}</dd>`+
-        `<dt>Size (X × Y × Z)</dt><dd>${s.x.toFixed(1)} × ${s.z.toFixed(1)} × ${s.y.toFixed(1)} mm</dd>`+
-        `<dt>Volume</dt><dd>${(Math.abs(vol)/1000).toFixed(1)} cm³</dd>`+
-        `<dt>Triangles</dt><dd>${(a.length/9).toLocaleString()}</dd>`;
-    },undefined,()=>{
-      msg.innerHTML='Could not load the STL. Browsers block file loading from <code>file://</code> pages. From the repo root run <code>python -m http.server 8000</code> and open <code>http://localhost:8000/viewer/parts.html</code>, or use GitHub Pages.';
-      msg.style.display='block';
+  function showMessage(text){message.textContent=text;message.style.display='block';}
+  if(typeof window.createHardwareParts!=='function'){
+    showMessage('The independent hardware registry could not be loaded. Keep hardware-parts.js beside this page.');
+    return;
+  }
+  if(typeof window.createAssemblyParts!=='function'){
+    showMessage('The assembly parts registry could not be loaded. Keep assembly-model.js beside this page.');
+    return;
+  }
+  if(!window.THREE||!THREE.STLLoader){
+    showMessage('The local Three.js library or STL loader is missing. Keep the files in viewer/vendor.');
+    return;
+  }
+  if(typeof window.loadAssemblyStls!=='function'){
+    showMessage('The assembly model loader is missing. Keep stl-assets.js and assembly-model.js beside this page.');
+    return;
+  }
+  window.loadAssemblyStls(THREE).then(stlGeometries=>{
+  let registry;
+  try{
+    registry=window.createAssemblyParts(THREE,stlGeometries);
+  }catch(error){
+    showMessage('The assembly parts registry could not be created: '+error.message);
+    return;
+  }
+  let hardwareParts;
+  try{
+    hardwareParts=window.createHardwareParts(THREE);
+  }catch(error){
+    showMessage('The independent hardware registry could not be created.');
+    return;
+  }
+  if(!Array.isArray(hardwareParts)){
+    showMessage('The independent hardware registry is invalid; expected a list of registered parts.');
+    return;
+  }
+  const assemblyParts=registry&&Array.isArray(registry.parts)?registry.parts:[];
+  const parts=[
+    ...assemblyParts.filter(part=>part.catalogVisible!==false).map(part=>({...part,catalogType:'assembly'})),
+    ...hardwareParts.map(part=>({...part,catalogType:'hardware'}))
+  ];
+  const steps=registry&&Array.isArray(registry.steps)?registry.steps:[];
+  const tutorial=registry&&Array.isArray(registry.tutorial)?registry.tutorial:[];
+  const hasTutorial=tutorial.length>0;
+  if(!parts.length){showMessage('No registered parts are available.');return;}
+
+  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  viewer.appendChild(renderer.domElement);
+
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(35,1,0.01,1000000);
+  scene.add(new THREE.HemisphereLight(0xffffff,0x8a8f88,.9));
+  const sun=new THREE.DirectionalLight(0xffffff,.85);sun.position.set(150,240,200);scene.add(sun);
+  const fill=new THREE.DirectionalLight(0xffffff,.35);fill.position.set(-180,100,-160);scene.add(fill);
+  const modelRoot=new THREE.Group();scene.add(modelRoot);
+
+  let currentIndex=-1;
+  let theta=.8,phi=1.0,distance=200,partRadius=80;
+  const target=new THREE.Vector3();
+  function placeCamera(){
+    camera.position.set(target.x+distance*Math.sin(phi)*Math.sin(theta),target.y+distance*Math.cos(phi),target.z+distance*Math.sin(phi)*Math.cos(theta));
+    camera.lookAt(target);
+  }
+  function zoom(factor){
+    distance=Math.max(partRadius*.08,Math.min(partRadius*30,distance*factor));
+    placeCamera();
+  }
+
+  function stepLabel(part){
+    if(hasTutorial){
+      const number=part.tutorialStep;
+      if(number===undefined||number===null||number==='')return 'Step not specified';
+      const step=tutorial[Number(number)-1];
+      const title=typeof step==='string'?step:(Array.isArray(step)?step[0]:(step&&(step.title||step.name||step.label)));
+      return `Step ${number}${title?` · ${title}`:''}`;
+    }
+    if(part.step===undefined||part.step===null||part.step==='')return 'Step not specified';
+    const step=steps.find((item,index)=>{
+      const number=item&&typeof item==='object'?(item.step??item.number??item.id??index+1):index+1;
+      return String(number)===String(part.step);
+    });
+    const title=typeof step==='string'?step:(Array.isArray(step)?step[0]:(step&&(step.title||step.name||step.label)));
+    return `Step ${part.step}${title?` · ${title}`:''}`;
+  }
+
+  function appendInfo(label,value){
+    const dt=document.createElement('dt');dt.textContent=label;
+    const dd=document.createElement('dd');dd.textContent=value;
+    info.append(dt,dd);
+  }
+
+  function stlFiles(part){
+    const entries=part.files!==undefined?part.files:(part.file?[part.file]:[]);
+    const files=Array.isArray(entries)?entries:[entries];
+    const seen=new Set();
+    return files.map(entry=>{
+      const path=typeof entry==='string'?entry:(entry&&(entry.path||entry.file||entry.href));
+      if(typeof path!=='string')return null;
+      const filename=path.replace(/\\/g,'/').split('/').pop();
+      if(!filename||!filename.toLowerCase().endsWith('.stl')||seen.has(filename))return null;
+      seen.add(filename);
+      return {filename,label:(entry&&typeof entry==='object'&&(entry.name||entry.label))||filename};
+    }).filter(Boolean);
+  }
+
+  function showInfo(part,size,index){
+    info.replaceChildren();
+    appendInfo('Name',part.name||`Part ${index+1}`);
+    if(part.id!==undefined&&part.id!==null)appendInfo('Registration ID',String(part.id));
+    appendInfo('Part type',part.catalogType==='hardware'?'Independent hardware':'Assembly component');
+    if(part.catalogType!=='hardware')appendInfo('Source step',stepLabel(part));
+    if(part.desc)appendInfo('Description',String(part.desc));
+    const material=typeof part.material==='string'?part.material.trim():(part.material&&typeof part.material.name==='string'?part.material.name.trim():'');
+    if(material)appendInfo('Material',material);
+    appendInfo('Size (X × Y × Z)',`${size.x.toFixed(1)} × ${size.y.toFixed(1)} × ${size.z.toFixed(1)} mm`);
+
+    const files=stlFiles(part);
+    if(files.length){
+      const dt=document.createElement('dt');dt.textContent=files.length===1?'STL file':'STL files';
+      const dd=document.createElement('dd');
+      const links=document.createElement('ul');links.className='downloads';
+      files.forEach(file=>{
+        const item=document.createElement('li');
+        const link=document.createElement('a');
+        link.href=`../mounts/stl/${encodeURIComponent(file.filename)}`;
+        link.download=file.filename;
+        link.textContent=file.label;
+        item.appendChild(link);links.appendChild(item);
+      });
+      dd.appendChild(links);info.append(dt,dd);
+    }
+  }
+
+  function setActiveButton(index){
+    Array.from(list.children).forEach((button,i)=>{
+      button.classList.toggle('on',i===index);
+      if(i===index)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current');
     });
   }
 
-  const list=document.getElementById('list');
-  PARTS.forEach((p,i)=>{const b=document.createElement('button');b.innerHTML=`${p.name}<small>${p.file} · ${p.mat}</small>`;b.onclick=()=>show(i);list.appendChild(b);});
+  function showPart(index){
+    const part=parts[index];
+    const source=part&&part.group;
+    setActiveButton(index);
+    currentIndex=index;
+    if(!source||typeof source.clone!=='function'){
+      showMessage('This registry entry does not contain a displayable THREE.Group.');
+      return;
+    }
 
-  const el=renderer.domElement; let drag=false,lx=0,ly=0;
-  el.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;ly=e.clientY;el.setPointerCapture(e.pointerId);});
-  el.addEventListener('pointermove',e=>{if(!drag)return;theta-=(e.clientX-lx)*0.006;phi-=(e.clientY-ly)*0.006;phi=Math.max(0.1,Math.min(1.55,phi));lx=e.clientX;ly=e.clientY;place();});
-  el.addEventListener('pointerup',()=>{drag=false;});
-  el.addEventListener('wheel',e=>{e.preventDefault();dist=Math.max(20,Math.min(1200,dist*(1+Math.sign(e.deltaY)*0.08)));place();},{passive:false});
-  let pinch=null;
-  el.addEventListener('touchstart',e=>{if(e.touches.length===2)pinch=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);},{passive:true});
-  el.addEventListener('touchmove',e=>{if(e.touches.length===2&&pinch){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);dist=Math.max(20,Math.min(1200,dist*pinch/d));pinch=d;place();}},{passive:true});
+    const clone=source.clone(true);
+    clone.updateMatrixWorld(true);
+    const bounds=new THREE.Box3().setFromObject(clone);
+    if(bounds.isEmpty()){
+      showMessage('This registered part has no visible geometry.');
+      return;
+    }
 
-  function resize(){const w=viewer.clientWidth,h=viewer.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
-  addEventListener('resize',resize); resize(); place(); show(0);
-  (function loop(){renderer.render(scene,camera);requestAnimationFrame(loop);})();
+    message.style.display='none';
+    modelRoot.clear();
+    const size=bounds.getSize(new THREE.Vector3());
+    const center=bounds.getCenter(new THREE.Vector3());
+    const centerGroup=new THREE.Group();
+    centerGroup.position.copy(center).multiplyScalar(-1);
+    centerGroup.add(clone);
+    modelRoot.add(centerGroup);
+
+    target.set(0,0,0);
+    partRadius=Math.max(size.length()*.5,.01);
+    const fov=THREE.MathUtils.degToRad(camera.fov);
+    const aspect=Math.max(camera.aspect,.01);
+    const hFov=2*Math.atan(Math.tan(fov/2)*aspect);
+    distance=partRadius/Math.sin(Math.min(fov,hFov)/2)*1.2;
+    placeCamera();
+    showInfo(part,size,index);
+  }
+
+  parts.forEach((part,index)=>{
+    const button=document.createElement('button');button.type='button';
+    button.textContent=part.name||`Part ${index+1}`;
+    const small=document.createElement('small');
+    small.textContent=[
+      part.id!==undefined?String(part.id):'',
+      part.catalogType==='hardware'?'Independent hardware':stepLabel(part)
+    ].filter(Boolean).join(' · ');
+    button.appendChild(small);
+    button.addEventListener('click',()=>showPart(index));
+    list.appendChild(button);
+  });
+
+  const canvas=renderer.domElement;
+  let dragging=false,lastX=0,lastY=0,pinchDistance=0;
+  const pointers=new Map();
+  canvas.addEventListener('pointerdown',event=>{
+    pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+    canvas.setPointerCapture(event.pointerId);
+    dragging=pointers.size===1;
+    lastX=event.clientX;lastY=event.clientY;
+    if(pointers.size===2){
+      const values=Array.from(pointers.values());
+      pinchDistance=Math.hypot(values[0].x-values[1].x,values[0].y-values[1].y);
+    }
+  });
+  canvas.addEventListener('pointermove',event=>{
+    if(!pointers.has(event.pointerId))return;
+    const previous=pointers.get(event.pointerId);
+    pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+    if(pointers.size>=2){
+      const values=Array.from(pointers.values());
+      const next=Math.hypot(values[0].x-values[1].x,values[0].y-values[1].y);
+      if(pinchDistance>0&&next>0)zoom(pinchDistance/next);
+      pinchDistance=next;
+      dragging=false;
+    }else if(dragging){
+      theta-=(event.clientX-lastX)*.006;
+      phi=Math.max(.1,Math.min(1.55,phi-(event.clientY-lastY)*.006));
+      placeCamera();
+    }
+    lastX=event.clientX;lastY=event.clientY;
+  });
+  function endPointer(event){
+    pointers.delete(event.pointerId);
+    if(pointers.size<2)pinchDistance=0;
+    dragging=pointers.size===1;
+    if(dragging){const remaining=Array.from(pointers.values())[0];lastX=remaining.x;lastY=remaining.y;}
+  }
+  canvas.addEventListener('pointerup',endPointer);
+  canvas.addEventListener('pointercancel',endPointer);
+  canvas.addEventListener('wheel',event=>{event.preventDefault();zoom(1+Math.sign(event.deltaY)*.08);},{passive:false});
+
+  function resize(){
+    const width=Math.max(viewer.clientWidth,1),height=Math.max(viewer.clientHeight,1);
+    renderer.setSize(width,height,false);
+    camera.aspect=width/height;camera.updateProjectionMatrix();
+    if(currentIndex>=0)showPart(currentIndex);
+    else placeCamera();
+  }
+  window.addEventListener('resize',resize);
+  resize();
+  showPart(0);
+  (function render(){renderer.render(scene,camera);window.requestAnimationFrame(render);})();
+  }).catch(error=>showMessage('Could not load assembly STL files. '+error.message+' Run python3 -m http.server 8000 from the repository root, then open http://localhost:8000/viewer/parts.html.'));
 })();
 </script>
 </body>

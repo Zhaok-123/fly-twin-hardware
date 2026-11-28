@@ -1,52 +1,60 @@
-# As-built status and change log
+# Airframe #1 as-built status and change log
 
-The [architecture](architecture.md), original BOM and some older planning notes describe
-a **reference design**. This page records the physical configuration of each aircraft.
-Whoever changes the aircraft updates this page in the same pull request.
+This is the authoritative current-state record. The assembly guide, BOM, wiring page and
+architecture page contain practical instructions or reference-design context and link
+here for the latest configuration. **The 2026-11-21 photographs predate the builder's
+later corrections recorded below; they do not confirm the current mount arrangement or
+the dimensions listed here.** The viewer uses supplied STL files, but their alignment to
+the physical aircraft has not been verified.
 
-## Units (reviewed 2026-11-21)
+## Current state — builder update 2026-11-28
 
-| Unit | Role | Verified state |
+| Area | Current information | Basis / status |
 |---|---|---|
-| Airframe #1 | Flying hardware prototype | ESC below FC; custom printed eight-hole adapter; V3 upper carrier with **ArmSoM CM5 + CM5-IO** installed; adjustable IMX219 camera, printed GPS mast, battery tray and four V7 legs. Mechanically assembled; **not signed off for flight** after rebuild. |
-| MicoAir stack #2 | Separate bench controller for planned HITL | Original 2026-11-10 record said in hand, not flashed; no later bench hardware verification in this update. Do not confuse this unit with PX4/Gazebo SITL. |
-| Companion on Airframe #1 | RK3576 Linux + camera system | ArmSoM CM5/CM5-IO photographed on the carrier, rather than the originally specified BPI-CM5 Pro. Flight-battery 12 V BEC not installed; TEL1 not verified. |
+| Flight stack | MicoAir 50A ESC below MicoAir NxtPX4v2 FC; FC uses the inner holes of the printed adapter. | Builder-described assembly. |
+| FC/ESC adapter | `05_esc_plate_40x40x1p5_outer4p1_R1.stl`: 40 × 40 × 1.5 mm; 30.5 mm outer pitch with 4.1 mm holes and 20 mm inner pitch with 3.3 mm holes. | Supplied STL header gives nominal dimensions and hole patterns; check fit on the hardware. |
+| Mounting hardware | Builder reports grommets installed at the adapter's outer holes and silicone washers above the FC at its inner holes. A separate request for inner-hole FC grommets remains open; upper washers do not establish that separate grommets are fitted. | Latest builder description; the dated photographs do not confirm this arrangement. Vibration performance and load paths remain unmeasured. |
+| Upper structure | The carbon top plate has been removed; the V3 printed carrier occupies its position. | Builder statement. Structural fit and load transfer have not been independently checked. |
+| Companion | BPI-CM5 Pro 4+32G WiFi compute module, identified from its packaging, with a separately purchased ArmSoM CM5-IO board. | Builder-provided identification. Vendor and order details are not recorded. |
+| Other fitted parts | Adjustable IMX219 camera hinge, GPS mast V2, underslung battery tray and four V7 landing legs. The builder identifies all five supplied STL revisions as the installed parts (eight instances total). | Builder-reported installed set; the 2026-11-21 photos do not confirm the latest STL geometries. |
+| Firmware / power / data | PX4 v1.16.2 has been flashed. Compute BEC is not installed; TEL1 MAVLink has not been validated. A new Airframe #1 reflight after the firmware update is not recorded. | Existing build and firmware record; do not infer an operational link or accepted flight. |
 
-## Known deviations — Airframe #1
+## Known differences and open checks
 
-| # | Area | Reference / earlier description | Current as-built fact | Validation or documentation still required |
+| # | Area | Earlier reference or record | Current state | Still to verify |
 |---|---|---|---|---|
-| 1 | FC/ESC order and mounting | FC below ESC; reference update envisioned FC above ESC on rubber-grommet mounting | FC **above** ESC. FC is rigidly mounted to a custom 38 × 38 × 2 mm 8-hole printed adapter (inner 20 × 20 mm). ESC / adapter use the outer 30.5 × 30.5 mm hole chain, silicone washers/spacers and long through-fasteners extending to the upper carrier. | Inspect clamp path and IMU vibration; silicone washers do not independently prove soft-mount isolation. |
-| 2 | Firmware | Vendor MicoAir PX4 1.14.3 | Official **PX4 v1.16.2** flashed on Airframe #1 (2026-11-10). | Full props-off actuator/RC/GPS/failsafe revalidation, fresh parameter export and controlled reflight remain pending. |
-| 3 | Upper carrier / companion | Older 130 × 90 mm reference carrier and BPI-CM5 Pro | **90 × 137 × 3 mm printed V3 carrier**, ArmSoM CM5/CM5-IO raised on four short standoffs. | Verify loaded flight-battery compute power before airborne use. |
-| 4 | Camera | TPU mount in front camera cage | Actual IMX219 on **adjustable metal tilt hinge** with white spacing sleeves. | Verify mechanical retention and CSI ribbon strain relief; reference TPU file remains for history only. |
-| 5 | Landing gear / GPS / battery | Initial printed references / no feet | Four printed **V7** legs, printed **GPS mast V2** and underslung printed battery tray installed. | Inspect print condition and fastener clearance; actual print material not certified by STL filenames. |
-| 6 | Printed models | Four planning-stage STL versions | Five supplied as-built STL types, eight instances, committed in `mounts/stl/` alongside legacy references. | Keep exact installed revisions and their provenance. |
-| 7 | Companion power and UART | 4S→12 V BEC and TEL1/MAVLink are planned | **BEC not installed**; **TEL1 MAVLink untested**. | Confirm 12 V power under load and actual UART pin/device/baud + heartbeat; never infer from a planning pinout. |
-| 8 | Electrical notes | Original reference design lists DShot600 and generic motor mapping | Old real-aircraft configuration was DShot300 and historical motor-output mapping. Current firmware settings not independently verified in this update. | Verify all four motor mappings/directions with props off, and export actual PX4 v1.16.2 parameters before flight. |
+| 1 | FC/ESC order | Early layout placed the FC below the ESC; a proposed isolation arrangement showed grommets at the inner FC holes. | FC is above the ESC on the 40 × 40 × 1.5 mm eight-hole adapter. Outer-hole grommets and upper silicone washers at the FC's inner holes are builder-reported. Separate inner-hole grommets requested for the FC are not confirmed fitted. | Inspect contact and clamp paths; confirm the requested inner grommets; measure FC vibration in flight before describing isolation as effective. |
+| 2 | Upper frame plate | Reference layout included a carbon top plate under the carrier. | Builder states the carbon top plate was removed and the printed V3 carrier takes its place. | Check fit, fastener engagement and structural load transfer on the aircraft. |
+| 3 | Carrier / models | Earlier carrier dimensions and CAD sketches described a reference layout. | The builder identifies all five supplied STL revisions as installed: `01_carrier_adapter_plate_V3.stl`, `03_gps_mast_v2_rounded_rect.stl`, `04_battery_tray_TPU.stl`, `05_esc_plate_40x40x1p5_outer4p1_R1.stl` and `landing_foot_v7.stl` (eight instances). | Mesh-to-airframe alignment, material, print process, fastener lengths and physical clearances are not verified. The old generator does not reproduce the supplied revisions. |
+| 4 | Companion board | Older documents referred to a BPI-CM5 Pro board or an ArmSoM CM5 module. | Package marking identifies the module as BPI-CM5 Pro 4+32G WiFi; the IO board is a separately purchased ArmSoM CM5-IO. | Verify board silkscreen, UART pins, firmware/image and loaded flight-battery power before use. No vendor or order detail is available. |
+| 5 | PX4 | Airframe #1 previously used MicoAir vendor PX4 v1.14.3. | Official PX4 v1.16.2 was flashed on 2026-11-10. The supplied parameter file is dated 2026-11-12; whether it is a post-check export has not been confirmed. | Revalidate actuator mapping, RC, sensors, GPS, battery measurement and failsafes with props removed; then export the actual configuration and perform a controlled reflight. |
+| 6 | Camera / GPS / landing gear | Earlier printed camera and GPS parts were planning models. | IMX219 camera uses an adjustable metal hinge; GPS mast V2, underslung tray and four V7 legs are included in the build documentation. | Confirm cable strain relief, fastener clearance and print condition on the aircraft. |
+| 7 | Companion power / UART | 4S-to-12 V BEC and TEL1 MAVLink were planned. | Flight-battery BEC is not installed; TEL1 is not validated. | Verify the loaded 12 V rail and measure UART pin/device/baud; confirm heartbeat before treating the link as working. |
 
-## Measured center-stack clearances
+## Latest builder-supplied clearances
 
-All measurements were supplied by the aircraft builder. They are **clearances between
-named faces**, not summed stack dimensions.
+The following face-to-face clearances were supplied with the latest update. The unit is
+interpreted as millimetres from context. These values are not measurements extracted from
+the STL files, and the earlier photographs do not confirm them.
 
 | Datum | Faces | Clearance |
 |---|---|---:|
-| H1 | Carbon frame mounting surface → ESC underside | 4.6 mm |
-| H2 | ESC upper surface → printed FC adapter underside | 6.0 mm |
-| H3 | Printed FC adapter upper surface → V3 carrier underside | 15.5 mm |
-| H4 | V3 carrier upper surface → CM5-IO underside | 5.8 mm |
+| H1 | Frame mounting surface → ESC underside | 5.0 mm |
+| H2 | ESC upper surface → FC adapter underside | 7.5 mm |
+| H3 | FC adapter upper surface → V3 carrier underside | 12.5 mm |
+| H4 | V3 carrier upper surface → CM5-IO underside | 6.7 mm |
 
-The four outer through-fasteners continue from the carbon frame to the carrier supports.
-The FC is secured independently to the four inner adapter holes. See
-[assembly guide](assembly.md) and the [dated photo log](../build-log/2026-11-21_airframe1_rebuild/notes.md).
+Use [the assembly guide](assembly.md) for the nine section-by-section instructions and
+the [36-step offline viewer](../viewer/index.html) for the part-by-part visual tutorial.
+The viewer is an aid for identifying and ordering parts; it is not evidence that the
+meshes match the physical airframe.
 
 ## Change log
 
-| Date | Unit | Change | By |
+| Date | Unit | Change | Basis |
 |---|---|---|---|
-| 2026-09-24 | — | Reference frame changed from iFlight Nazgul5 V3 to TBS Source One V5.1; companion was specified as BPI-CM5 Pro. | A |
-| 2026-11 | #1 | Initial assembly; manual flights using MicoAir vendor firmware, without companion computer. | B |
-| 2026-11-10 | #1 | Official PX4 v1.16.2 flashed; no new-flight acceptance evidenced. | B |
-| 2026-11-10 | — | Reference hardware repository created. | A |
-| 2026-11-21 | #1 | Documented ESC-under-FC rebuild, V3 CM5 carrier, camera hinge, printed parts and H1–H4; mechanical drawings, photos and 3D viewer added. | B |
+| 2026-09-24 | — | Reference frame changed from iFlight Nazgul5 V3 to TBS Source One V5.1; BPI-CM5 Pro was specified as the compute module. | Project record |
+| 2026-11 | #1 | Initial assembly and manual flights using MicoAir vendor firmware, without the companion computer. | Existing build record |
+| 2026-11-10 | #1 | Official PX4 v1.16.2 flashed; no post-update flight acceptance recorded. | Builder record |
+| 2026-11-21 | #1 | Rebuild photos and notes recorded the FC-over-ESC arrangement, V3 carrier, camera hinge, GPS mast, tray and landing legs. | Dated photos and notes; not proof of later changes |
+| 2026-11-28 | #1 | Updated adapter identity, mounting description, carrier position, compute-board identification and H1–H4 clearances. | Latest builder-provided corrections; photos do not confirm these updates |

@@ -1,13 +1,8 @@
 # PX4 firmware and parameters
 
-> **Airframe #1 update (2026-11-21):** The builder flashed official **PX4 v1.16.2**
-> on 2026-11-10. The migration instructions and parameter values below are a
-> **reference plan**, not evidence of a current verified configuration. There has
-> been **no accepted real-aircraft reflight** on this firmware in the supplied
-> records. Recheck actuator mapping, DShot output, RC, GPS, battery monitoring,
-> sensors and failsafes with **propellers removed** before a controlled flight;
-> export the actual current `.params` afterwards. Do **not** load old 1.14.3
-> parameters wholesale. See [as-built status](as-built-status.md).
+> Firmware version, parameter-file status, and current validation state are maintained in
+> [as-built status](as-built-status.md). This page's migration steps and parameter values
+> are historical reference material; verify settings with props removed before flight.
 
 ## Firmware decision
 
@@ -33,11 +28,9 @@ Check what a board is running: QGroundControl → Analyze Tools → MAVLink Cons
 
 ## Historical migration plan — do not repeat on Airframe #1
 
-The following steps are retained for provenance, not as current instructions. Airframe #1
-has already been flashed and its FC is rigidly mounted; there has been no confirmed
-soft-mount rebuild. Do not reflash or apply the historical settings below merely because
-they appear here. First export the actual current parameters and verify the configuration
-with propellers removed.
+The following steps are retained for provenance, not as current instructions. Check
+[as-built status](as-built-status.md) before applying anything here. Export the actual
+current parameters and verify the configuration with propellers removed.
 
 1. **Back up the vendor state** (airframe #1):
    - QGC → Parameters → Tools → Save to file →

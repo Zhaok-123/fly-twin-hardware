@@ -5,15 +5,9 @@ PX4 flight controller and an RK3576 companion computer. This repo is the single 
 of truth for **how the prototype is built**, so the software team (simulation, onboard
 software) and the hardware team stay in sync.
 
-> **As-built update (2026-11-21):** Airframe #1 has been reassembled with the
-> **NxtPX4v2 flight controller above the MicoAir 50A ESC** on a custom printed
-> eight-hole adapter, an ArmSoM CM5/CM5-IO on a raised V3 carrier, adjustable
-> front camera and four printed landing legs. The physical build is documented
-> in [the English assembly guide](docs/assembly.md), [photographs](build-log/2026-11-21_airframe1_rebuild/notes.md)
-> and [interactive 3D assembly viewer](viewer/index.html). **Vibration isolation
-> is unverified; compute BEC is not installed; TEL1 telemetry and PX4 v1.16.2
-> reflight are pending.** Older design pages describe the reference build,
-> not necessarily the actual aircraft. See [as-built status](docs/as-built-status.md).
+> **Current hardware state, measurements, evidence and open checks:** see
+> [as-built status](docs/as-built-status.md). Follow the [assembly guide](docs/assembly.md)
+> and [36-step offline viewer](viewer/index.html) for assembly.
 
 ![Printed parts preview](mounts/preview.png)
 
@@ -30,23 +24,21 @@ software) and the hardware team stay in sync.
 | [mounts/](mounts/) | 3D-printed parts: STL files, parametric source, print settings |
 | [viewer/index.html](viewer/index.html) | Interactive 3D assembly viewer (step-by-step, exploded view, click a part) |
 | [viewer/parts.html](viewer/parts.html) | 3D viewer for the printed-part STL files |
-| [params/](params/) | PX4 parameter export instructions; actual aircraft exports are still pending |
+| [params/](params/) | Supplied PX4 parameter file and notes; aircraft identity and post-check status are not confirmed |
 | [build-log/](build-log/) | Dated build photos and notes |
 
 ### Opening the 3D viewers
 
-`viewer/index.html` works by double-clicking it. `viewer/parts.html` loads the STL files
-over HTTP, so serve the repo first:
+Serve the repository root locally, then open the assembly tutorial:
 
 ```bash
-python -m http.server 8000      # from the repo root
-# then open http://localhost:8000/viewer/parts.html
+python3 -m http.server 8000     # from the repo root
+# open http://localhost:8000/viewer/index.html
 ```
 
-`viewer/index.html` is the reviewed self-contained as-built viewer (embedded meshes).
-`viewer/parts.html` uses locally bundled scripts and loads the standalone STL files over
-HTTP; neither viewer requires an internet connection.
-Both pages also work from GitHub Pages if it is enabled for this repo.
+The 36-step assembly viewer and the printed-parts viewer use local files and bundled
+scripts; neither requires an internet connection. `viewer/parts.html` is available at
+`http://localhost:8000/viewer/parts.html`.
 
 ## The aircraft in one table
 
@@ -57,7 +49,7 @@ Both pages also work from GitHub Pages if it is enabled for this repo.
 | Props | Gemfan 51466 tri-blade |
 | Flight stack | MicoAir NxtPX4v2 50A stack: NxtPX4v2 flight controller (STM32H743, dual BMI088, 20×20 mm) + MicoAir 50A 4-in-1 ESC |
 | Flight firmware | PX4 **v1.16.2**, mainline target `hkust_nxt-dual` (migrating from the vendor build `micoair743-v1.14.3`) |
-| Companion computer | **Airframe #1: ArmSoM CM5 + ArmSoM CM5-IO** (RK3576). Earlier reference design specified BPI-CM5 Pro; confirm the exact installed board before wiring. |
+| Companion computer | See the [as-built board identification and status](docs/as-built-status.md); UART pins and power are unverified. |
 | Camera | IMX219 120° (MIPI CSI) |
 | GPS + compass | Holybro Micro M10 |
 | Radio | RadioMaster RP1 ELRS 2.4 GHz receiver, RadioMaster Pocket transmitter |

@@ -1,14 +1,10 @@
 # Architecture — how the prototype works
 
-> **Reference-design document.** The vertical stack, companion module, compute BEC,
-> data links and anti-vibration scheme below describe planned architecture, not a
-> verified claim about Airframe #1. The aircraft photographed on 2026-11-21 has an
-> **ArmSoM CM5 + CM5-IO**, custom eight-hole FC-over-ESC adapter and continuous outer
-> through-fasteners. BEC is **not installed**, TEL1 is **not validated**, and vibration
-> isolation is **not proven**. For physical reconstruction use the
-> [as-built assembly guide](assembly.md) and [actual-state record](as-built-status.md).
-> The reference DShot600/bidirectional telemetry and programmed offboard policy are
-> **not verified Airframe #1 features**.
+> **Reference-design document:** the stack, power tree, data links and anti-vibration
+> scheme below are proposals, not verified Airframe #1 behavior. See
+> [as-built status](as-built-status.md) for the current configuration, evidence and open
+> checks. DShot600, bidirectional telemetry and the proposed offboard policy are not
+> verified Airframe #1 features.
 
 This document explains *why* the aircraft is built the way it is. The step-by-step
 build is in [assembly.md](assembly.md); pin-level detail is in [wiring.md](wiring.md).
@@ -17,7 +13,8 @@ build is in [assembly.md](assembly.md); pin-level detail is in [wiring.md](wirin
 
 ```
 ┌───────────────────────────────────────────────────────────┐
-│ Companion computer — Banana Pi BPI-CM5 Pro (RK3576)       │
+│ Companion computer — BPI-CM5 Pro 4+32G WiFi module        │
+│   on separately purchased ArmSoM CM5-IO (RK3576)          │
 │   camera → YOLO (NPU) → RL policy → velocity setpoints    │
 │   safety clipping, task planner, logging                  │
 └──────────────────────────┬────────────────────────────────┘
@@ -50,8 +47,8 @@ Bottom to top:
             ┌──────────────────────────────┐
   Layer 5   │ GPS + compass on 30 mm mast  │  farthest from power wiring
             ├──────────────────────────────┤
-  Layer 4   │ BPI CM5 Pro IO board +       │  100 × 80 mm board on M2.5 standoffs
-            │ CM5 Pro module + heatsink    │
+  Layer 4   │ ArmSoM CM5-IO board +        │  Reference stack; header/power unverified
+            │ BPI-CM5 Pro module           │
             ├──────────────────────────────┤
   Layer 3   │ Printed carrier adapter plate│  130 × 90 × 3 mm, bolted to top plate
             │ Carbon top plate             │
@@ -65,6 +62,9 @@ Bottom to top:
               Battery strapped *under* the bottom plate (TPU tray + EVA pad)
               Camera in the front camera cage; receiver at the rear
 ```
+
+This reference stack retains a carbon top plate and shows a proposed soft-mount. Check
+[as-built status](as-built-status.md) before applying it to Airframe #1.
 
 ### Why the flight controller sits above the ESC (and not at the bottom)
 
@@ -81,19 +81,17 @@ It flew, but it is not the reference configuration, for three reasons:
 3. **Reproducibility.** The build is published; someone following the docs must end up
    with the same aircraft.
 
-The fix: mount the flight controller on a **30.5→20 mm adapter plate** above the ESC,
-with **rubber grommets at the 20×20 holes**. The rigid adapter only converts the hole
-pattern; the grommets provide the isolation. Grommets are compressed until just snug —
-crushed grommets are a hard mount.
+The reference proposal was to mount the flight controller on a **30.5→20 mm adapter
+plate** above the ESC, with **rubber grommets at the 20×20 holes**. Check
+[as-built status](as-built-status.md) before reproducing this proposal.
 
 ### Why the companion computer is on top and the battery underneath
 
-The Source One V5 is designed for a top-mounted battery. In the prototype the top is
-taken by the 100 × 80 mm IO board (it overhangs the 40 mm-wide body by ~25 mm per side),
-so the battery moves underneath. Side effects: lower centre of gravity (calmer in
-hover), and the battery is the first thing to touch the ground on landing — hence the
-TPU tray and 3 mm EVA pad. The AIO board (~65 × 50 mm, 30.5 mm hole pattern) will fit
-inside the stack and restore the top-battery layout.
+The Source One V5 is designed for a top-mounted battery. The reference layout places the
+IO board above the center stack, so the battery is shown underneath. On Airframe #1 the
+carbon top plate is reported removed to make way for the V3 carrier; the actual frame and
+carrier fit require a physical check. The battery tray and upper structure are described
+in the [assembly guide](assembly.md).
 
 ## 3. Power tree
 
@@ -106,7 +104,8 @@ ESC battery pads (+ low-ESR capacitor soldered at the pads)
   ├──► 8-pin stack cable ──► Flight controller VBAT input
   │                           ├─ onboard 5 V BEC ──► FC, GPS, receiver
   │                           └─ onboard 12 V BEC (unused)
-  └──► XT30 pigtail ──► 4S→12 V/3 A BEC ──► DC 5.5×2.1 ──► BPI CM5 Pro IO board
+  └──► XT30 pigtail ──► 4S→12 V/3 A BEC ──► DC 5.5×2.1 ──► ArmSoM CM5-IO board
+                                                          └─ BPI-CM5 Pro module
                                                           └─ IMX219 camera (via CSI)
 ```
 
@@ -145,7 +144,7 @@ Notes:
 Vibration in the IMU is the most common reason a PX4 multicopter drifts in position mode.
 The prototype uses three measures:
 
-1. **Mechanical:** ESC and FC each on rubber grommets (two isolation stages).
+1. **Mechanical proposal:** ESC and FC each on rubber grommets (two isolation stages).
 2. **Electronic:** bidirectional DShot gives PX4 per-motor RPM, enabling the dynamic
    notch filter on the gyro (`IMU_GYRO_DNF_EN`).
 3. **Maintenance:** balanced, undamaged props; motor screws with threadlocker.
@@ -155,9 +154,10 @@ the *Vibration* and *Actuator* pages and the raw accelerometer/gyro spectra are 
 Two datasets matter:
 
 - **Baseline:** the first flights with the hard-mounted FC (already flown — keep those logs).
-- **Reference:** the same aircraft after the soft-mount rebuild.
+- **Reference:** the same aircraft after the builder-reported mount update; verify the FC's effective isolation before treating it as a vibration baseline.
 
-The difference between them is the input for the AIO board's IMU island design.
+The difference between them is the input for the AIO board's IMU island design. Airframe
+#1's current configuration and validation status are in [as-built status](as-built-status.md).
 
 ## 6. RF and magnetic layout
 
@@ -175,7 +175,7 @@ The difference between them is the input for the AIO board's IMU island design.
 | Source One V5.1 frame (incl. hardware) | 118 | |
 | XING2 2207 ×4 | 136 | |
 | MicoAir 50A stack (FC + ESC) | 25 | |
-| BPI CM5 Pro module + IO board + heatsink | 80 | |
+| BPI-CM5 Pro module + ArmSoM CM5-IO board + heatsink | 80 | |
 | Carrier adapter plate + standoffs (printed) | 25 | |
 | IMX219 camera + adapter | 5 | |
 | Micro M10 GPS + mast | 15 | |
@@ -193,7 +193,7 @@ learned-policy errors. This aircraft is a development platform, not an endurance
 
 | Prototype part | AIO version |
 |----------------|-------------|
-| BPI CM5 Pro IO board | FlyAgent AIO carrier board (the same CM5 Pro module plugs in) |
+| ArmSoM CM5-IO board | FlyAgent AIO carrier board (the BPI-CM5 Pro module is intended to carry over) |
 | MicoAir NxtPX4v2 FC | H743 + ICM-42688-P + BMI088 + baro on the AIO board, IMU on an isolated island |
 | 12 V BEC | AIO board's own 4S input |
 | Printed carrier adapter plate | Not needed (AIO board on the 30.5 mm stack) |
