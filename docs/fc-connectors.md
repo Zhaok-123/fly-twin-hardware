@@ -2,7 +2,7 @@
 
 This reference photo is from the 2026-11-21 build log. A–C mark the three sockets along the board’s upper edge, left to right; D marks the white plug on the left edge. The microSD card is near the board centre and USB-C is at the lower edge.
 
-![Top-down flight-controller photo with connector locations A–D marked](images/fc-connectors.svg)
+![Top-down flight-controller photo with connector locations A–D marked](images/fc-connectors.png)
 
 *The photo is embedded unchanged beneath the overlay. [Open the original JPEG](../build-log/2026-11-21_airframe1_rebuild/photos/03_flight_stack_top.jpg).*
 
