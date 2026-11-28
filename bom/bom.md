@@ -1,29 +1,26 @@
 # Bill of materials — 5-inch prototype (Route B)
 
-Prices are historical planning/reference prices (CNY, Taobao, 2026-09), **not a
-verified current procurement ledger**. Entries marked with a dash have no confirmed
-actual cost; the original subtotal is a historical estimate only.
-Search terms are given where no stable link exists. **Status:** *In hand* = confirmed
-received; *On #1* = fitted to airframe #1 (it has flown); *To order*; *Verify* = assumed
-bought per the plan, not yet confirmed — update when checked.
+Prices are historical planning estimates (CNY, Taobao, 2026-09); dashes indicate costs
+not recorded. **Status:** *In hand* = received; *On #1* = fitted to Airframe #1;
+*To order*; *Verify* = purchase or installation not confirmed.
 
-See the [as-built record](../docs/as-built-status.md) before interpreting reference prices
-or treating an open mounting, power or wiring item as verified.
+For the current configuration and open checks, see the
+[as-built record](../docs/as-built-status.md).
 
 ## A. Flight hardware (per aircraft)
 
 | # | Part | Exact model | Qty | Unit ¥ | Total ¥ | Where / search term | Status |
 |---|------|-------------|----:|-------:|--------:|---------------------|--------|
-| A1 | Frame | TBS Source One V5.1, 5", 6 mm arms, ~118 g, with hardware | 1 | 252 | 252 | Taobao "澳信航模" (TBS distributor); TBS / GetFPV ~$30 | On #1 |
+| A1 | Frame | TBS Source One V5.1, 5", 6 mm arms, ~118 g, with hardware | 1 | 252 | 252 | Taobao TBS distributor; seller identity unconfirmed; TBS / GetFPV ~$30 | On #1 |
 | A2 | Standoffs | M3 × 30 mm aluminium ×4 + M3×8 screws (level the top plate) | 1 set | 10 | 10 | Any hardware shop | Verify |
-| A3 | Motors | iFlight XING2 2207 1855KV | 4 | 90 | 360 | "翼飞 XING2 2207 1855KV" | On #1 |
-| A4 | Props | Gemfan 51466 tri-blade (2 CW + 2 CCW per set) | 4 pairs | 10 | 40 | "乾丰 51466" | On #1 (verify model) |
-| A5 | Flight stack | MicoAir NxtPX4v2 **50A stack**: NxtPX4v2 FC (STM32H743, dual BMI088, SPL06 baro, 20×20 mm, onboard 5 V and 12 V BEC) + MicoAir 50A 4-in-1 ESC + stack hardware + 8-pin cable | 1 | 628 | 628 | Taobao "微空科技" official store | On #1 |
+| A3 | Motors | iFlight XING2 2207 1855KV | 4 | 90 | 360 | Taobao search: iFlight XING2 2207 1855KV | On #1 |
+| A4 | Props | Gemfan 51466 tri-blade (2 CW + 2 CCW per set) | 4 pairs | 10 | 40 | Taobao search: Gemfan 51466 | On #1 (verify model) |
+| A5 | Flight stack | MicoAir NxtPX4v2 **50A stack**: NxtPX4v2 FC (STM32H743, dual BMI088, SPL06 baro, 20×20 mm, onboard 5 V and 12 V BEC) + MicoAir 50A 4-in-1 ESC + stack hardware + 8-pin cable | 1 | 628 | 628 | MicoAir official Taobao store | On #1 |
 | A6 | FC/ESC adapter | **Custom printed 40 × 40 × 1.5 mm, eight holes; 20 mm inner and 30.5 mm outer patterns** | 1 | — | — | Supplied [STL](../mounts/stl/05_esc_plate_40x40x1p5_outer4p1_R1.stl) | **Builder reports installed on #1** |
 | A7 | Mounting spacers and silicone | Builder reports grommets at the adapter's outer holes and silicone washers above the FC at the inner holes; separate inner-hole grommets are requested but not confirmed | 1 set | — | — | See [current mounting status](../docs/as-built-status.md); fastener sizes to verify | **Arrangement builder-reported; vibration not measured** |
 | A8 | GPS | Holybro Micro M10 (plastic case), with compass | 1 | 166 | 166 | Holybro store | On #1 |
 | A9 | Receiver | RadioMaster RP1 ELRS 2.4 GHz | 1 | 60 | 60 | "RadioMaster RP1" | On #1 |
-| A10 | Battery | Tattu R-Line 4S 1550 mAh 95C | 2 | 180 | 360 | "格式 R-Line 4S 1550" | Verify |
+| A10 | Battery | Tattu R-Line 4S 1550 mAh 95C | 2 | 180 | 360 | Taobao search: Tattu R-Line 4S 1550 mAh | Verify |
 | A11 | Compute BEC | Planned 4S → 12 V supply for CM5-IO; bench supply is separate | 1 | 50 | 50 | Historical plan; no acceptance on airframe | **Not installed on #1** |
 | A12 | Prop guards | 5" universal | 1 set | 40 | 40 | Taobao | Verify |
 | A13 | Wiring | XT60 + 14 AWG, XT30 pigtail, low-ESR capacitor, 22 AWG silicone wire, heat-shrink, zip ties, crash strip | 1 set | 120 | 120 | Taobao | Verify |
@@ -37,7 +34,7 @@ or treating an open mounting, power or wiring item as verified.
 |---|------|-------------|----:|-------:|--------:|-------|--------|
 | B1 | Compute module + IO board | **BPI-CM5 Pro 4+32G WiFi module** (package marking) + separately purchased **ArmSoM CM5-IO** board (RK3576) | 1 | — | — | Vendor, order and current paid price are not recorded | **Builder-identified configuration; power and UART unverified** |
 | B2 | Heatsink | ~30×30 mm for the SoC (if not included) | 1 | 10 | 10 | Taobao | Verify |
-| B3 | Camera | IMX219 120° wide-angle, Raspberry Pi connector, 15 cm FPC (+ 22→15-pin adapter if needed) | 1 | 33 | 33 | "IMX219 120度 树莓派 Pi5" | In hand, fitted |
+| B3 | Camera | IMX219 120° wide-angle, Raspberry Pi connector, 15 cm FPC (+ 22→15-pin adapter if needed) | 1 | 33 | 33 | Taobao search: IMX219 120° Raspberry Pi camera | In hand, fitted |
 | B4 | Wi-Fi antenna | IPEX → external antenna (if not included) | 1 | 10 | 10 | Taobao | Verify |
 
 ## C. Bench / development (shared)

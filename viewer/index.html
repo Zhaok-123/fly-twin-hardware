@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FlyTwin Airframe #1 · 逐步组装指南</title>
+<title>FlyTwin Airframe #1 · Step-by-Step Assembly Guide</title>
 <style>
   :root{
     --paper:#EDEDE8; --ink:#23262B; --ink-2:#5C6168; --line:#C9CBC4;
@@ -86,38 +86,38 @@
 <body>
 <div id="app">
   <div id="viewer">
-    <div id="tip">拖动旋转 · 滚轮或双指缩放 · 点击查看零件</div>
+    <div id="tip">Drag to rotate · Scroll or pinch to zoom · Click a part for details</div>
     <div id="load-error" role="status" hidden></div>
     <div id="hud">
-      <div class="ctl"><h4>模型视图</h4>
-        <div class="views"><button id="all">整机总览</button><button data-v="iso">等轴</button><button data-v="top">俯视</button><button data-v="side">侧视</button><button data-v="front">正视</button><button data-v="under">仰视</button></div>
+      <div class="ctl"><h4>Model view</h4>
+        <div class="views"><button id="all">Full assembly</button><button data-v="iso">Isometric</button><button data-v="top">Top</button><button data-v="side">Side</button><button data-v="front">Front</button><button data-v="under">Bottom</button></div>
       </div>
-      <div class="ctl"><h4>爆炸图</h4><input id="explode" type="range" min="0" max="1" step="0.01" value="0" aria-label="爆炸程度">
+      <div class="ctl"><h4>Exploded view</h4><input id="explode" type="range" min="0" max="1" step="0.01" value="0" aria-label="Explode parts">
       </div>
     </div>
   </div>
   <aside id="rail">
     <section id="guide" aria-live="polite">
-      <p class="count" id="step-count">第 1 步 / 共 36 步</p>
-      <h2 id="step-title">正在载入组装步骤…</h2>
+      <p class="count" id="step-count">Step 1 of 36</p>
+      <h2 id="step-title">Loading assembly steps…</h2>
       <p class="description" id="step-description"></p>
       <div class="materials" id="step-materials"></div>
-      <p class="help" id="step-help">橙色表示本步安装件，动画为位置示意。</p>
+      <p class="help" id="step-help">Orange highlights the parts for this step. Animation illustrates placement.</p>
       <div class="guide-controls">
-        <button id="prev" aria-label="上一步">上一步</button>
-        <button id="next" aria-label="下一步">下一步</button>
-        <button id="replay">重播本步</button>
+        <button id="prev" aria-label="Previous step">Previous</button>
+        <button id="next" aria-label="Next step">Next</button>
+        <button id="replay">Replay step</button>
       </div>
     </section>
     <h1>FlyTwin Airframe #1</h1>
-    <p class="sub">按顺序查看零件安装过程，点击模型中的部件可查看说明。</p>
-    <p class="sub"><a href="parts.html">查看单个零件</a></p>
-    <p class="note">托盘原始 STL 的中央为开口，内圈螺钉按示意穿过；内圈相向螺钉的净空需要实物核对。</p>
-    <div id="detail"><h3>零件信息</h3><p class="k">点击模型中的零件查看名称、安装步骤和说明。</p></div>
-    <h2>组装步骤目录</h2>
+    <p class="sub">Follow the parts in assembly order. Click a component in the model for details.</p>
+    <p class="sub"><a href="parts.html">Browse individual parts</a></p>
+    <p class="note">The original battery-tray STL has an opening in the center. The inner screws are shown passing through it; verify clearance between opposing screws on the physical assembly.</p>
+    <div id="detail"><h3>Part details</h3><p class="k">Click a part in the model to see its name, assembly step, and description.</p></div>
+    <h2>Assembly steps</h2>
     <ol class="stepslist" id="steps"></ol>
-    <h2>模型颜色</h2>
-    <div class="legend"><span class="c1">碳纤维</span><span class="c2">电路板</span><span class="c3">电机</span><span class="c4">金属</span><span class="c5">3D 打印</span><span class="c7">硅胶垫圈</span><span class="c6">线材 / 外设</span></div>
+    <h2>Model colors</h2>
+    <div class="legend"><span class="c1">Carbon fiber</span><span class="c2">Circuit boards</span><span class="c3">Motors</span><span class="c4">Metal</span><span class="c5">3D-printed parts</span><span class="c7">Silicone washers</span><span class="c6">Wiring / accessories</span></div>
   </aside>
 </div>
 
@@ -131,9 +131,9 @@
 (function(){
   const loadError=document.getElementById('load-error');
   function showLoadError(text){loadError.textContent=text;loadError.hidden=false;}
-  if(!window.THREE||!THREE.STLLoader){showLoadError('本地 Three.js 或 STL 加载器未找到。请保留 viewer/vendor 文件。');return;}
+  if(!window.THREE||!THREE.STLLoader){showLoadError('The local Three.js library or STL loader is missing. Keep the files in viewer/vendor.');return;}
   if(typeof window.loadAssemblyStls!=='function'||typeof window.createAssemblyParts!=='function'){
-    showLoadError('组装模型脚本未找到。请保留 viewer/stl-assets.js 和 viewer/assembly-model.js。');return;
+    showLoadError('The assembly model scripts are missing. Keep viewer/stl-assets.js and viewer/assembly-model.js.');return;
   }
   window.loadAssemblyStls(THREE).then(function(stlGeometries){
   const viewer=document.getElementById('viewer');
@@ -175,12 +175,12 @@
   tutorial.forEach((step,i)=>{
     const li=document.createElement('li');
     const label=document.createElement('span');
-    label.textContent=step.title||('第 '+(i+1)+' 步');
+    label.textContent=step.title||('Step '+(i+1));
     const small=document.createElement('small');
     small.textContent=step.description||'';
     label.appendChild(small);li.appendChild(label);
     li.setAttribute('role','button');li.setAttribute('tabindex','0');
-    li.setAttribute('aria-label','第 '+(i+1)+' 步：'+(step.title||''));
+    li.setAttribute('aria-label','Step '+(i+1)+': '+(step.title||''));
     li.addEventListener('click',()=>setStep(i+1));
     li.addEventListener('keydown',e=>{
       if(e.key==='Enter'||e.key===' '){e.preventDefault();setStep(i+1);}
@@ -282,29 +282,29 @@
     const help=document.getElementById('step-help');
     const step=tutorial[cur-1];
     if(overview){
-      count.textContent='整机总览 · 共 '+N+' 步';
-      title.textContent='整机总览';
-      description.textContent='所有零件均已显示。可旋转、缩放、切换爆炸图，或从步骤目录继续查看安装过程。';
+      count.textContent='Full assembly · '+N+' steps';
+      title.textContent='Full assembly';
+      description.textContent='All parts are visible. Rotate, zoom, adjust the exploded view, or choose a step to continue the assembly guide.';
       materialBox.replaceChildren();
-      help.textContent='可从步骤目录返回分步安装，或调整爆炸图查看零件关系。';
+      help.textContent='Choose a step to return to the guide, or adjust the exploded view to inspect how parts fit together.';
     }else if(step){
-      count.textContent='第 '+cur+' 步 / 共 '+N+' 步';
-      title.textContent=step.title||('第 '+cur+' 步');
+      count.textContent='Step '+cur+' of '+N;
+      title.textContent=step.title||('Step '+cur);
       description.textContent=step.description||'';
       help.textContent=repeatedHardwareParts(step).length>0
-        ?'橙色表示本步安装件，动画为位置示意。本步聚焦第1处，其余重复件位置相同；可拖动查看或点击“整机总览”。'
-        :'橙色表示本步安装件，动画为位置示意。';
+        ?'Orange highlights the parts for this step. Animation illustrates placement and focuses on the first part; repeated parts use the same placement. Drag to inspect, or select “Full assembly.”'
+        :'Orange highlights the parts for this step. Animation illustrates placement.';
       materialBox.replaceChildren();
       const materials=Array.isArray(step.materials)?step.materials:[];
       if(materials.length){
         const label=document.createElement('strong');
-        label.textContent='本步材料（'+materials.length+' 项）：';
+        label.textContent='Parts for this step ('+materials.length+'): ';
         const list=document.createElement('ul');
         materials.forEach(material=>{
           const item=document.createElement('li');item.textContent=material;list.appendChild(item);
         });
         materialBox.append(label,list);
-      }else materialBox.textContent='本步材料：无单独新增材料';
+      }else materialBox.textContent='Parts for this step: no new parts';
     }
     [...stepsEl.children].forEach((li,i)=>{
       li.classList.toggle('on',!overview&&i+1===cur);
@@ -449,18 +449,18 @@
   function showPart(part){
     const detail=document.getElementById('detail');detail.replaceChildren();
     if(!part){
-      const heading=document.createElement('h3');heading.textContent='零件信息';
-      const note=document.createElement('p');note.className='k';note.textContent='点击模型中的零件查看名称、安装步骤和说明。';
+      const heading=document.createElement('h3');heading.textContent='Part details';
+      const note=document.createElement('p');note.className='k';note.textContent='Click a part in the model to see its name, assembly step, and description.';
       detail.append(heading,note);
       detail.scrollIntoView({block:'center',behavior:reducedMotion?'auto':'smooth'});return;
     }
-    const heading=document.createElement('h3');heading.textContent=part.name||'零件';detail.appendChild(heading);
+    const heading=document.createElement('h3');heading.textContent=part.name||'Part';detail.appendChild(heading);
     if(part.tutorialStep){
       const fitted=document.createElement('p');fitted.className='k';
-      fitted.textContent='首次安装：第 '+part.tutorialStep+' 步';detail.appendChild(fitted);
+      fitted.textContent='First installed in step '+part.tutorialStep;detail.appendChild(fitted);
     }else if(part.step!==undefined&&part.step!==null){
       const fitted=document.createElement('p');fitted.className='k';
-      fitted.textContent='零件步骤：'+part.step;detail.appendChild(fitted);
+      fitted.textContent='Part step: '+part.step;detail.appendChild(fitted);
     }
     if(part.desc){const text=document.createElement('p');text.textContent=part.desc;detail.appendChild(text);}
     detail.scrollIntoView({block:'center',behavior:reducedMotion?'auto':'smooth'});
@@ -518,14 +518,14 @@
   addEventListener('resize',resize);resize();place();
   if(N)setStep(1);
   else{
-    document.getElementById('step-count').textContent='组装步骤不可用';
-    document.getElementById('step-title').textContent='未找到逐步教程数据';
-    document.getElementById('step-description').textContent='请检查 assembly-model.js 是否包含 tutorial 数据。';
+    document.getElementById('step-count').textContent='Assembly steps unavailable';
+    document.getElementById('step-title').textContent='Step-by-step guide data not found';
+    document.getElementById('step-description').textContent='Check that assembly-model.js includes the tutorial data.';
   }
   (function loop(){renderer.render(scene,camera);requestAnimationFrame(loop);})();
   }).catch(function(error){
     console.error(error);
-    showLoadError('模型文件加载失败：'+error.message+'\n请在仓库根目录运行 python3 -m http.server 8000，然后打开 http://localhost:8000/viewer/index.html。');
+    showLoadError('Could not load model files: '+error.message+'\nStart a local web server by following the instructions in README, then open http://localhost:8000/viewer/index.html.');
   });
 })();
 </script>

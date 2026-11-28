@@ -295,7 +295,7 @@
   resize();
   showPart(0);
   (function render(){renderer.render(scene,camera);window.requestAnimationFrame(render);})();
-  }).catch(error=>showMessage('Could not load assembly STL files. '+error.message+' Run python3 -m http.server 8000 from the repository root, then open http://localhost:8000/viewer/parts.html.'));
+  }).catch(error=>showMessage('Could not load assembly STL files. '+error.message+' Start a local web server by following the instructions in README, then open http://localhost:8000/viewer/parts.html.'));
 })();
 </script>
 </body>

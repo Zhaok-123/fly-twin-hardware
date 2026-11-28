@@ -5,9 +5,9 @@ PX4 flight controller and an RK3576 companion computer. This repo is the single 
 of truth for **how the prototype is built**, so the software team (simulation, onboard
 software) and the hardware team stay in sync.
 
-> **Current hardware state, measurements, evidence and open checks:** see
-> [as-built status](docs/as-built-status.md). Follow the [assembly guide](docs/assembly.md)
-> and [36-step offline viewer](viewer/index.html) for assembly.
+Current configuration, evidence and open checks are in the
+[as-built status](docs/as-built-status.md). The [assembly guide](docs/assembly.md) and
+[36-step offline viewer](viewer/index.html) walk through the build.
 
 ![Printed parts preview](mounts/preview.png)
 
@@ -19,25 +19,28 @@ software) and the hardware team stay in sync.
 | [docs/assembly.md](docs/assembly.md) | As-built English assembly guide with photographs and mechanical schematics |
 | [docs/wiring.md](docs/wiring.md) | Every connector and pin mapping |
 | [docs/px4-firmware-and-params.md](docs/px4-firmware-and-params.md) | Firmware version, flashing, migration from the vendor build, parameter set |
-| [docs/as-built-status.md](docs/as-built-status.md) | Differences between docs and the real aircraft; change log |
+| [docs/as-built-status.md](docs/as-built-status.md) | Current configuration, evidence, open checks and change log |
 | [bom/bom.md](bom/bom.md) | Bill of materials with installed status and historical reference prices |
-| [mounts/](mounts/) | 3D-printed parts: STL files, parametric source, print settings |
+| [mounts/](mounts/) | Current STL files and legacy generator |
 | [viewer/index.html](viewer/index.html) | Interactive 3D assembly viewer (step-by-step, exploded view, click a part) |
 | [viewer/parts.html](viewer/parts.html) | 3D viewer for the printed-part STL files |
-| [params/](params/) | Supplied PX4 parameter file and notes; aircraft identity and post-check status are not confirmed |
+| [params/](params/) | Supplied PX4 parameter file and naming notes |
 | [build-log/](build-log/) | Dated build photos and notes |
 
 ### Opening the 3D viewers
 
-Serve the repository root locally, then open the assembly tutorial:
+Serve the repository root locally, then open the assembly tutorial. On Windows with
+Conda, use the second command:
 
 ```bash
-python3 -m http.server 8000     # from the repo root
+python3 -m http.server 8000     # Linux/macOS, from the repo root
+# Windows (Conda base environment)
+conda run --no-capture-output -n base python -u -m http.server 8000
 # open http://localhost:8000/viewer/index.html
 ```
 
-The 36-step assembly viewer and the printed-parts viewer use local files and bundled
-scripts; neither requires an internet connection. `viewer/parts.html` is available at
+The assembly and printed-parts viewers use local files and bundled scripts; neither
+requires an internet connection. `viewer/parts.html` is available at
 `http://localhost:8000/viewer/parts.html`.
 
 ## The aircraft in one table
@@ -49,12 +52,12 @@ scripts; neither requires an internet connection. `viewer/parts.html` is availab
 | Props | Gemfan 51466 tri-blade |
 | Flight stack | MicoAir NxtPX4v2 50A stack: NxtPX4v2 flight controller (STM32H743, dual BMI088, 20×20 mm) + MicoAir 50A 4-in-1 ESC |
 | Flight firmware | PX4 **v1.16.2**, mainline target `hkust_nxt-dual` (migrating from the vendor build `micoair743-v1.14.3`) |
-| Companion computer | See the [as-built board identification and status](docs/as-built-status.md); UART pins and power are unverified. |
+| Companion computer | BPI-CM5 Pro 4+32G WiFi module on a separately purchased ArmSoM CM5-IO board (RK3576) |
 | Camera | IMX219 120° (MIPI CSI) |
 | GPS + compass | Holybro Micro M10 |
 | Radio | RadioMaster RP1 ELRS 2.4 GHz receiver, RadioMaster Pocket transmitter |
 | Battery | Tattu R-Line 4S 1550 mAh 95C (LiPo) |
-| Companion power | **Planned** 4S → 12 V BEC to IO board; **not installed** on Airframe #1 |
+| Companion power | Planned 4S → 12 V BEC to IO board; not installed on Airframe #1 |
 
 This is a **transition prototype**. The FlyAgent AIO carrier board (RK3576 module +
 integrated H743 flight controller) will replace the IO board, the MicoAir flight

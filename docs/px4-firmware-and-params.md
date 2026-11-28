@@ -1,8 +1,8 @@
 # PX4 firmware and parameters
 
-> Firmware version, parameter-file status, and current validation state are maintained in
-> [as-built status](as-built-status.md). This page's migration steps and parameter values
-> are historical reference material; verify settings with props removed before flight.
+> Airframe #1's firmware, parameter file and validation state are in
+> [as-built status](as-built-status.md). Procedures and values below are reference
+> material; check settings with props removed.
 
 ## Firmware decision
 
@@ -26,11 +26,10 @@ Why mainline v1.16.2:
 
 Check what a board is running: QGroundControl → Analyze Tools → MAVLink Console → `ver all`.
 
-## Historical migration plan — do not repeat on Airframe #1
+## Firmware migration procedure
 
-The following steps are retained for provenance, not as current instructions. Check
-[as-built status](as-built-status.md) before applying anything here. Export the actual
-current parameters and verify the configuration with propellers removed.
+Airframe #1 was migrated to mainline v1.16.2 on 2026-11-10. Use these steps as a
+reference for another board; save its current parameters before flashing.
 
 1. **Back up the vendor state** (airframe #1):
    - QGC → Parameters → Tools → Save to file →
@@ -51,7 +50,7 @@ current parameters and verify the configuration with propellers removed.
    PX4 → Advanced → *Custom firmware file* → select the `.px4`. If the board does not
    enter the bootloader, hold the boot button while plugging USB.
 4. **Verify:** `ver all` shows v1.16.2 / HKUST_NXT_DUAL; both IMUs and the baro appear in
-   QGC sensors; GPS gets a fix by a window.
+   QGC sensors; confirm GPS reception outdoors with a clear view of the sky.
 5. **Do not load the old parameter file wholesale** — names and defaults change between
    versions. Set values by hand from your notes and the table below, then calibrate
    everything (accelerometer, gyro, level horizon, compass, radio, ESC/battery).
@@ -63,12 +62,11 @@ Stack #2 is the software team's bench unit for HITL. Label it **"BENCH / HITL"**
 `SYS_HITL = 1` on a flying aircraft disables real sensors and outputs. Never move a
 parameter file from the bench unit to a flying aircraft.
 
-## Historical initial setup proposal — verify, do not apply blindly
+## Initial setup reference
 
-The list and table below are an unverified reference plan, not a record of the current
-configuration. Airframe #1 previously used DShot300; its current protocol, telemetry
-support, motor mapping and directions must be checked on the actual hardware with props
-removed. Do not assume the proposed settings or motor map below are correct.
+The list and table below are proposed settings, not a record of the current configuration.
+Airframe #1 previously used DShot300; check its current protocol, telemetry support, motor
+mapping and directions on the hardware with props removed.
 
 1. Airframe: **Generic Quadcopter** (`SYS_AUTOSTART = 4001`).
 2. Sensor calibration: accelerometer, gyro, level horizon, compass (GPS-mounted).
@@ -79,11 +77,10 @@ removed. Do not assume the proposed settings or motor map below are correct.
 6. Companion link: `MAV_1_CONFIG = TEL1`, `SER_TEL1_BAUD = 921600`, `MAV_1_MODE = Onboard`.
 7. Failsafes and geofence (table below). Export the parameter file and commit it.
 
-## Historical proposed parameters — not verified settings
+## Proposed parameter values
 
-Parameter names below are those used in our planning docs. **Check each name in QGC on
-v1.16.2** — a few failsafe parameters were renamed between releases. Update this table
-with the names and values actually set.
+Check parameter names in QGC on v1.16.2; some failsafe parameters changed between
+releases. Update this table with the names and values actually set.
 
 | Parameter | Purpose | Value |
 |-----------|---------|-------|

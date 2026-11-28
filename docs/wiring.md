@@ -1,14 +1,10 @@
 # Wiring
 
-> This page is a reference pinout and planned UART configuration. See
-> [as-built status](as-built-status.md) for Airframe #1's current board identification,
-> wiring state and validation gaps. Confirm pinouts on the hardware; do not connect the
-> 5 V rails together.
+> Reference pinouts below are for the MicoAir NxtPX4v2. Airframe #1's wiring and open
+> checks are recorded in [as-built status](as-built-status.md).
 
-All flight-controller peripherals use JST-GH sockets — no soldering on the FC side.
-Silkscreen labels below are from the MicoAir NxtPX4v2 documentation; **always confirm
-against the silkscreen on your board** before plugging anything in. Rows marked
-*verify* have not been checked on the physical aircraft yet.
+Flight-controller peripherals use JST-GH sockets. Labels below follow MicoAir's
+NxtPX4v2 documentation; check the board silkscreen before connecting cables.
 
 ## Overview
 
@@ -39,8 +35,7 @@ The two orders do not match. Map **by signal name**, not by position: GPS TX →
 GPS RX → FC Tx, SCL → SCL, SDA → SDA, 5 V → 5V, GND → G. Re-pin the GH housing (lift the
 latch with a needle, pull the contact, reinsert) and label the cable.
 
-Status: airframe #1 has a working GPS, so a working mapping exists — *verify and record
-the actual re-pinning here.*
+Airframe #1's GPS works. Record the actual repinning here when confirmed.
 
 ## RC
 
@@ -55,6 +50,9 @@ PX4 detects CRSF automatically on the RC port. Bind with the ELRS procedure.
 
 ## TEL1 → companion UART
 
+Connect ground and TX/RX only. Leave the FC's 5 V pin cut or insulated; do not connect
+the FC and IO board 5 V rails together.
+
 | FC `TEL1` silkscreen | Wire | IO board 40-pin |
 |----------------------|------|-----------------|
 | GND | yes | GND — *verify pin number* |
@@ -62,18 +60,17 @@ PX4 detects CRSF automatically on the RC port. Bind with the ELRS procedure.
 | TX | yes | UART RX — *verify pin number* |
 | RX | yes | UART TX — *verify pin number* |
 
-The installed board is an ArmSoM CM5-IO. Verify its 40-pin header against the board
-silkscreen and the documentation for the exact board revision and OS image. Which
-`/dev/ttyS*` maps to each header pin, and whether the UART needs a device-tree overlay,
-depends on the board image. Find candidate serial devices with:
+On the ArmSoM CM5-IO, check the 40-pin header against the board silkscreen and the exact
+board revision and OS image. The `/dev/ttyS*` mapping and any device-tree overlay depend
+on the image. Find candidate serial devices with:
 
 ```bash
 ls /dev/ttyS* /dev/ttyAMA* 2>/dev/null
 dmesg | grep -i tty
 ```
 
-Then confirm with MAVSDK (`serial:///dev/ttySx:921600`) receiving a heartbeat.
-*Fill in the confirmed header pins and device name here.*
+Confirm the device with MAVSDK (`serial:///dev/ttySx:921600`) by receiving a heartbeat,
+then record the header pins and device name here.
 
 ## ESC 8-pin
 
@@ -88,4 +85,4 @@ factory firmware — record `BAT1_A_PER_V` / `BAT1_V_DIV` before reflashing
   the IO board CAM connector is 22-pin. Use a 22→15 adapter cable if the camera board is
   15-pin.
 - Contacts face the right way on both ends — check against the connector's contact side.
-- Camera bring-up is deferred; the camera is mounted but not yet producing images.
+- The camera is mounted; image capture has not been brought up.

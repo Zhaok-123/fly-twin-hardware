@@ -1,11 +1,9 @@
 # 3D-printed parts
 
-The five current STL files listed below were supplied for the latest Airframe #1
-documentation. Earlier STL assets were removed from the working tree; earlier revisions
-remain in Git history. The original planning-stage generator remains for reference. The
-[36-step interactive assembly viewer](../viewer/index.html) presents the
-parts in assembly order; the [STL parts viewer](../viewer/parts.html) loads standalone
-meshes.
+These five supplied STL files are the revisions identified by the builder as installed on
+Airframe #1. Earlier files remain in Git history. The legacy generator does not reproduce
+these models. The [36-step assembly viewer](../viewer/index.html) shows the parts in
+assembly order; the [STL parts viewer](../viewer/parts.html) loads individual meshes.
 
 ## Supplied Airframe #1 part files
 
@@ -17,12 +15,10 @@ meshes.
 | [05_esc_plate_40x40x1p5_outer4p1_R1.stl](stl/05_esc_plate_40x40x1p5_outer4p1_R1.stl) | 1 | **40 × 40 × 1.5** | FC/ESC adapter. STL header specifies 30.5 mm outer pitch with 4.1 mm holes and 20 mm inner pitch with 3.3 mm holes. |
 | [landing_foot_v7.stl](stl/landing_foot_v7.stl) | 4 | **54.5 × 25 × 80** | Repeated landing leg under each motor arm, approximately 80 mm tall. |
 
-**Total:** Five unique models and eight part instances. The builder identifies all five
-supplied revisions as the installed parts. Their mesh alignment with the built aircraft
-has not been verified. See [as-built status](../docs/as-built-status.md) for the source
-and confidence of dimensions, fit and mounting details. Material,
-manufacturing process, fastener lengths and installed clearance are not certified by an
-STL filename or model.
+**Total:** Five models and eight part instances. Nominal dimensions and the adapter hole
+patterns come from the STL files; physical fit and the source of other build details are
+recorded in [as-built status](../docs/as-built-status.md). The tray filename does not
+confirm print material.
 
 ## Model provenance and regeneration
 
@@ -31,5 +27,5 @@ not reproduce the five supplied STL revisions; do not regenerate over the suppli
 The script's original requirements are `pip install trimesh manifold3d numpy`.
 
 The original script uses millimetres, X left/right, +Y forward and Z upward. No editable
-CAD or STEP sources for the five supplied revisions were provided. The assembly viewer is
-an offline visual aid, not confirmation that its meshes align with Airframe #1.
+CAD or STEP sources for the five supplied revisions were provided. Viewer geometry is
+for visualization; physical alignment has not been checked.

@@ -55,7 +55,7 @@
       const group = new THREE.Group();
       group.name = id;
       mesh(group, annulusGeometry(outerDiameter / 2, innerDiameter / 2, height), (materialFactory || silicone)());
-      return { id: id, name: name, desc: desc, material: materialName || '硅胶', group: group };
+      return { id: id, name: name, desc: desc, material: materialName || 'Silicone', group: group };
     }
 
     function addScrew(id, name, rodLength, desc, rodDiameter, headDiameter, headHeight) {
@@ -67,7 +67,7 @@
       mesh(group, new THREE.CylinderGeometry(rodDiameter / 2, rodDiameter / 2, rodLength, 48), steel());
       const head = mesh(group, new THREE.CylinderGeometry(headDiameter / 2, headDiameter / 2, headHeight, 48), steel());
       head.position.y = rodLength / 2 + headHeight / 2;
-      return { id: id, name: name, desc: desc, material: '金属（示意）', group: group };
+      return { id: id, name: name, desc: desc, material: 'Metal (illustrative)', group: group };
     }
 
     function addHexBorePart(id, name, acrossFlats, thickness, boreDiameter, desc) {
@@ -101,7 +101,7 @@
         id: id,
         name: name,
         desc: desc,
-        material: '金属（示意）',
+        material: 'Metal (illustrative)',
         group: group
       };
     }
@@ -138,8 +138,8 @@
       return {
         id: id,
         name: name,
-        desc: '正六角螺母，对边 5.6 mm，厚 ' + thickness + ' mm；未建螺纹，贯穿孔 Ø3.2 mm。',
-        material: '金属（示意）',
+        desc: 'Hex nut with 5.6 mm across flats and a thickness of ' + thickness + ' mm. Threads are not modeled; the through-hole is Ø3.2 mm.',
+        material: 'Metal (illustrative)',
         group: group
       };
     }
@@ -200,9 +200,9 @@
 
       return {
         id: 'm3-single-ended-hex-standoff',
-        name: '单头六角柱（M3）',
-        desc: '六角主体对边 5.6 mm、高 5 mm；顶部延伸 M3 螺杆，直径 3 mm、长度 6 mm；另一端为 Ø3 mm 轴向盲孔，深 4 mm。未建螺纹。',
-        material: '金属（示意）',
+        name: 'Single-ended hex standoff (M3)',
+        desc: 'Hex body with 5.6 mm across flats and a height of 5 mm. An M3 rod extends 6 mm from the top (3 mm diameter); the other end has a 4 mm-deep, Ø3 mm axial blind bore. Threads are not modeled.',
+        material: 'Metal (illustrative)',
         group: group
       };
     }
@@ -218,23 +218,23 @@
     upperFlange.position.y = 1.55;
 
     return [
-      addScrew('m3-screw-40', 'M3×40 圆柱头内六角螺钉', 40, '螺杆直径 3 mm、杆长 40 mm（不含头部）；圆柱头直径约 5.5 mm、高约 3 mm，为示意尺寸。未建螺纹，未细化内六角孔。'),
-      addScrew('m3-screw-16', 'M3×16 螺钉', 16, '螺杆直径 3 mm、杆长 16 mm（不含头部）；圆柱头直径约 5.5 mm、高约 3 mm，沿用 M3×40 的示意尺寸。未建螺纹，实际材质和头型未提供，均为示意。'),
-      addScrew('m3-screw-12', 'M3×12 螺钉', 12, '螺杆直径 3 mm、杆长 12 mm（不含头部）；圆柱头直径约 5.5 mm、高约 3 mm，沿用 M3×40 的示意尺寸。未建螺纹，实际材质和头型未提供，均为示意。'),
-      addScrew('m3-screw-20', 'M3×20 螺钉', 20, '螺杆直径 3 mm、杆长 20 mm（不含头部）；圆柱头直径约 5.5 mm、高约 3 mm，沿用现有示意尺寸。未建螺纹，头型为示意。'),
-      addScrew('m2p5-screw-16', 'M2.5×16 圆柱头螺钉', 16, '螺杆直径 2.5 mm、杆长 16 mm（不含头部）；圆柱头直径约 4.5 mm、高约 2.5 mm，为示意尺寸。未建螺纹。', 2.5, 4.5, 2.5),
-      addNut('m3-hex-nut-2p5', 'M3 六角螺母（厚 2.5 mm）', 2.5),
-      addNut('m3-hex-nut-5', 'M3 六角螺母（厚 5 mm）', 5),
-      addHexBorePart('m2p5-hex-nut-6', 'M2.5 六角柱/通孔螺母（高 6 mm）', 4.7, 6, 2.5, '正六角通孔螺母/六角柱，对边 4.7 mm、高 6 mm；未建螺纹，贯穿孔 Ø2.5 mm。'),
-      addHexBorePart('m2p5-hex-nut-2', 'M2.5 普通薄六角螺母（厚 2 mm）', 5, 2, 2.5, '正六角螺母，对边 5 mm、厚 2 mm；未建螺纹，贯穿孔 Ø2.5 mm。'),
-      addWasher('m3-silicone-washer-6x3x1p5', 'M3×6×1.5 硅胶垫圈', '外径 6 mm、内径 3 mm、厚 1.5 mm，贯穿孔。', 6, 3, 1.5),
-      addWasher('m2-silicone-washer-5x2x1', 'M2×5×1 硅胶垫圈', '外径 5 mm、内径 2 mm、厚 1 mm，贯穿孔。', 5, 2, 1),
-      addWasher('m3-hard-plastic-washer-7x3x1', 'M3×7×1 塑料硬垫片', '外径约 7 mm、内径约 3 mm、厚 1 mm，带贯穿孔。塑料类型未提供，颜色仅作显示示意。', 7, 3, 1, plastic, '塑料（示意）'),
+      addScrew('m3-screw-40', 'M3×40 socket-head cap screw', 40, 'Rod diameter: 3 mm; rod length: 40 mm (excluding the head). Illustrative cylindrical head: approximately 5.5 mm in diameter and 3 mm high. Threads are not modeled, and the hex socket is not detailed.'),
+      addScrew('m3-screw-16', 'M3×16 screw', 16, 'Rod diameter: 3 mm; rod length: 16 mm (excluding the head). Illustrative cylindrical head: approximately 5.5 mm in diameter and 3 mm high, based on the M3×40 example. Threads are not modeled. The actual material and head type were not specified; both are illustrative.'),
+      addScrew('m3-screw-12', 'M3×12 screw', 12, 'Rod diameter: 3 mm; rod length: 12 mm (excluding the head). Illustrative cylindrical head: approximately 5.5 mm in diameter and 3 mm high, based on the M3×40 example. Threads are not modeled. The actual material and head type were not specified; both are illustrative.'),
+      addScrew('m3-screw-20', 'M3×20 screw', 20, 'Rod diameter: 3 mm; rod length: 20 mm (excluding the head). Illustrative cylindrical head: approximately 5.5 mm in diameter and 3 mm high, based on the existing example. Threads are not modeled; the head type is illustrative.'),
+      addScrew('m2p5-screw-16', 'M2.5×16 socket-head cap screw', 16, 'Rod diameter: 2.5 mm; rod length: 16 mm (excluding the head). Illustrative cylindrical head: approximately 4.5 mm in diameter and 2.5 mm high. Threads are not modeled.', 2.5, 4.5, 2.5),
+      addNut('m3-hex-nut-2p5', 'M3 hex nut (2.5 mm thick)', 2.5),
+      addNut('m3-hex-nut-5', 'M3 hex nut (5 mm thick)', 5),
+      addHexBorePart('m2p5-hex-nut-6', 'M2.5 hex standoff / through-hole nut (6 mm high)', 4.7, 6, 2.5, 'Hexagonal through-hole nut/standoff with 4.7 mm across flats and a height of 6 mm. Threads are not modeled; the through-hole is Ø2.5 mm.'),
+      addHexBorePart('m2p5-hex-nut-2', 'M2.5 thin hex nut (2 mm thick)', 5, 2, 2.5, 'Hex nut with 5 mm across flats and a thickness of 2 mm. Threads are not modeled; the through-hole is Ø2.5 mm.'),
+      addWasher('m3-silicone-washer-6x3x1p5', 'M3×6×1.5 silicone washer', 'Outer diameter: 6 mm; inner diameter: 3 mm; thickness: 1.5 mm. Through-hole.', 6, 3, 1.5),
+      addWasher('m2-silicone-washer-5x2x1', 'M2×5×1 silicone washer', 'Outer diameter: 5 mm; inner diameter: 2 mm; thickness: 1 mm. Through-hole.', 5, 2, 1),
+      addWasher('m3-hard-plastic-washer-7x3x1', 'M3×7×1 hard plastic washer', 'Outer diameter: approximately 7 mm; inner diameter: approximately 3 mm; thickness: 1 mm. Has a through-hole. The plastic type was not specified; its color is illustrative.', 7, 3, 1, plastic, 'Plastic (illustrative)'),
       {
         id: 'silicone-damping-grommet',
-        name: '硅胶缓震圈（Ø6/Ø4/内孔Ø3）',
-        desc: '内径 3 mm 贯穿孔；上凸缘外径 6 mm、厚 1.4 mm，腰部外径 4 mm、高 1.5 mm，下凸缘外径 6 mm、厚 1.6 mm，总高 4.5 mm。',
-        material: '硅胶',
+        name: 'Silicone vibration-damping grommet (Ø6 / Ø4 / Ø3 bore)',
+        desc: 'Ø3 mm through-hole. Upper flange: 6 mm outer diameter and 1.4 mm thick. Waist: 4 mm outer diameter and 1.5 mm high. Lower flange: 6 mm outer diameter and 1.6 mm thick. Total height: 4.5 mm.',
+        material: 'Silicone',
         group: grommetGroup
       },
       addHexStandoff()

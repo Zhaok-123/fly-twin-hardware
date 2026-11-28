@@ -1,10 +1,8 @@
 # Architecture — how the prototype works
 
-> **Reference-design document:** the stack, power tree, data links and anti-vibration
-> scheme below are proposals, not verified Airframe #1 behavior. See
-> [as-built status](as-built-status.md) for the current configuration, evidence and open
-> checks. DShot600, bidirectional telemetry and the proposed offboard policy are not
-> verified Airframe #1 features.
+> This page describes the reference design. For Airframe #1's current configuration and
+> open checks, see [as-built status](as-built-status.md); DShot600, bidirectional
+> telemetry and offboard control have not been verified on the aircraft.
 
 This document explains *why* the aircraft is built the way it is. The step-by-step
 build is in [assembly.md](assembly.md); pin-level detail is in [wiring.md](wiring.md).
@@ -63,8 +61,7 @@ Bottom to top:
               Camera in the front camera cage; receiver at the rear
 ```
 
-This reference stack retains a carbon top plate and shows a proposed soft-mount. Check
-[as-built status](as-built-status.md) before applying it to Airframe #1.
+This reference stack retains the carbon top plate and shows proposed soft mounts.
 
 ### Why the flight controller sits above the ESC (and not at the bottom)
 
@@ -81,17 +78,14 @@ It flew, but it is not the reference configuration, for three reasons:
 3. **Reproducibility.** The build is published; someone following the docs must end up
    with the same aircraft.
 
-The reference proposal was to mount the flight controller on a **30.5→20 mm adapter
-plate** above the ESC, with **rubber grommets at the 20×20 holes**. Check
-[as-built status](as-built-status.md) before reproducing this proposal.
+The reference proposal mounts the flight controller above the ESC on a **30.5→20 mm
+adapter plate**, with **rubber grommets at the 20×20 holes**.
 
 ### Why the companion computer is on top and the battery underneath
 
-The Source One V5 is designed for a top-mounted battery. The reference layout places the
-IO board above the center stack, so the battery is shown underneath. On Airframe #1 the
-carbon top plate is reported removed to make way for the V3 carrier; the actual frame and
-carrier fit require a physical check. The battery tray and upper structure are described
-in the [assembly guide](assembly.md).
+The Source One V5 is designed for a top-mounted battery. This layout places the IO board
+above the center stack and the battery underneath; the battery tray and upper structure
+are described in the [assembly guide](assembly.md).
 
 ## 3. Power tree
 
@@ -109,6 +103,8 @@ ESC battery pads (+ low-ESR capacitor soldered at the pads)
                                                           └─ IMX219 camera (via CSI)
 ```
 
+The flight-battery BEC branch is planned and is not installed on Airframe #1.
+
 | Rail | Source | Loads | Budget |
 |------|--------|-------|--------|
 | 4S main | Battery | Motors (hover ~150–200 W), everything else | 1550 mAh × 95C |
@@ -123,9 +119,8 @@ Notes:
   before reflashing, see [px4-firmware-and-params.md](px4-firmware-and-params.md)).
 - The UART link between FC and companion computer shares **ground only** — never connect
   the 5 V pins of the two boards together.
-- Open question: the FC's own 12 V / 2.5 A BEC could replace the external BEC. Not done
-  yet because it has not been verified under combined load; the external BEC keeps the
-  compute rail isolated.
+- The FC's own 12 V / 2.5 A BEC could replace the external BEC, but combined-load
+  operation has not been verified.
 
 ## 4. Data links
 
@@ -149,15 +144,14 @@ The prototype uses three measures:
    notch filter on the gyro (`IMU_GYRO_DNF_EN`).
 3. **Maintenance:** balanced, undamaged props; motor screws with threadlocker.
 
-What we measure and why: every flight's `.ulg` goes to Flight Review (logs.px4.io);
-the *Vibration* and *Actuator* pages and the raw accelerometer/gyro spectra are archived.
+For each flight, archive the `.ulg`, Flight Review's *Vibration* and *Actuator* pages,
+and the raw accelerometer/gyro spectra.
 Two datasets matter:
 
-- **Baseline:** the first flights with the hard-mounted FC (already flown — keep those logs).
-- **Reference:** the same aircraft after the builder-reported mount update; verify the FC's effective isolation before treating it as a vibration baseline.
+- **Baseline:** first flights with the hard-mounted FC.
+- **Reference:** flights after the reported mount update, once the FC's isolation is measured.
 
-The difference between them is the input for the AIO board's IMU island design. Airframe
-#1's current configuration and validation status are in [as-built status](as-built-status.md).
+Compare the two data sets to inform the AIO board's IMU island design.
 
 ## 6. RF and magnetic layout
 
@@ -186,8 +180,8 @@ The difference between them is the input for the AIO board's IMU island design. 
 | Tattu 4S 1550 mAh | 190 | |
 | **All-up weight** | **~670** | |
 
-Expected hover time: ~6–7 minutes. Thrust-to-weight: ~6:1, plenty of margin for
-learned-policy errors. This aircraft is a development platform, not an endurance one.
+Estimated hover time is ~6–7 minutes and estimated thrust-to-weight is ~6:1. Weigh the
+aircraft and validate flight performance before using these estimates for planning.
 
 ## 8. Transition to the AIO carrier board
 

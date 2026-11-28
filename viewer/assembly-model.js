@@ -177,7 +177,7 @@
     function id2(prefix, i) { return prefix + '-' + String(i + 1).padStart(2, '0'); }
     function locLabel(i) { return ['front-left', 'front-right', 'rear-left', 'rear-right'][i]; }
 
-    const frameDesc = '简化的 Source One V5.1 Quad X 机架示意。机臂末端外轮廓对角线保持270 mm；电机与真实V7脚沿机臂径向内移8 mm。每个机臂按脚底座朝外的两个Ø3.2 mm安装位开孔，孔边距约0.74 mm，仅作示意，须实物确认。下板为167×30 mm，上板约110×30 mm；30.5×30.5 mm外孔位置在30 mm板宽外0.25 mm，按开边缺口表示。机架细节需实物测量。';
+    const frameDesc = 'Simplified Source One V5.1 Quad X frame illustration. The diagonal across the outer arm tips is 270 mm; the motors and actual V7 feet are moved 8 mm inward along each arm. Each arm has two Ø3.2 mm mounting holes on the outward side of the foot base. The edge margin is approximately 0.74 mm; this is illustrative and must be checked against the physical parts. The lower plate is 167 × 30 mm and the estimated upper plate is approximately 110 × 30 mm. The 30.5 × 30.5 mm outer holes extend 0.25 mm beyond the 30 mm plate width and are shown as open-edge notches. Measure the physical frame to confirm its details.';
     add('frame-carbon-lower-plate', 'Source One V5.1 lower carbon plate', 1, frameDesc, [0, 0, 0], function (g) {
       framePlate(g, 167, 3, -5, M.carbon);
     }, { material: 'Carbon fiber (schematic)' });
@@ -193,7 +193,7 @@
           frameArm(g, Math.sign(x) * 10, Math.sign(z) * 10, x, z, armWidth, 6, -3, M.carbon, motorHoles);
         }, { material: 'Carbon fiber (schematic)' });
     }
-    const motorDesc = 'XING2 2207 1855KV示意电机，底座下表面Y=0并贴机臂上表面；电机中心沿机臂向内8 mm。机身、底座和轴为近似外形。';
+    const motorDesc = 'Illustrative XING2 2207 1855KV motor. The bottom of the base is at Y=0 and sits against the top of the arm; the motor center is shifted 8 mm inward along the arm. The motor body, base, and shaft are approximate shapes.';
     for (let i = 0; i < motorPoints.length; i++) {
       const x = motorPoints[i][0], z = motorPoints[i][1];
       add(id2('motor', i), 'XING2 2207 1855KV motor ' + (i + 1) + ' (' + locLabel(i) + ')', 2,
@@ -204,7 +204,7 @@
         }, { material: 'Copper, aluminum and black anodized finish (schematic)' });
     }
 
-    const escDesc = 'MicoAir 50A ESC示意板，板厚3 mm，四个30.5×30.5 mm外孔与四个20×20 mm内孔均为通孔。外侧四处由M3×40长螺钉支撑；机臂上方依次为4颗厚2.5 mm的M3螺母、4个M3硅胶垫圈和ESC，尾端朝-Z。示意板底面Y=4 mm。电源线与电容仅为示意，不建螺纹。';
+    const escDesc = 'Illustrative MicoAir 50A ESC board, 3 mm thick, with through-holes on both the 30.5 × 30.5 mm outer pattern and the 20 × 20 mm inner pattern. Four M3×40 long screws support the outer mounting points. Above the arms, each mounting point has an M3 nut (2.5 mm thick) and an M3 silicone washer, followed by the ESC. The rear edge faces -Z. The illustrative board bottom is at Y=4 mm. The power lead and capacitor are illustrative only; threads are not modeled.';
     add('esc-pcb', 'MicoAir 50A ESC lower PCB', 5, escDesc, [0, 14, 0], function (g) {
       const shape = new THREE.Shape();
       shape.moveTo(-22, -21.75);
@@ -249,14 +249,14 @@
       }, { material: 'Capacitor can (schematic)' });
 
     add('esc-fc-adapter', 'Actual 40 × 40 × 1.5 mm FC/ESC adapter (8 holes)', 8,
-      '真实05_esc_plate_40x40x1p5_R1 STL，保留原几何与孔位；底面Y=16.6 mm、顶面Y=18.1 mm。四个外孔装入腰部Ø4×1.5 mm的硅胶缓震圈，四个内孔与飞控M3×12螺钉对齐。',
+      'Actual 05_esc_plate_40x40x1p5_R1 STL; its original geometry and hole positions are preserved. The bottom is at Y=16.6 mm and the top at Y=18.1 mm. The four outer holes hold silicone vibration-damping grommets with Ø4 × 1.5 mm waists; the four inner holes align with the flight-controller M3×12 screws.',
       [0, 48, 0], function (g) {
         printed(g, '05_esc_plate_40x40x1p5_outer4p1_R1.stl', M.print, 0, Z.adapterTop, 0, 'horizontal');
       }, { file: '05_esc_plate_40x40x1p5_outer4p1_R1.stl', material: 'Printed material not verified' });
 
     const boardY = Z.adapterTop + 4.7;
     add('flight-controller-pcb', 'MicoAir NxtPX4v2 flight controller PCB', 8,
-      'MicoAir NxtPX4v2飞控示意板，32×27×2 mm，四个Ø3 mm内孔位于20×20 mm中心方形。板底Y=21.8 mm，与适配板顶面Y=18.1 mm相隔3.7 mm；4颗M3×12螺钉从上向下穿入，板上有4个M3垫圈、适配板下有4颗M3厚2.5 mm螺母。',
+      'Illustrative MicoAir NxtPX4v2 flight-controller board, 32 × 27 × 2 mm, with four Ø3 mm holes on a centered 20 × 20 mm square. The board bottom is at Y=21.8 mm, 3.7 mm above the adapter plate top at Y=18.1 mm. Four M3×12 screws pass down from above; four M3 washers sit on the board and four M3 nuts, 2.5 mm thick, sit below the adapter plate.',
       [0, 65, 0], function (g) {
         const outline = new THREE.Shape();
         outline.moveTo(-16, -13.5);
@@ -283,8 +283,8 @@
       'Schematic black connector on the board’s +X edge; its position and orientation are illustrative.', [0, 65, 0], function (g) {
         box(g, 4, 1.5, 8, M.black, 14, boardY + 1.5, 0);
       }, { material: 'Black polymer (schematic)' });
-    add('flight-controller-direction-mark', '飞控前向标记（+Z）', 8,
-      '白色箭头表示飞控前向+Z，与机架前方一致。', [0, 65, 0], function (g) {
+    add('flight-controller-direction-mark', 'Flight controller forward marker (+Z)', 8,
+      'The white arrow marks the flight controller’s forward direction (+Z), aligned with the front of the frame.', [0, 65, 0], function (g) {
         const arrow = new THREE.Shape();
         arrow.moveTo(0, -5); arrow.lineTo(-3, 2); arrow.lineTo(-1, 2); arrow.lineTo(-1, 7);
         arrow.lineTo(1, 7); arrow.lineTo(1, 2); arrow.lineTo(3, 2); arrow.closePath();
@@ -294,14 +294,14 @@
         g.add(mesh);
       }, { material: 'White marking (schematic)' });
     add('carrier-plate-v3', 'Actual 90 × 137 × 3 mm carrier plate (V3)', 10,
-      '真实V3载板STL保持原几何、原点和孔位；底面Y=31.5 mm、顶面Y=34.5 mm，落在四个等高M3单头六角柱上。前方+Z为排线孔，后方-Z为GPS安装孔。',
+      'Actual V3 carrier-plate STL; its original geometry, origin, and hole positions are preserved. The bottom is at Y=31.5 mm and the top at Y=34.5 mm, resting on four M3 single-ended hex standoffs of equal height. The cable opening faces forward (+Z), and the GPS mounting holes face rearward (-Z).',
       [0, 102, 0], function (g) {
         printed(g, '01_carrier_adapter_plate_V3.stl', M.print, 0, (Z.carrierBottom + Z.carrierTop) / 2, 0, 'horizontal');
       }, { file: '01_carrier_adapter_plate_V3.stl', material: 'Printed material not verified' });
 
-    const ioDesc = 'ArmSoM CM5-IO底板与Banana Pi BPI-CM5 Pro核心板为示意，实物分别购买。IO底板以V3载板现有四孔坐标定位，先由4颗M2.5×16螺钉从下向上固定四个6 mm高M2.5六角柱，再放置IO板并用4颗薄螺母固定。四个M2垫圈的内孔按弹性撑开至2.5 mm示意，外径保持5 mm。';
+    const ioDesc = 'The ArmSoM CM5-IO baseboard and Banana Pi BPI-CM5 Pro compute module are illustrative; purchase the physical components separately. The IO board uses the four existing V3 carrier-plate hole coordinates. First, four M2.5×16 screws pass up from below to secure four 6 mm-high M2.5 hex standoffs. Place the IO board on the standoffs and secure it with four thin nuts. The four M2 washers are shown elastically expanded to 2.5 mm inner diameter while retaining their 5 mm outer diameter.';
     add('io-carrier-outline', 'ArmSoM CM5 IO main board', 12,
-      '80×100 mm ArmSoM CM5 IO主板示意，四个Ø3.3 mm安装孔按IO_HOLES原世界坐标与V3载板孔对齐。板底位于Y=41.5 mm。', [0, 145, 0], function (g) {
+      'Illustrative 80 × 100 mm ArmSoM CM5 IO board, with four Ø3.3 mm mounting holes aligned to the V3 carrier plate using the original IO_HOLES world coordinates. The board bottom is at Y=41.5 mm.', [0, 145, 0], function (g) {
         g.position.set(IO_BOARD_CENTER[0], 0, IO_BOARD_CENTER[1]);
         const outline = new THREE.Shape();
         outline.moveTo(-40, -50); outline.lineTo(40, -50); outline.lineTo(40, 50); outline.lineTo(-40, 50); outline.closePath();
@@ -349,7 +349,7 @@
       }, { material: 'Black polymer (schematic)' });
 
     add('gps-mast-v2', 'Actual GPS mast V2', 13,
-      '真实GPS mast STL保留原几何，安装在载板后侧-Z；两颗M3×12螺钉头在GPS底座上方，螺钉向下穿过M3×7×1硬垫片、mast底座和载板，载板下方由M3螺母固定。',
+      'Actual GPS mast STL with its original geometry preserved, mounted on the rear side of the carrier plate (-Z). The heads of two M3×12 screws sit above the GPS base. Each screw passes down through an M3×7×1 hard washer, the mast base, and the carrier plate, then is secured with an M3 nut below the plate.',
       [-40, 55, -50], function (g) {
         printed(g, '03_gps_mast_v2_rounded_rect.stl', M.tpu, 0, Z.carrierTop, -65, 'upright');
       }, { file: '03_gps_mast_v2_rounded_rect.stl', material: 'Printed material not verified' });
@@ -362,7 +362,7 @@
         box(g, 25, 1, 31.5, M.wire, 0, Z.carrierTop + 41.5, -65);
       }, { material: 'Illustrative electronic detail' });
     add('gps-direction-mark', 'GPS forward direction mark', 13,
-      '白色箭头表示GPS前向+Z，与飞控和机架前方一致。', [-40, 55, -50], function (g) {
+      'The white arrow marks the GPS forward direction (+Z), aligned with the flight controller and the front of the frame.', [-40, 55, -50], function (g) {
         const arrow = new THREE.Shape();
         arrow.moveTo(0, -5); arrow.lineTo(-3, 2); arrow.lineTo(-1, 2); arrow.lineTo(-1, 7);
         arrow.lineTo(1, 7); arrow.lineTo(1, 2); arrow.lineTo(3, 2); arrow.closePath();
@@ -372,7 +372,7 @@
         g.add(mesh);
       }, { material: 'White marking (schematic)' });
 
-    const cameraDesc = '前向+Z的可调相机支架与IMX219示意组件，保持原有支架、镜头和排线位置；铰链角度与排线路径仅作示意。';
+    const cameraDesc = 'Illustrative adjustable camera bracket and IMX219 assembly facing forward (+Z), with the existing bracket, lens, and cable positions preserved. The hinge angle and cable route are illustrative only.';
     add('camera-bracket-base', 'Camera bracket base plate', 14, cameraDesc, [0, 0, 60], function (g) {
       box(g, 24, 3, 25, M.alu, 0, -1, 79);
     }, { material: 'Aluminum (schematic)' });
@@ -405,25 +405,25 @@
       }, { material: 'Flexible circuit (schematic)' });
 
     add('battery-tray', 'Actual underslung battery tray (empty)', 3,
-      '真实04_battery_tray_TPU STL，不改原网格，开口朝下。底板厚3 mm，贴机架底面Y≈-6.5，底板下表面Y≈-9.5；托盘保持空置。',
+      'Actual 04_battery_tray_TPU STL with the original mesh unchanged and the opening facing down. The 3 mm base plate sits against the frame bottom at Y≈-6.5; its lower surface is at Y≈-9.5. The tray is shown empty.',
       [0, -55, 0], function (g) {
         printed(g, '04_battery_tray_TPU.stl', M.tpu, 0, Z.trayTop, 0, 'horizontal');
       }, { file: '04_battery_tray_TPU.stl', material: 'Printed material not verified' });
     add('battery-strap', 'Battery tray retaining strap', 3,
-      '空托盘下方的示意固定带。', [0, -55, 0], function (g) {
+      'Illustrative retaining strap below the empty tray.', [0, -55, 0], function (g) {
         box(g, 47, 2.3, 10, M.black, 0, -23.5, 0);
       }, { material: 'Black polymer (schematic)' });
     for (let i = 0; i < motorPoints.length; i++) {
       const x = motorPoints[i][0], z = motorPoints[i][1];
       const toward = Math.atan2(-x, -z);
       add(id2('landing-leg-v7', i), 'Actual V7 landing leg ' + (i + 1) + ' (' + locLabel(i) + ')', 2,
-        '真实V7脚STL实例，高80 mm，保留原几何；脚顶面移至Y=-6与机臂底面贴合，脚中心与电机同样沿机臂内移8 mm。',
+        'Actual V7 foot STL instance, 80 mm high, with its original geometry preserved. The top of the foot is positioned at Y=-6 against the underside of the arm; like the motor, its center is shifted 8 mm inward along the arm.',
         [0, -30, 0], function (g) {
           const host = printed(g, 'landing_foot_v7.stl', M.tpu, x, -86, z, 'upright');
           host.rotation.y = toward + Math.PI / 2;
         }, { file: 'landing_foot_v7.stl', material: 'Printed material not verified' });
     }
-    const propDesc = 'Gemfan 51466示意桨叶，中心随电机沿机臂内移8 mm。桨叶仅供展示；台架、固件、接线和电机转向检查时应拆下，转向未验证。';
+    const propDesc = 'Illustrative Gemfan 51466 propeller. Its center is shifted 8 mm inward along the arm with the motor. The propeller is for display only and should be removed during bench, firmware, wiring, and motor-direction checks. Motor direction has not been verified.';
     for (let i = 0; i < motorPoints.length; i++) {
       const x = motorPoints[i][0], z = motorPoints[i][1];
       add(id2('propeller', i), 'Gemfan 51466 propeller ' + (i + 1) + ' (' + locLabel(i) + ')', 15,
@@ -440,78 +440,78 @@
     }
 
     const steps = [
-      ['组装碳纤维机架', '对齐上下板和4根机臂；机架外轮廓对角线保持270 mm，前方为+Z。'],
-      ['安装电机与真实V7脚', '4台电机与脚沿各机臂向内8 mm；脚顶Y=-6贴机臂底面。每脚取朝外的2个孔，8颗M3×16从脚底向上穿过脚和机臂进入电机底座。'],
-      ['安装空电池托盘与长螺钉', '托盘真实STL底板贴机架底Y≈-6.5，底面Y≈-9.5。4颗M3×20从托盘下方穿20×20内圈孔向上；4颗M3×40从托盘底面穿30.5×30.5外孔向上，杆端到Y≈30.5。'],
-      ['安装ESC下方支撑', '在4根外侧M3×40螺杆上各装1颗厚2.5 mm的M3螺母，再装1个M3硅胶垫圈；垫圈顶面Y=4，供ESC落座。'],
-      ['放置ESC', '将MicoAir 50A ESC落在4个硅胶垫圈上，尾端朝-Z；板厚3 mm，底面Y=4。'],
-      ['安装ESC上方垫圈和锁紧螺母', '4根外螺杆上各连续放2个M3×6×1.5硅胶垫圈，共8个；再在每处装1颗厚5 mm的M3螺母压住垫圈，螺母顶面Y=15，位于适配板及缓震圈下方。'],
-      ['侧边预装飞控叠层', '将实际40×40×1.5 mm适配板、飞控、4个缓震圈、4颗M3×12、4个M3垫圈和4颗厚2.5 mm螺母在机架右侧预装；仅此步将预装件偏移展示。'],
-      ['将飞控叠层装到长螺杆上', '预装件沿4根外侧M3×40螺杆放下，缓震圈对准外孔；面向机头（+Z）时左侧（+X）两根外杆各加1颗厚2.5 mm的M3螺母，右侧不加。飞控内圈M3×12由上向下。'],
-      ['安装4根单头六角柱', '将M3单头柱盲孔朝下套入外侧M3×40杆端4 mm；4柱等高，柱底约Y=26.5、顶面Y=31.5。'],
-      ['安装V3载板', '真实90×137×3 mm载板落在四柱顶面；前方+Z为排线孔，后方-Z为GPS孔。载板底Y=31.5、顶Y=34.5，四颗厚2.5 mm的M3螺母从上方锁紧单头柱。'],
-      ['安装IO板支撑螺钉与垫柱', '按IO_HOLES四个原坐标，4颗M2.5×16从载板下方朝上穿孔；板下各放1个原M2×5×1硅胶垫圈（内孔弹性撑至2.5 mm），板上装4个高6 mm的M2.5六角通孔柱和4个撑开垫圈。'],
-      ['固定ArmSoM CM5 IO主板', '将80×100 mm示意主板落在四个上垫圈上，确认左侧-X端口朝向；板上用4颗M2.5薄螺母固定。'],
-      ['安装GPS与真实mast', '在载板后侧-Z安装真实GPS mast；用2颗M3×12、2片M3×7×1塑料硬垫片和2颗厚2.5 mm的M3螺母固定。GPS箭头朝+Z。'],
-      ['安装前向相机', '按原位置安装可调支架、IMX219相机和排线；相机位于+Z前端，铰链角度与排线路径为示意。'],
-      ['最后安装螺旋桨', '安装4片Gemfan 51466示意桨。台架、固件、接线和电机转向检查前拆下螺旋桨。']
+      ['Assemble the carbon-fiber frame', 'Align the upper and lower plates with the four arms. The diagonal across the outer frame outline is 270 mm, with the front facing +Z.'],
+      ['Install the motors and actual V7 feet', 'Shift the four motors and feet 8 mm inward along their arms. The top of each foot sits at Y=-6 against the underside of the arm. Use the two outward-facing holes on each foot; pass eight M3×16 screws up through the feet and arms into the motor bases.'],
+      ['Install the empty battery tray and long screws', 'The base of the actual tray STL sits against the frame bottom at Y≈-6.5, with its lower surface at Y≈-9.5. Pass four M3×20 screws up through the 20 × 20 mm inner pattern from below the tray. Pass four M3×40 screws up through the 30.5 × 30.5 mm outer pattern from the tray base; the rod ends reach Y≈30.5.'],
+      ['Install the ESC lower supports', 'Fit one M3 nut, 2.5 mm thick, on each of the four outer M3×40 rods, followed by one M3 silicone washer. The washer tops are at Y=4 to support the ESC.'],
+      ['Place the ESC', 'Set the MicoAir 50A ESC on the four silicone washers with its rear edge facing -Z. The board is 3 mm thick, with its bottom at Y=4.'],
+      ['Install the ESC upper washers and lock nuts', 'Stack two M3×6×1.5 silicone washers on each outer rod above the ESC (eight washers total). Add one M3 nut, 5 mm thick, at each position to hold the washers. The nut tops are at Y=15, below the adapter plate and vibration-damping grommets.'],
+      ['Preassemble the flight-controller stack beside the frame', 'Preassemble the actual 40 × 40 × 1.5 mm adapter plate, flight controller, four grommets, four M3×12 screws, four M3 washers, and four M3 nuts (2.5 mm thick) to the right of the frame. This step alone shows the assembly offset from its installed position.'],
+      ['Fit the flight-controller stack onto the long screws', 'Lower the preassembled stack along the four outer M3×40 rods, aligning the grommets with the outer holes. When facing the front (+Z), fit one M3 nut, 2.5 mm thick, onto each of the two left-side (+X) outer rods; leave the right side without these nuts. Insert the flight-controller’s inner M3×12 screws from above.'],
+      ['Install four single-ended hex standoffs', 'Fit the M3 single-ended standoffs over the outer M3×40 rod ends, with the blind bores facing down and overlapping each rod by 4 mm. All four standoffs are the same height, with their bases near Y=26.5 and tops at Y=31.5.'],
+      ['Install the V3 carrier plate', 'Place the actual 90 × 137 × 3 mm carrier plate on the four standoff tops. The cable opening faces forward (+Z), and the GPS holes face rearward (-Z). The plate bottom is at Y=31.5 and the top at Y=34.5. Secure the standoffs from above with four M3 nuts, each 2.5 mm thick.'],
+      ['Install the IO-board mounting screws and standoffs', 'Using the original four IO_HOLES coordinates, pass four M2.5×16 screws upward through the carrier plate from below. Add one original M2×5×1 silicone washer under each hole (shown elastically expanded to a 2.5 mm bore), then fit four 6 mm-high M2.5 hex through-hole standoffs and four expanded washers above the plate.'],
+      ['Secure the ArmSoM CM5 IO board', 'Lower the illustrative 80 × 100 mm board onto the four upper washers, with its ports facing the left side (-X). Secure it from above with four M2.5 thin nuts.'],
+      ['Install the GPS and actual mast', 'Mount the actual GPS mast at the rear of the carrier plate (-Z). Secure it with two M3×12 screws, two M3×7×1 hard plastic washers, and two M3 nuts, each 2.5 mm thick. The GPS arrow faces +Z.'],
+      ['Install the forward-facing camera', 'Install the adjustable bracket, IMX219 camera, and cable in their shown positions. The camera sits at the front (+Z); the hinge angle and cable route are illustrative.'],
+      ['Install the propellers last', 'Fit four illustrative Gemfan 51466 propellers. Remove them before bench, firmware, wiring, and motor-direction checks.']
     ];
 
     const assemblyDefinitions = [
       {
-        id: 'frame', name: 'Source One V5.1碳纤维机架', step: 1, explode: [0, 0, 0],
-        desc: '包含下板、估算的上板和4根16 mm宽机臂。270 mm指相对机臂末端外轮廓对角线；电机及脚中心沿臂内移8 mm，机臂外轮廓不变。电机脚孔附近余边约0.74 mm，仅作示意，需实测。30.5×30.5 mm外孔因板宽仅30 mm而画成开边缺口。'
+        id: 'frame', name: 'Source One V5.1 carbon-fiber frame', step: 1, explode: [0, 0, 0],
+        desc: 'Includes the lower plate, estimated upper plate, and four 16 mm-wide arms. The 270 mm dimension is the diagonal across the outer arm-tip outline; motor and foot centers are shifted 8 mm inward along the arms, without changing the arm outline. The remaining edge near the motor-foot holes is approximately 0.74 mm; this is illustrative and must be measured on the physical parts. The 30.5 × 30.5 mm outer holes are shown as open-edge notches because the plate is only 30 mm wide.'
       },
       {
-        id: 'motors', name: 'XING2 2207 1855KV电机×4', step: 2, explode: [0, 0, 0],
-        desc: '四台示意电机位于机臂末端内侧8 mm；底座下表面Y=0并贴机臂上表面。电机脚螺钉为独立实例。'
+        id: 'motors', name: 'XING2 2207 1855KV motors ×4', step: 2, explode: [0, 0, 0],
+        desc: 'Four illustrative motors sit 8 mm inward from the arm tips. The bottom of each base is at Y=0 against the top of the arm. Motor-foot screws are shown as separate parts.'
       },
       {
         id: 'esc', name: 'MicoAir 50A ESC', step: 5, explode: [0, 14, 0],
-        desc: '约44×43.5×3 mm示意板，保留30.5 mm外孔和20 mm内孔；尾端朝-Z。四颗2.5 mm M3螺母及硅胶垫圈在板下；板上每根外杆有两片硅胶垫圈和一颗厚5 mm的M3螺母，均为独立硬件实例。'
+        desc: 'Illustrative board, approximately 44 × 43.5 × 3 mm, with 30.5 mm outer holes and 20 mm inner holes; its rear edge faces -Z. Four 2.5 mm M3 nuts and silicone washers sit below the board. Above it, each outer rod has two silicone washers and one M3 nut, 5 mm thick. All are separate hardware instances.'
       },
       {
-        id: 'fc-adapter', name: '真实40×40×1.5 mm飞控适配板', step: 8, explode: [0, 48, 0],
-        desc: '真实STL保持原几何，底面Y=16.6 mm、顶面Y=18.1 mm；外4孔安装硅胶缓震圈，内4孔固定飞控。第7步与飞控和五金在机架右侧预装展示。',
+        id: 'fc-adapter', name: 'Actual 40 × 40 × 1.5 mm flight-controller adapter plate', step: 8, explode: [0, 48, 0],
+        desc: 'The actual STL retains its original geometry. The bottom is at Y=16.6 mm and the top at Y=18.1 mm. Silicone vibration-damping grommets fit in the four outer holes; the four inner holes secure the flight controller. In step 7, the plate is shown preassembled with the flight controller and hardware beside the frame.',
         staging: { start: 14, end: 19, offset: [110, 0, 0] },
         file: '05_esc_plate_40x40x1p5_outer4p1_R1.stl'
       },
       {
-        id: 'fc', name: 'MicoAir NxtPX4v2飞控', step: 8, explode: [0, 65, 0],
-        desc: '32×27×2 mm示意飞控板底面Y=21.8 mm，与适配板顶面Y=18.1 mm相隔3.7 mm；四颗M3×12由上向下穿20×20 mm内孔；4个垫圈在板上、4颗M3厚2.5 mm螺母在适配板下。板上白箭头指向+Z。第7步侧边预装。',
+        id: 'fc', name: 'MicoAir NxtPX4v2 flight controller', step: 8, explode: [0, 65, 0],
+        desc: 'Illustrative 32 × 27 × 2 mm flight-controller board. Its bottom is at Y=21.8 mm, 3.7 mm above the adapter plate top at Y=18.1 mm. Four M3×12 screws pass down through the 20 × 20 mm inner pattern. Four washers sit on the board and four M3 nuts, 2.5 mm thick, sit below the adapter plate. The white arrow points toward +Z. Shown preassembled beside the frame in step 7.',
         staging: { start: 14, end: 19, offset: [110, 0, 0] }
       },
       {
-        id: 'carrier', name: '真实V3载板90×137×3 mm', step: 10, explode: [0, 102, 0],
-        desc: '真实载板STL保持原几何和孔位，底面Y=31.5、顶面Y=34.5，落在4个单头六角柱顶面；+Z前侧为排线孔，-Z后侧为GPS孔。',
+        id: 'carrier', name: 'Actual V3 carrier plate, 90 × 137 × 3 mm', step: 10, explode: [0, 102, 0],
+        desc: 'The actual carrier-plate STL retains its original geometry and hole positions. The bottom is at Y=31.5 and the top at Y=34.5, resting on four single-ended hex standoffs. The cable opening is at the front (+Z), and the GPS holes are at the rear (-Z).',
         file: '01_carrier_adapter_plate_V3.stl'
       },
       {
-        id: 'cm5-io', name: 'ArmSoM CM5-IO底板与BPI-CM5 Pro核心板', step: 12, explode: [0, 145, 0],
-        desc: '80×100 mm IO主板按IO_HOLES世界坐标对齐载板孔，板底Y=41.5 mm，落在4个6 mm高M2.5六角通孔柱及上垫圈上；4颗M2.5×16从下向上固定，板上由4颗薄螺母锁紧。'
+        id: 'cm5-io', name: 'ArmSoM CM5-IO baseboard and BPI-CM5 Pro compute module', step: 12, explode: [0, 145, 0],
+        desc: 'Illustrative 80 × 100 mm IO board aligned to the carrier-plate holes using IO_HOLES world coordinates. The board bottom is at Y=41.5 mm, resting on four 6 mm-high M2.5 hex through-hole standoffs and upper washers. Four M2.5×16 screws secure it from below, and four thin nuts secure it from above.'
       },
       {
-        id: 'gps', name: '真实GPS mast与GPS模块', step: 13, explode: [-40, 55, -50],
-        desc: '真实GPS mast STL保留原几何，位于载板后侧-Z；两颗M3×12、硬塑料垫片和螺母独立显示。GPS与飞控箭头均朝+Z。',
+        id: 'gps', name: 'Actual GPS mast and GPS module', step: 13, explode: [-40, 55, -50],
+        desc: 'The actual GPS mast STL retains its original geometry and sits at the rear of the carrier plate (-Z). Two M3×12 screws, hard plastic washers, and nuts are shown separately. The GPS and flight-controller arrows both point toward +Z.',
         file: '03_gps_mast_v2_rounded_rect.stl'
       },
       {
-        id: 'camera', name: '前向相机支架与IMX219', step: 14, explode: [0, 0, 60],
-        desc: '保留原示意支架、铰链、白色垫套、相机板、镜头与排线位置，安装在+Z前端；铰链角度和排线路径仅作示意。'
+        id: 'camera', name: 'Forward-facing camera bracket and IMX219', step: 14, explode: [0, 0, 60],
+        desc: 'The illustrative bracket, hinge, white sleeves, camera board, lens, and cable retain their shown positions at the front (+Z). The hinge angle and cable route are illustrative only.'
       },
       {
-        id: 'battery-tray', name: '真实下挂电池托盘（空）', step: 3, explode: [0, -55, 0],
-        desc: '真实托盘STL与示意固定带；3 mm底板接触机架底面Y≈-6.5，板底Y≈-9.5。空托盘，不包含飞行电池。',
+        id: 'battery-tray', name: 'Actual underslung battery tray (empty)', step: 3, explode: [0, -55, 0],
+        desc: 'Actual tray STL with an illustrative retaining strap. The 3 mm base plate contacts the frame bottom at Y≈-6.5, with its lower surface at Y≈-9.5. The tray is empty; no flight battery is included.',
         file: '04_battery_tray_TPU.stl'
       },
       {
-        id: 'legs', name: '真实V7着陆脚×4', step: 2, explode: [0, -30, 0],
-        desc: '四个真实V7 STL实例保持原几何，脚顶面Y=-6贴机臂底面；相对机臂外端内移8 mm。每个脚的两颗M3×16向上穿入电机底座。',
+        id: 'legs', name: 'Actual V7 landing feet ×4', step: 2, explode: [0, -30, 0],
+        desc: 'Four actual V7 STL instances retain their original geometry. The top of each foot is at Y=-6 against the underside of the arm, shifted 8 mm inward from the arm tip. Two M3×16 screws per foot pass upward into the motor base.',
         file: 'landing_foot_v7.stl'
       },
       {
-        id: 'props', name: 'Gemfan 51466示意桨×4', step: 15, explode: [0, 35, 0],
-        desc: '四片桨中心随电机内移8 mm，仅作外观示意；台架、接线和电机转向检查前应拆下。'
+        id: 'props', name: 'Illustrative Gemfan 51466 propellers ×4', step: 15, explode: [0, 35, 0],
+        desc: 'The four propeller centers shift inward 8 mm with the motors. These are for appearance only; remove them before bench, wiring, and motor-direction checks.'
       }
     ];
 
@@ -630,7 +630,7 @@
 
     const outerMounts = [[-15.25, 15.25], [15.25, 15.25], [-15.25, -15.25], [15.25, -15.25]];
     const innerMounts = [[-10, -10], [-10, 10], [10, -10], [10, 10]];
-    const cornerNames = ['前左', '前右', '后左', '后右'];
+    const cornerNames = ['Front-left', 'Front-right', 'Rear-left', 'Rear-right'];
     const staged = { start: 14, end: 19, offset: stagedOffset };
 
     for (let i = 0; i < motorPoints.length; i++) {
@@ -638,85 +638,85 @@
       const outwardHoles = [[x + Math.sign(footprint[i][0]) * 8, z], [x, z + Math.sign(footprint[i][1]) * 8]];
       for (let j = 0; j < outwardHoles.length; j++) {
         addScrew('m3-screw-16', 'motor-foot-m3x16-' + String(i + 1) + '-' + String(j + 1),
-          cornerNames[i] + '电机脚M3×16螺钉' + (j + 1), 2, outwardHoles[j][0], outwardHoles[j][1], -11, true,
-          { explodeY: -7, desc: 'M3×16螺钉由脚底向上穿过真实脚和机臂，进入电机底座；位置为每脚朝臂外侧的两个孔之一。未建螺纹。' });
+          cornerNames[i] + ' motor-foot M3×16 screw ' + (j + 1), 2, outwardHoles[j][0], outwardHoles[j][1], -11, true,
+          { explodeY: -7, desc: 'M3×16 screw passes upward from below through the actual foot and arm into the motor base. It occupies one of the two outward-facing holes on each foot. Threads are not modeled.' });
       }
     }
 
     for (let i = 0; i < innerMounts.length; i++) {
-      addScrew('m3-screw-20', 'battery-inner-m3x20-' + String(i + 1), '电池托盘内圈M3×20螺钉' + (i + 1),
+      addScrew('m3-screw-20', 'battery-inner-m3x20-' + String(i + 1), 'Battery tray inner M3×20 screw ' + (i + 1),
         3, innerMounts[i][0], innerMounts[i][1], Z.trayBottom, true,
-        { explodeY: -8, desc: 'M3×20螺钉从托盘底面向上，穿过20×20 mm内圈安装位；杆长20 mm，不含头。未建螺纹。' });
-      addScrew('m3-screw-40', 'battery-outer-m3x40-' + String(i + 1), '电池托盘外圈M3×40螺钉' + (i + 1),
+        { explodeY: -8, desc: 'M3×20 screw passes upward from the tray bottom through the 20 × 20 mm inner mounting pattern. Rod length is 20 mm, excluding the head. Threads are not modeled.' });
+      addScrew('m3-screw-40', 'battery-outer-m3x40-' + String(i + 1), 'Battery tray outer M3×40 screw ' + (i + 1),
         3, outerMounts[i][0], outerMounts[i][1], Z.trayBottom, true,
-        { explodeY: -12, desc: 'M3×40长螺钉从托盘底面向上穿过托盘与机架30.5×30.5 mm外孔，杆端Y≈30.5 mm；后续套入单头六角柱。未建螺纹。' });
+        { explodeY: -12, desc: 'M3×40 long screw passes upward from the tray bottom through the tray and the frame’s 30.5 × 30.5 mm outer hole pattern. The rod end is at Y≈30.5 mm and will receive a single-ended hex standoff. Threads are not modeled.' });
     }
 
     for (let i = 0; i < outerMounts.length; i++) {
       const x = outerMounts[i][0], z = outerMounts[i][1];
-      addHardware('m3-hex-nut-2p5', 'esc-lower-m3-nut-' + String(i + 1), cornerNames[i] + 'ESC下方M3薄螺母', 4,
-        x, 1.25, z, { explodeY: -5, desc: '厚2.5 mm的M3螺母，位于机臂上方、ESC下支撑处。未建螺纹。' });
-      addHardware('m3-silicone-washer-6x3x1p5', 'esc-lower-m3-washer-' + String(i + 1), cornerNames[i] + 'ESC下方M3硅胶垫圈', 4,
-        x, 3.25, z, { explodeY: -7, desc: 'M3×6×1.5硅胶垫圈，位于下支撑螺母与ESC之间。' });
-      addHardware('m3-silicone-washer-6x3x1p5', 'esc-upper-m3-washer-a-' + String(i + 1), cornerNames[i] + 'ESC上方M3硅胶垫圈', 6,
-        x, 7.75, z, { explodeY: 8, desc: 'M3×6×1.5硅胶垫圈，第一层位于ESC上表面Y=7 mm。' });
-      addHardware('silicone-damping-grommet', 'fc-adapter-grommet-' + String(i + 1), cornerNames[i] + '适配板硅胶缓震圈', 8,
+      addHardware('m3-hex-nut-2p5', 'esc-lower-m3-nut-' + String(i + 1), cornerNames[i] + ' ESC lower M3 thin nut', 4,
+        x, 1.25, z, { explodeY: -5, desc: 'M3 nut, 2.5 mm thick, above the arm at the lower ESC support. Threads are not modeled.' });
+      addHardware('m3-silicone-washer-6x3x1p5', 'esc-lower-m3-washer-' + String(i + 1), cornerNames[i] + ' ESC lower M3 silicone washer', 4,
+        x, 3.25, z, { explodeY: -7, desc: 'M3×6×1.5 silicone washer between the lower support nut and the ESC.' });
+      addHardware('m3-silicone-washer-6x3x1p5', 'esc-upper-m3-washer-a-' + String(i + 1), cornerNames[i] + ' ESC upper M3 silicone washer', 6,
+        x, 7.75, z, { explodeY: 8, desc: 'First M3×6×1.5 silicone washer layer, on the ESC top at Y=7 mm.' });
+      addHardware('silicone-damping-grommet', 'fc-adapter-grommet-' + String(i + 1), cornerNames[i] + ' adapter-plate silicone vibration-damping grommet', 8,
         x, Z.adapterBottom + 0.65, z, { explodeY: 10, staging: staged,
-          desc: '硅胶缓震圈腰部Ø4 mm、高1.5 mm，嵌入40×40×1.5 mm适配板的Ø4.1 mm外孔；上下凸缘夹持板面。' });
-      addHardware('m3-silicone-washer-6x3x1p5', 'esc-upper-m3-washer-b-' + String(i + 1), cornerNames[i] + 'ESC上方第二片M3硅胶垫圈', 6,
-        x, 9.25, z, { explodeY: 10, desc: 'M3×6×1.5硅胶垫圈，紧叠在ESC上方第一片垫圈之上。' });
-      addHardware('m3-hex-nut-5', 'esc-upper-m3-nut-' + String(i + 1), cornerNames[i] + '适配板下方M3厚螺母', 6,
-        x, 12.5, z, { explodeY: 14, desc: '厚5 mm的M3螺母，压在每根外杆两片M3硅胶垫圈上；位于缓震圈与适配板下方。未建螺纹。' });
-      addHardware('m3-single-ended-hex-standoff', 'carrier-m3-single-ended-column-' + String(i + 1), cornerNames[i] + '载板M3单头六角柱', 9,
-        x, 29, z, { explodeY: 12, desc: 'M3单头六角柱，盲孔朝下套入外侧M3×40杆端4 mm；柱体高5 mm，四柱顶面均为Y=31.5 mm。' });
-      addHardware('m3-hex-nut-2p5', 'carrier-top-m3-nut-' + String(i + 1), cornerNames[i] + '载板上M3薄螺母', 10,
-        x, 35.75, z, { explodeY: 8, desc: '厚2.5 mm的M3螺母，位于载板顶面并固定单头六角柱的上伸螺杆。未建螺纹。' });
+          desc: 'Grommet waist is Ø4 mm in diameter and 1.5 mm high. It fits into an Ø4.1 mm outer hole in the 40 × 40 × 1.5 mm adapter plate, with the flanges holding the plate faces.' });
+      addHardware('m3-silicone-washer-6x3x1p5', 'esc-upper-m3-washer-b-' + String(i + 1), cornerNames[i] + ' ESC second upper M3 silicone washer', 6,
+        x, 9.25, z, { explodeY: 10, desc: 'Second M3×6×1.5 silicone washer, stacked directly on the first washer above the ESC.' });
+      addHardware('m3-hex-nut-5', 'esc-upper-m3-nut-' + String(i + 1), cornerNames[i] + ' M3 thick nut below adapter plate', 6,
+        x, 12.5, z, { explodeY: 14, desc: 'M3 nut, 5 mm thick, pressing on the two M3 silicone washers on each outer rod. It sits below the grommet and adapter plate. Threads are not modeled.' });
+      addHardware('m3-single-ended-hex-standoff', 'carrier-m3-single-ended-column-' + String(i + 1), cornerNames[i] + ' carrier-plate M3 single-ended hex standoff', 9,
+        x, 29, z, { explodeY: 12, desc: 'M3 single-ended hex standoff with its blind bore facing down, fitted 4 mm over the outer M3×40 rod end. The body is 5 mm high; all four standoff tops are at Y=31.5 mm.' });
+      addHardware('m3-hex-nut-2p5', 'carrier-top-m3-nut-' + String(i + 1), cornerNames[i] + ' carrier-plate upper M3 thin nut', 10,
+        x, 35.75, z, { explodeY: 8, desc: 'M3 nut, 2.5 mm thick, on top of the carrier plate securing the projecting rod of the single-ended hex standoff. Threads are not modeled.' });
     }
 
     for (let i = 0; i < 2; i++) {
       const z = i === 0 ? 15.25 : -15.25;
-      addHardware('m3-hex-nut-2p5', 'fc-left-outer-m3-nut-' + String(i + 1), '面向机头左侧+X外杆M3薄螺母' + (i + 1), 8,
-        15.25, 20.75, z, { explodeY: 12, desc: '厚2.5 mm的M3螺母，仅安装在面向机头（+Z）时左侧（+X）的两根外杆、缓震圈上凸缘之上；右侧（-X）外杆不加此螺母。未建螺纹。' });
+      addHardware('m3-hex-nut-2p5', 'fc-left-outer-m3-nut-' + String(i + 1), 'Left-side (+X) outer-rod M3 thin nut ' + (i + 1), 8,
+        15.25, 20.75, z, { explodeY: 12, desc: 'M3 nut, 2.5 mm thick, installed only on the two left-side (+X) outer rods when facing forward (+Z), above the grommet flanges. Do not add this nut to the right-side (-X) rods. Threads are not modeled.' });
     }
 
     for (let i = 0; i < innerMounts.length; i++) {
       const x = innerMounts[i][0], z = innerMounts[i][1];
-      addScrew('m3-screw-12', 'fc-inner-m3x12-' + String(i + 1), '飞控内圈M3×12螺钉' + (i + 1), 8,
+      addScrew('m3-screw-12', 'fc-inner-m3x12-' + String(i + 1), 'Flight-controller inner M3×12 screw ' + (i + 1), 8,
         x, z, 25.3, false,
-        { explodeY: 10, staging: staged, desc: 'M3×12螺钉从飞控上方向下穿过板与适配板内圈孔；螺杆下端Y=13.3 mm，头部底面Y=25.3 mm并压在板上M3垫圈，适配板下方由2.5 mm M3螺母承接。未建螺纹。' });
-      addHardware('m3-silicone-washer-6x3x1p5', 'fc-top-m3-washer-' + String(i + 1), '飞控板上M3硅胶垫圈' + (i + 1), 8,
-        x, 24.55, z, { explodeY: 13, staging: staged, desc: 'M3×6×1.5硅胶垫圈，位于飞控板上表面与M3×12螺钉头之间。' });
-      addHardware('m3-hex-nut-2p5', 'fc-under-m3-nut-' + String(i + 1), '适配板下M3薄螺母' + (i + 1), 8,
-        x, Z.adapterBottom - 1.25, z, { explodeY: -8, staging: staged, desc: '厚2.5 mm的M3螺母，位于FC适配板下方，固定内圈M3×12螺钉。未建螺纹。' });
+        { explodeY: 10, staging: staged, desc: 'M3×12 screw passes down from above the flight controller through the board and the adapter plate’s inner hole pattern. The rod end is at Y=13.3 mm; the head bottom is at Y=25.3 mm against the M3 washer on the board. An M3 nut, 2.5 mm thick, secures it below the adapter plate. Threads are not modeled.' });
+      addHardware('m3-silicone-washer-6x3x1p5', 'fc-top-m3-washer-' + String(i + 1), 'Flight-controller upper M3 silicone washer ' + (i + 1), 8,
+        x, 24.55, z, { explodeY: 13, staging: staged, desc: 'M3×6×1.5 silicone washer between the flight-controller board top and the M3×12 screw head.' });
+      addHardware('m3-hex-nut-2p5', 'fc-under-m3-nut-' + String(i + 1), 'M3 thin nut below adapter plate ' + (i + 1), 8,
+        x, Z.adapterBottom - 1.25, z, { explodeY: -8, staging: staged, desc: 'M3 nut, 2.5 mm thick, below the flight-controller adapter plate securing the inner M3×12 screw. Threads are not modeled.' });
     }
 
     for (let i = 0; i < IO_HOLES.length; i++) {
       const x = IO_HOLES[i][0], z = IO_HOLES[i][1];
-      addScrew('m2p5-screw-16', 'io-m2p5x16-' + String(i + 1), 'IO载板M2.5×16螺钉' + (i + 1), 11,
+      addScrew('m2p5-screw-16', 'io-m2p5x16-' + String(i + 1), 'IO board-to-carrier M2.5×16 screw ' + (i + 1), 11,
         x, z, Z.carrierBottom - 1, true,
-        { explodeY: -8, desc: 'M2.5×16螺钉从V3载板下方朝上穿过IO_HOLES孔位；杆长16 mm，未建螺纹。' });
-      addHardware('m2-silicone-washer-5x2x1', 'io-under-m2-washer-' + String(i + 1), '载板下M2弹性垫圈' + (i + 1), 11,
+        { explodeY: -8, desc: 'M2.5×16 screw passes upward through the IO_HOLES position from below the V3 carrier plate. Rod length is 16 mm. Threads are not modeled.' });
+      addHardware('m2-silicone-washer-5x2x1', 'io-under-m2-washer-' + String(i + 1), 'M2 elastic washer below carrier plate ' + (i + 1), 11,
         x, Z.carrierBottom - 0.5, z, { explodeY: -5, stretchedM2Washer: true,
-          desc: '原M2×5×1硅胶垫圈，外径保持5 mm；示意弹性撑开后内孔为2.5 mm，位于载板下方。' });
-      addHardware('m2p5-hex-nut-6', 'io-m2p5-column-' + String(i + 1), 'IO主板6 mm高M2.5六角柱' + (i + 1), 11,
-        x, Z.carrierTop + 3, z, { explodeY: 8, desc: '对边4.7 mm、厚6 mm、Ø2.5 mm通孔的M2.5六角柱，位于载板上方。未建螺纹。' });
-      addHardware('m2-silicone-washer-5x2x1', 'io-top-m2-washer-' + String(i + 1), 'IO主板下M2弹性垫圈' + (i + 1), 11,
+          desc: 'Original M2×5×1 silicone washer, retaining its 5 mm outer diameter. The inner hole is shown elastically expanded to 2.5 mm. It sits below the carrier plate.' });
+      addHardware('m2p5-hex-nut-6', 'io-m2p5-column-' + String(i + 1), '6 mm-high M2.5 hex standoff for IO board ' + (i + 1), 11,
+        x, Z.carrierTop + 3, z, { explodeY: 8, desc: 'M2.5 hex standoff with 4.7 mm across flats, 6 mm thickness, and an Ø2.5 mm through-hole. It sits above the carrier plate. Threads are not modeled.' });
+      addHardware('m2-silicone-washer-5x2x1', 'io-top-m2-washer-' + String(i + 1), 'M2 elastic washer below IO board ' + (i + 1), 11,
         x, Z.ioBottom - 0.5, z, { explodeY: 11, stretchedM2Washer: true,
-          desc: '原M2×5×1硅胶垫圈，外径保持5 mm；示意弹性撑开后内孔为2.5 mm，位于6 mm六角柱与IO板之间。' });
-      addHardware('m2p5-hex-nut-2', 'io-top-m2p5-thin-nut-' + String(i + 1), 'IO主板上M2.5薄螺母' + (i + 1), 12,
-        x, Z.ioBottom + 3, z, { explodeY: 12, desc: '厚2 mm、对边5 mm的M2.5薄螺母，固定IO主板。未建螺纹。' });
+          desc: 'Original M2×5×1 silicone washer, retaining its 5 mm outer diameter. The inner hole is shown elastically expanded to 2.5 mm. It sits between the 6 mm standoff and the IO board.' });
+      addHardware('m2p5-hex-nut-2', 'io-top-m2p5-thin-nut-' + String(i + 1), 'M2.5 thin nut above IO board ' + (i + 1), 12,
+        x, Z.ioBottom + 3, z, { explodeY: 12, desc: 'M2.5 thin nut, 2 mm thick and 5 mm across flats, securing the IO board. Threads are not modeled.' });
     }
 
     for (let i = 0; i < 2; i++) {
       const x = i === 0 ? -7.5 : 7.5;
       const z = -65;
-      addScrew('m3-screw-12', 'gps-m3x12-' + String(i + 1), 'GPS mast M3×12螺钉' + (i + 1), 13,
+      addScrew('m3-screw-12', 'gps-m3x12-' + String(i + 1), 'GPS mast M3×12 screw ' + (i + 1), 13,
         x, z, 38.5, false,
-        { explodeY: 8, desc: 'M3×12螺钉头位于GPS mast底座上方，向下穿过塑料硬垫片、mast底座与载板；下端由载板下方M3螺母固定。未建螺纹。' });
-      addHardware('m3-hard-plastic-washer-7x3x1', 'gps-m3-hard-washer-' + String(i + 1), 'GPS mast塑料硬垫片' + (i + 1), 13,
-        x, 38, z, { explodeY: 5, desc: 'M3×7×1塑料硬垫片，位于GPS mast底座上方与螺钉头之间。' });
-      addHardware('m3-hex-nut-2p5', 'gps-m3-nut-' + String(i + 1), 'GPS mast上方M3螺母' + (i + 1), 13,
-        x, 30.25, z, { explodeY: -8, desc: '厚2.5 mm的M3螺母，位于载板下方，固定GPS mast安装螺钉。未建螺纹。' });
+        { explodeY: 8, desc: 'M3×12 screw head sits above the GPS mast base. The screw passes downward through the hard plastic washer, mast base, and carrier plate, then is secured with an M3 nut below the plate. Threads are not modeled.' });
+      addHardware('m3-hard-plastic-washer-7x3x1', 'gps-m3-hard-washer-' + String(i + 1), 'GPS mast hard plastic washer ' + (i + 1), 13,
+        x, 38, z, { explodeY: 5, desc: 'M3×7×1 hard plastic washer between the GPS mast base and the screw head.' });
+      addHardware('m3-hex-nut-2p5', 'gps-m3-nut-' + String(i + 1), 'M3 nut below GPS mast ' + (i + 1), 13,
+        x, 30.25, z, { explodeY: -8, desc: 'M3 nut, 2.5 mm thick, below the carrier plate securing the GPS mast screw. Threads are not modeled.' });
     }
 
     function numberedIds(prefix, count) {
@@ -731,42 +731,42 @@
     }
 
     const tutorial = [
-      { title: '准备碳纤维机架', description: '机架作为装配基础整体展示；机头方向之后由飞控箭头标识。', materials: ['Source One V5.1机架 ×1'], ids: ['frame'] },
-      { title: '安装四台电机', description: '将电机放在各机臂末端安装位，底座贴机臂上表面；电机中心沿机臂内移8 mm。', materials: ['XING2 2207 1855KV电机 ×4'], ids: ['motors'] },
-      { title: '安装四个V7脚', description: '将真实V7脚顶面贴紧机臂底面，并对齐每个脚的安装孔。', materials: ['真实V7着陆脚 ×4'], ids: ['legs'] },
-      { title: '固定电机脚', description: '每个脚取朝外的两个孔位，用M3×16螺钉从脚底向上穿过脚和机臂，进入电机底座。孔边距约0.74 mm仅为示意，需实物确认。', materials: ['M3×16螺钉 ×8'], ids: gridIds('motor-foot-m3x16', 4, 2) },
-      { title: '安装空电池托盘', description: '安装真实TPU托盘，开口朝下；托盘底板贴紧机架下表面，保持空置。托盘固定带为示意。', materials: ['真实TPU电池托盘 ×1', '示意固定带 ×1'], ids: ['battery-tray'] },
-      { title: '装入四颗M3×20螺钉', description: '从托盘下方向上穿过20×20 mm内圈安装位。', materials: ['M3×20螺钉 ×4'], ids: numberedIds('battery-inner-m3x20', 4) },
-      { title: '装入四颗M3×40螺钉', description: '从托盘下方向上穿过30.5×30.5 mm外圈安装位；板边开口为示意，需按实物确认。杆端高出机架上表面约30.5 mm。', materials: ['M3×40螺钉 ×4'], ids: numberedIds('battery-outer-m3x40', 4) },
-      { title: '安装ESC下方螺母', description: '在四根外侧长螺杆上各装一颗厚2.5 mm的M3螺母，位置在机臂上方。', materials: ['M3薄螺母（厚2.5 mm）×4'], ids: numberedIds('esc-lower-m3-nut', 4) },
-      { title: '安装ESC下方硅胶垫圈', description: '在四颗下支撑螺母上各放一只M3×6×1.5硅胶垫圈，使垫圈顶面与ESC底面齐平。', materials: ['M3×6×1.5硅胶垫圈 ×4'], ids: numberedIds('esc-lower-m3-washer', 4) },
-      { title: '放置ESC', description: '将MicoAir 50A ESC落在四只硅胶垫圈上，接线端朝机尾。', materials: ['MicoAir 50A ESC示意件 ×1'], ids: ['esc'] },
-      { title: '安装ESC上方第一层垫圈', description: '每根外侧长螺杆在ESC上表面各放一片M3硅胶垫圈。', materials: ['M3×6×1.5硅胶垫圈 ×4'], ids: numberedIds('esc-upper-m3-washer-a', 4) },
-      { title: '安装ESC上方第二层垫圈', description: '在第一层垫圈上再各叠放一片同规格M3硅胶垫圈。', materials: ['M3×6×1.5硅胶垫圈 ×4'], ids: numberedIds('esc-upper-m3-washer-b', 4) },
-      { title: '安装ESC上方厚螺母', description: '在每根外侧螺杆的两片硅胶垫圈上方装一颗厚5 mm的M3螺母，供上方适配板支撑。', materials: ['M3螺母（厚5 mm）×4'], ids: numberedIds('esc-upper-m3-nut', 4) },
-      { title: '放置飞控适配板', description: '将真实40×40×1.5 mm适配板放在机架侧边预装位，保持原孔位方向。', materials: ['40×40×1.5 mm飞控适配板 ×1'], ids: ['fc-adapter'] },
-      { title: '安装四个缓震圈', description: '缓震圈外凸缘直径6 mm；将外径4 mm、高1.5 mm的腰部嵌入适配板外孔，使上下凸缘夹持板面。', materials: ['硅胶缓震圈（凸缘外径6 mm、腰部4×1.5 mm）×4'], ids: numberedIds('fc-adapter-grommet', 4) },
-      { title: '放置飞控板', description: '将MicoAir NxtPX4v2飞控置于适配板上方，板底Y=21.8 mm、适配板顶面Y=18.1 mm，两者间隔3.7 mm；板上箭头朝机头（+Z）。', materials: ['MicoAir NxtPX4v2飞控示意件 ×1'], ids: ['fc'] },
-      { title: '安装飞控上垫圈', description: '在飞控四个安装孔位置各放一片M3硅胶垫圈，位于板上。', materials: ['M3×6×1.5硅胶垫圈 ×4'], ids: numberedIds('fc-top-m3-washer', 4) },
-      { title: '装入飞控M3×12螺钉', description: '从上向下穿过垫圈、飞控和适配板内圈孔。', materials: ['M3×12螺钉 ×4'], ids: numberedIds('fc-inner-m3x12', 4) },
-      { title: '固定飞控下方螺母', description: '在适配板下方为四颗螺钉各装一颗厚2.5 mm的M3薄螺母，完成侧边预装。', materials: ['M3薄螺母（厚2.5 mm）×4'], ids: numberedIds('fc-under-m3-nut', 4) },
-      { title: '将飞控预装组移到机身', description: '把侧边完成的预装组整体移到机身，使四个外孔缓震圈对准四根M3×40长螺杆，再沿杆放下。', materials: [], ids: [], move: ['fc-adapter'].concat(numberedIds('fc-adapter-grommet', 4), ['fc'], numberedIds('fc-top-m3-washer', 4), numberedIds('fc-inner-m3x12', 4), numberedIds('fc-under-m3-nut', 4)) },
-      { title: '安装左侧两颗螺母', description: '面向机头（+Z）时，仅在左侧（+X）两根外侧长螺杆上各装一颗厚2.5 mm的M3薄螺母；右侧（-X）不加。', materials: ['M3薄螺母（厚2.5 mm）×2'], ids: numberedIds('fc-left-outer-m3-nut', 2) },
-      { title: '安装四根单头柱', description: '将M3单头柱盲孔朝下，分别套入外侧长螺杆约4 mm，使四根柱顶面齐平。', materials: ['M3单头六角柱（高5 mm）×4'], ids: numberedIds('carrier-m3-single-ended-column', 4) },
-      { title: '放置V3载板', description: '将真实载板落在四根柱顶面并贴合；排线孔朝机头，GPS安装孔朝机尾。', materials: ['真实V3载板（90×137×3 mm）×1'], ids: ['carrier'] },
-      { title: '锁紧载板上方螺母', description: '从载板上方在四个柱位各装一颗厚2.5 mm的M3螺母。', materials: ['M3薄螺母（厚2.5 mm）×4'], ids: numberedIds('carrier-top-m3-nut', 4) },
-      { title: '放置载板下M2垫圈', description: '在载板四个外侧安装孔下方各放一片垫圈；示意内孔弹性撑至2.5 mm。', materials: ['M2×5×1硅胶垫圈 ×4'], ids: numberedIds('io-under-m2-washer', 4) },
-      { title: '装入IO板M2.5×16螺钉', description: '从载板下方将四颗螺钉向上穿过四个外侧安装孔。', materials: ['M2.5×16螺钉 ×4'], ids: numberedIds('io-m2p5x16', 4) },
-      { title: '安装四根IO板六角柱', description: '在载板上方的四个安装位各装一根高6 mm的M2.5六角通孔柱。', materials: ['M2.5六角通孔柱（高6 mm）×4'], ids: numberedIds('io-m2p5-column', 4) },
-      { title: '放置IO板上方垫圈', description: '在四根六角柱顶端各放一片垫圈，垫圈位于IO板下方；示意内孔弹性撑至2.5 mm。', materials: ['M2×5×1硅胶垫圈 ×4'], ids: numberedIds('io-top-m2-washer', 4) },
-      { title: '放置CM5 IO主板', description: '将80×100 mm ArmSoM CM5 IO板按载板四个外侧安装孔对齐，放在四个垫圈上；接口朝向面向机头时的左侧。', materials: ['ArmSoM CM5-IO底板示意件 ×1', 'BPI-CM5 Pro核心板示意件 ×1', 'IO金属接口示意件 ×3', '黑色连接器示意件 ×1', '后排针示意件 ×1'], ids: ['cm5-io'] },
-      { title: '固定IO主板', description: '在主板上方四个安装孔各装一颗M2.5薄螺母；螺母厚2 mm。', materials: ['M2.5薄螺母（厚2 mm）×4'], ids: numberedIds('io-top-m2p5-thin-nut', 4) },
-      { title: '安装GPS组件', description: '将真实GPS mast装在载板机尾端；GPS前向箭头朝机头。GPS模块外形为示意。', materials: ['真实GPS mast V2 ×1', 'GPS模块示意件 ×1', 'GPS顶盖与线缆细节示意 ×1'], ids: ['gps'] },
-      { title: '放置GPS塑料垫片', description: '在mast底座两个螺钉位各放一片M3×7×1塑料硬垫片，位于底座上方。', materials: ['M3×7×1塑料硬垫片 ×2'], ids: numberedIds('gps-m3-hard-washer', 2) },
-      { title: '装入GPS M3×12螺钉', description: '在机尾两个安装位将螺钉头朝上，从上向下穿过垫片、mast底座和载板。', materials: ['M3×12螺钉 ×2'], ids: numberedIds('gps-m3x12', 2) },
-      { title: '固定GPS下方螺母', description: '在载板下方的两颗螺钉末端各装一颗厚2.5 mm的M3螺母。', materials: ['M3薄螺母（厚2.5 mm）×2'], ids: numberedIds('gps-m3-nut', 2) },
-      { title: '安装前向相机', description: '将相机支架与IMX219组件放在机架机头端；铰链角度和排线路径按现有示意。', materials: ['相机支架底座 ×1', '相机支架立板 ×1', '相机铰链 ×1', '白色垫套 ×2', 'IMX219相机板 ×1', '相机镜头 ×1', '相机FPC排线 ×1'], ids: ['camera'] },
-      { title: '安装四片螺旋桨', description: '在四台电机位置安装Gemfan 51466示意桨；模型未定义实际转向和接线。', materials: ['Gemfan 51466螺旋桨 ×4'], ids: ['props'] }
+      { title: 'Prepare the carbon-fiber frame', description: 'The frame is shown as the assembly base. The flight-controller arrow will mark the front direction later in the guide.', materials: ['Source One V5.1 frame ×1'], ids: ['frame'] },
+      { title: 'Install the four motors', description: 'Place one motor at each arm-tip mounting position with its base against the top of the arm. Shift each motor center 8 mm inward along the arm.', materials: ['XING2 2207 1855KV motors ×4'], ids: ['motors'] },
+      { title: 'Install the four V7 feet', description: 'Place the top of each actual V7 foot against the underside of an arm and align the mounting holes.', materials: ['Actual V7 landing feet ×4'], ids: ['legs'] },
+      { title: 'Secure the motor feet', description: 'Use the two outward-facing holes on each foot. Pass eight M3×16 screws upward through the feet and arms into the motor bases. The approximately 0.74 mm hole-edge margin is illustrative; verify it on the physical parts.', materials: ['M3×16 screws ×8'], ids: gridIds('motor-foot-m3x16', 4, 2) },
+      { title: 'Install the empty battery tray', description: 'Fit the actual TPU tray with its opening facing down and its base plate against the underside of the frame. Leave the tray empty. The retaining strap is illustrative.', materials: ['Actual TPU battery tray ×1', 'Illustrative retaining strap ×1'], ids: ['battery-tray'] },
+      { title: 'Insert four M3×20 screws', description: 'Pass the screws upward from below the tray through the 20 × 20 mm inner mounting pattern.', materials: ['M3×20 screws ×4'], ids: numberedIds('battery-inner-m3x20', 4) },
+      { title: 'Insert four M3×40 screws', description: 'Pass the screws upward from below the tray through the 30.5 × 30.5 mm outer mounting pattern. The open-edge plate notches are illustrative and must be checked against the physical parts. The rod ends extend approximately 30.5 mm above the frame top.', materials: ['M3×40 screws ×4'], ids: numberedIds('battery-outer-m3x40', 4) },
+      { title: 'Install the nuts below the ESC', description: 'Fit one M3 nut, 2.5 mm thick, on each of the four outer long screws above the arms.', materials: ['M3 thin nuts, 2.5 mm thick ×4'], ids: numberedIds('esc-lower-m3-nut', 4) },
+      { title: 'Install the silicone washers below the ESC', description: 'Place one M3×6×1.5 silicone washer on each of the four support nuts, with the washer tops level with the ESC bottom.', materials: ['M3×6×1.5 silicone washers ×4'], ids: numberedIds('esc-lower-m3-washer', 4) },
+      { title: 'Place the ESC', description: 'Set the illustrative MicoAir 50A ESC on the four silicone washers with its wiring end facing the rear.', materials: ['Illustrative MicoAir 50A ESC ×1'], ids: ['esc'] },
+      { title: 'Install the first upper washer layer on the ESC', description: 'Place one M3 silicone washer on the ESC top at each outer long screw.', materials: ['M3×6×1.5 silicone washers ×4'], ids: numberedIds('esc-upper-m3-washer-a', 4) },
+      { title: 'Install the second upper washer layer on the ESC', description: 'Stack another washer of the same size on each first-layer washer.', materials: ['M3×6×1.5 silicone washers ×4'], ids: numberedIds('esc-upper-m3-washer-b', 4) },
+      { title: 'Install the thick nuts above the ESC', description: 'Fit one M3 nut, 5 mm thick, above the two silicone washers on each outer screw. These nuts support the adapter plate above.', materials: ['M3 nuts, 5 mm thick ×4'], ids: numberedIds('esc-upper-m3-nut', 4) },
+      { title: 'Place the flight-controller adapter plate', description: 'Position the actual 40 × 40 × 1.5 mm adapter plate beside the frame for preassembly, keeping its original hole orientation.', materials: ['40 × 40 × 1.5 mm flight-controller adapter plate ×1'], ids: ['fc-adapter'] },
+      { title: 'Install the four vibration-damping grommets', description: 'Each grommet has 6 mm outer-diameter flanges. Fit its 4 mm-diameter, 1.5 mm-high waist into an outer adapter-plate hole so the flanges hold both sides of the plate.', materials: ['Silicone vibration-damping grommets (6 mm flanges, 4 × 1.5 mm waist) ×4'], ids: numberedIds('fc-adapter-grommet', 4) },
+      { title: 'Place the flight-controller board', description: 'Place the illustrative MicoAir NxtPX4v2 board above the adapter plate. The board bottom is at Y=21.8 mm and the adapter-plate top at Y=18.1 mm, leaving a 3.7 mm gap. Point the board arrow toward the front (+Z).', materials: ['Illustrative MicoAir NxtPX4v2 flight controller ×1'], ids: ['fc'] },
+      { title: 'Install the washers above the flight controller', description: 'Place one M3 silicone washer on the board at each of its four mounting holes.', materials: ['M3×6×1.5 silicone washers ×4'], ids: numberedIds('fc-top-m3-washer', 4) },
+      { title: 'Insert the flight-controller M3×12 screws', description: 'Pass the screws downward through the washers, flight controller, and adapter plate’s inner holes.', materials: ['M3×12 screws ×4'], ids: numberedIds('fc-inner-m3x12', 4) },
+      { title: 'Secure the nuts below the flight controller', description: 'Fit one M3 thin nut, 2.5 mm thick, below the adapter plate on each screw to complete the side preassembly.', materials: ['M3 thin nuts, 2.5 mm thick ×4'], ids: numberedIds('fc-under-m3-nut', 4) },
+      { title: 'Move the preassembled flight-controller stack onto the frame', description: 'Move the completed side assembly onto the frame. Align the four outer grommets with the four M3×40 long screws, then lower the stack along the screws.', materials: [], ids: [], move: ['fc-adapter'].concat(numberedIds('fc-adapter-grommet', 4), ['fc'], numberedIds('fc-top-m3-washer', 4), numberedIds('fc-inner-m3x12', 4), numberedIds('fc-under-m3-nut', 4)) },
+      { title: 'Install two nuts on the left side', description: 'When facing forward (+Z), fit one M3 thin nut, 2.5 mm thick, on each of the two left-side (+X) outer long screws. Do not add nuts on the right side (-X).', materials: ['M3 thin nuts, 2.5 mm thick ×2'], ids: numberedIds('fc-left-outer-m3-nut', 2) },
+      { title: 'Install the four single-ended standoffs', description: 'Point the blind bore of each M3 single-ended standoff down and fit it approximately 4 mm over an outer long screw, keeping all four standoff tops level.', materials: ['M3 single-ended hex standoffs, 5 mm high ×4'], ids: numberedIds('carrier-m3-single-ended-column', 4) },
+      { title: 'Place the V3 carrier plate', description: 'Lower the actual carrier plate onto the four standoff tops. Face the cable opening toward the front and the GPS mounting holes toward the rear.', materials: ['Actual V3 carrier plate (90 × 137 × 3 mm) ×1'], ids: ['carrier'] },
+      { title: 'Tighten the nuts above the carrier plate', description: 'From above the carrier plate, fit one M3 nut, 2.5 mm thick, at each of the four standoff positions.', materials: ['M3 thin nuts, 2.5 mm thick ×4'], ids: numberedIds('carrier-top-m3-nut', 4) },
+      { title: 'Place the M2 washers below the carrier plate', description: 'Place one washer below each of the four outer carrier-plate holes. The inner hole is shown elastically expanded to 2.5 mm.', materials: ['M2×5×1 silicone washers ×4'], ids: numberedIds('io-under-m2-washer', 4) },
+      { title: 'Insert the IO-board M2.5×16 screws', description: 'Pass four screws upward from below the carrier plate through the four outer mounting holes.', materials: ['M2.5×16 screws ×4'], ids: numberedIds('io-m2p5x16', 4) },
+      { title: 'Install the four IO-board hex standoffs', description: 'Fit one 6 mm-high M2.5 hex through-hole standoff at each of the four mounting positions above the carrier plate.', materials: ['M2.5 hex through-hole standoffs, 6 mm high ×4'], ids: numberedIds('io-m2p5-column', 4) },
+      { title: 'Place the washers above the IO-board standoffs', description: 'Place one washer on each hex standoff so it sits below the IO board. The inner hole is shown elastically expanded to 2.5 mm.', materials: ['M2×5×1 silicone washers ×4'], ids: numberedIds('io-top-m2-washer', 4) },
+      { title: 'Place the CM5 IO board', description: 'Align the illustrative 80 × 100 mm ArmSoM CM5 IO board with the four outer carrier-plate holes and set it on the washers. Face its ports to the left when looking toward the front.', materials: ['Illustrative ArmSoM CM5-IO baseboard ×1', 'Illustrative BPI-CM5 Pro compute module ×1', 'Illustrative IO metal ports ×3', 'Illustrative black connector ×1', 'Illustrative rear header ×1'], ids: ['cm5-io'] },
+      { title: 'Secure the IO board', description: 'Fit one M2.5 thin nut, 2 mm thick, above each of the board’s four mounting holes.', materials: ['M2.5 thin nuts, 2 mm thick ×4'], ids: numberedIds('io-top-m2p5-thin-nut', 4) },
+      { title: 'Install the GPS assembly', description: 'Mount the actual GPS mast at the rear of the carrier plate. Point the GPS forward arrow toward the front. The GPS module shape is illustrative.', materials: ['Actual GPS mast V2 ×1', 'Illustrative GPS module ×1', 'Illustrative GPS cover and cable details ×1'], ids: ['gps'] },
+      { title: 'Place the GPS plastic washers', description: 'Place one M3×7×1 hard plastic washer above the mast base at each of its two screw positions.', materials: ['M3×7×1 hard plastic washers ×2'], ids: numberedIds('gps-m3-hard-washer', 2) },
+      { title: 'Insert the GPS M3×12 screws', description: 'At the two rear mounting positions, point the screw heads upward and pass the screws downward through the washers, mast base, and carrier plate.', materials: ['M3×12 screws ×2'], ids: numberedIds('gps-m3x12', 2) },
+      { title: 'Secure the nuts below the GPS mast', description: 'Fit one M3 nut, 2.5 mm thick, on each screw end below the carrier plate.', materials: ['M3 thin nuts, 2.5 mm thick ×2'], ids: numberedIds('gps-m3-nut', 2) },
+      { title: 'Install the forward-facing camera', description: 'Place the camera bracket and IMX219 assembly at the front of the frame. The hinge angle and cable route follow the existing illustration.', materials: ['Camera bracket base ×1', 'Camera bracket upright ×1', 'Camera hinge ×1', 'White spacer sleeves ×2', 'IMX219 camera board ×1', 'Camera lens ×1', 'Camera FPC cable ×1'], ids: ['camera'] },
+      { title: 'Install the four propellers', description: 'Fit the illustrative Gemfan 51466 propellers to the four motors. The model does not define actual motor direction or wiring.', materials: ['Illustrative Gemfan 51466 propellers ×4'], ids: ['props'] }
     ];
 
     const partsById = new Map(resultParts.map(function (part) { return [part.id, part]; }));

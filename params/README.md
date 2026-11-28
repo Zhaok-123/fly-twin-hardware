@@ -1,11 +1,10 @@
 # PX4 parameter files
 
-The supplied [PX4 v1.16.2 file](airframe1_px4-v1.16.2_2026-11-12.params)
-is dated 2026-11-12. The filename identifies it as Airframe #1, but the source aircraft
-and whether it is a post-check export after the latest updates have not been confirmed. It does not
-by itself establish props-off validation or a new flight. See the
-[firmware and parameter notes](../docs/px4-firmware-and-params.md) and the
-[current as-built status](../docs/as-built-status.md) before applying it.
+The supplied [PX4 v1.16.2 file](airframe1_px4-v1.16.2_2026-11-12.params) is dated
+2026-11-12. Its filename suggests Airframe #1, but the source aircraft and whether it is
+a post-check export are unconfirmed. See [as-built status](../docs/as-built-status.md)
+for current validation and [firmware and parameters](../docs/px4-firmware-and-params.md)
+for migration notes.
 
 To save a file from QGroundControl: Vehicle Setup → Parameters → Tools → *Save to file*.
 
