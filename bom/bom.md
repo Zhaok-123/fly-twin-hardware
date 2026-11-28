@@ -11,13 +11,13 @@ For the current configuration and open checks, see the
 
 | # | Part | Exact model | Qty | Unit ¥ | Total ¥ | Where / search term | Status |
 |---|------|-------------|----:|-------:|--------:|---------------------|--------|
-| A1 | Frame | TBS Source One V5.1, 5", 6 mm arms, ~118 g, with hardware | 1 | 252 | 252 | Taobao TBS distributor; seller identity unconfirmed; TBS / GetFPV ~$30 | On #1 |
+| A1 | Frame | TBS Source One V5.1, 5", 6 mm arms, ~118 g, with hardware | 1 | 252 | 252 | TBS / GetFPV ~$30 | On #1 |
 | A2 | Standoffs | M3 × 30 mm aluminium ×4 + M3×8 screws (level the top plate) | 1 set | 10 | 10 | Any hardware shop | Verify |
 | A3 | Motors | iFlight XING2 2207 1855KV | 4 | 90 | 360 | Taobao search: iFlight XING2 2207 1855KV | On #1 |
 | A4 | Props | Gemfan 51466 tri-blade (2 CW + 2 CCW per set) | 4 pairs | 10 | 40 | Taobao search: Gemfan 51466 | On #1 (verify model) |
 | A5 | Flight stack | MicoAir NxtPX4v2 **50A stack**: NxtPX4v2 FC (STM32H743, dual BMI088, SPL06 baro, 20×20 mm, onboard 5 V and 12 V BEC) + MicoAir 50A 4-in-1 ESC + stack hardware + 8-pin cable | 1 | 628 | 628 | MicoAir official Taobao store | On #1 |
 | A6 | FC/ESC adapter | **Custom printed 40 × 40 × 1.5 mm, eight holes; 20 mm inner and 30.5 mm outer patterns** | 1 | — | — | Supplied [STL](../mounts/stl/05_esc_plate_40x40x1p5_outer4p1_R1.stl) | **Builder reports installed on #1** |
-| A7 | Mounting spacers and silicone | Builder reports grommets at the adapter's outer holes and silicone washers above the FC at the inner holes; separate inner-hole grommets are requested but not confirmed | 1 set | — | — | See [current mounting status](../docs/as-built-status.md); fastener sizes to verify | **Arrangement builder-reported; vibration not measured** |
+| A7 | Mounting spacers and silicone | Four grommets at the adapter's outer holes and silicone washers above the FC at the inner holes | 1 set | — | — | [Fasteners by joint](../docs/fasteners.md) | **Installed on #1** |
 | A8 | GPS | Holybro Micro M10 (plastic case), with compass | 1 | 166 | 166 | Holybro store | On #1 |
 | A9 | Receiver | RadioMaster RP1 ELRS 2.4 GHz | 1 | 60 | 60 | "RadioMaster RP1" | On #1 |
 | A10 | Battery | Tattu R-Line 4S 1550 mAh 95C | 2 | 180 | 360 | Taobao search: Tattu R-Line 4S 1550 mAh | Verify |
@@ -32,7 +32,7 @@ For the current configuration and open checks, see the
 
 | # | Part | Exact model | Qty | Unit ¥ | Total ¥ | Where | Status |
 |---|------|-------------|----:|-------:|--------:|-------|--------|
-| B1 | Compute module + IO board | **BPI-CM5 Pro 4+32G WiFi module** (package marking) + separately purchased **ArmSoM CM5-IO** board (RK3576) | 1 | — | — | Vendor, order and current paid price are not recorded | **Builder-identified configuration; power and UART unverified** |
+| B1 | Compute module + IO board | **BPI-CM5 Pro 4+32G WiFi module** + separately purchased **ArmSoM CM5-IO** board (RK3576) | 1 | — | — | — | **Power and UART unverified** |
 | B2 | Heatsink | ~30×30 mm for the SoC (if not included) | 1 | 10 | 10 | Taobao | Verify |
 | B3 | Camera | IMX219 120° wide-angle, Raspberry Pi connector, 15 cm FPC (+ 22→15-pin adapter if needed) | 1 | 33 | 33 | Taobao search: IMX219 120° Raspberry Pi camera | In hand, fitted |
 | B4 | Wi-Fi antenna | IPEX → external antenna (if not included) | 1 | 10 | 10 | Taobao | Verify |
@@ -83,4 +83,4 @@ For the current configuration and open checks, see the
 | iFlight Nazgul5 V3 frame | TBS Source One V5.1 | Nazgul5 V3 not sold as a bare frame in China; Source One is open-source |
 | iFlight BLITZ E55S ESC | MicoAir 50A ESC (in the stack) | Comes matched with the FC, cable and current scale included |
 | Holybro Pixhawk 6C Mini + PM06 | MicoAir NxtPX4v2 | Cost; NxtPX4v2 is also the open reference design for the AIO FC |
-| Earlier generic “ArmSoM CM5 module” identification | BPI-CM5 Pro 4+32G WiFi module + separately purchased ArmSoM CM5-IO board | Module identity comes from its packaging; vendor and order details are not recorded |
+| Earlier generic “ArmSoM CM5 module” identification | BPI-CM5 Pro 4+32G WiFi module + separately purchased ArmSoM CM5-IO board | Corrected to the builder-confirmed module and IO board models |

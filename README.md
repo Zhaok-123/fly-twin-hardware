@@ -17,6 +17,8 @@ Current configuration, evidence and open checks are in the
 |------|----------|
 | [docs/architecture.md](docs/architecture.md) | How the aircraft works: layer stack, power tree, data links, vibration isolation, RF/magnetic layout, mass budget, design decisions |
 | [docs/assembly.md](docs/assembly.md) | As-built English assembly guide with photographs and mechanical schematics |
+| [docs/fasteners.md](docs/fasteners.md) | Screws, nuts, washers and standoffs by joint |
+| [docs/fc-connectors.md](docs/fc-connectors.md) | Labeled flight-controller connector photo |
 | [docs/wiring.md](docs/wiring.md) | Every connector and pin mapping |
 | [docs/px4-firmware-and-params.md](docs/px4-firmware-and-params.md) | Firmware version, flashing, migration from the vendor build, parameter set |
 | [docs/as-built-status.md](docs/as-built-status.md) | Current configuration, evidence, open checks and change log |

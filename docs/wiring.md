@@ -6,6 +6,9 @@
 Flight-controller peripherals use JST-GH sockets. Labels below follow MicoAir's
 NxtPX4v2 documentation; check the board silkscreen before connecting cables.
 
+The [flight-controller connector photo](fc-connectors.md) shows the plug positions and
+wire colours on the assembled aircraft.
+
 ## Overview
 
 | From | To | Cable | Notes |

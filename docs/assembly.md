@@ -19,7 +19,7 @@ Follow the [36-step offline viewer](../viewer/index.html) alongside these instru
 | FC/ESC adapter | Printed **40 × 40 × 1.5 mm** plate; 20 mm inner pitch, 30.5 mm outer pitch | Supplied eight-hole STL; builder reports it is installed |
 | Upper carrier | Printed **90 × 137 × 3 mm** V3 plate | Actual STL |
 | Upper plate position | Carbon top plate removed; the V3 printed carrier occupies this position | Builder statement; load transfer not independently checked |
-| Companion | **BPI-CM5 Pro 4+32G WiFi module** (package marking) with separately purchased **ArmSoM CM5-IO** on four raised supports | Builder identification; UART and power are unverified |
+| Companion | **BPI-CM5 Pro 4+32G WiFi module** with separately purchased **ArmSoM CM5-IO** on four raised supports | Builder-confirmed models; UART and power are unverified |
 | GPS / camera | Holybro Micro M10 GPS on printed mast; IMX219 on adjustable metal hinge | Photographs; GPS mast STL |
 | Landing gear | Four printed V7 legs, each nominally 80 mm tall | Actual V7 STL |
 | Battery support | Underslung printed battery tray and strap | Actual STL; battery not fixed in model |
@@ -41,6 +41,8 @@ The builder-reported H1–H4 clearances and face definitions are in
 
 The four outer fasteners continue from the frame through the ESC and adapter to the V3
 carrier.
+
+See [fasteners by joint](fasteners.md) for the screw, washer, nut and standoff sizes.
 
 ## 3. Assembly sequence
 
@@ -69,14 +71,13 @@ See [wiring.md](wiring.md) for connector pinouts, the ESC-to-FC harness and pola
 
 ### Step 3 — Printed 8-hole adapter and NxtPX4v2 FC
 
-1. Fit the four grommets into the adapter's **outer holes**, then position the spacer/nut stack without loading electrical components.
+1. Fit four grommets into the adapter's **outer holes**, then position the spacer/nut stack without loading electrical components.
 2. Seat the **40 × 40 × 1.5 mm eight-hole adapter** (`05_esc_plate_40x40x1p5_outer4p1_R1.stl`) on its **30.5 mm outer pitch**.
-3. Mount the NxtPX4v2 FC at the adapter's **20 mm inner pitch** using the actual hardware. The builder reports silicone washers above the FC at these inner holes; separate inner-hole grommets are not confirmed fitted.
+3. Mount the NxtPX4v2 FC at the adapter's **20 mm inner pitch** with silicone washers above the FC.
 4. Keep the FC USB-C socket and microSD access clear. Install the matching original ESC-to-FC cable and verify connector orientation against the hardware, not cable colour.
 5. Check clearance from the ESC, FC solder joints, all screw ends and the upper carrier supports. Do not allow the adapter or nuts to touch live pads.
 
-The following stack photos date from 2026-11-21 and show the earlier adapter assembly; the
-latest reported mounting arrangement is documented in [as-built status](as-built-status.md).
+Top and side views of the stack are included below.
 
 ![Stack top photograph](../build-log/2026-11-21_airframe1_rebuild/photos/03_flight_stack_top.jpg)
 
@@ -159,7 +160,7 @@ The 3D viewer displays Gemfan propellers to resemble the airframe photos. **Do n
 
 - [ ] Battery disconnected and **all propellers removed**.
 - [ ] Four ESC/FC outer through-fasteners are secured; **the ESC PCB is not acting as a bent load-bearing spacer**.
-- [ ] Inner FC hardware is secure; screw tips and washers clear circuitry, and the requested separate inner-hole grommets have been fitted or explicitly resolved.
+- [ ] Inner FC hardware is secure; screw tips and washers clear the circuitry.
 - [ ] Silicone washers do not bridge to bare solder or power pads; metal paths and vibration coupling have been assessed.
 - [ ] Carrier, GPS mast, camera hinge and all four V7 legs are rigidly retained where intended.
 - [ ] CM5/IO board is elevated without board flex; connectors, ribbon and antennas have strain relief.

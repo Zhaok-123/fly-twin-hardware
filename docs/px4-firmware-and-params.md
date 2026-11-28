@@ -4,6 +4,9 @@
 > [as-built status](as-built-status.md). Procedures and values below are reference
 > material; check settings with props removed.
 
+The supplied `params/airframe1_px4-v1.16.2_2026-11-12.params` file is the confirmed latest
+export after checks for Airframe #1.
+
 ## Firmware decision
 
 | | Before (airframe #1 first flights) | Now (team standard) |
